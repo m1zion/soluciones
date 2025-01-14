@@ -1,0 +1,30 @@
+@use '../../styles/_vars.css' as vars;
+.menuAppBar{
+    position:sticky;
+    background-color:var(--black247) !important;
+    height:5rem;
+}
+.navbar{
+    background-color: var(--black247);
+    display: flex;
+    flex-direction: column;
+}
+.toolbarContainer {
+    background:blue;
+    width: 80%;
+    height: fit-content;
+    border-radius: 16px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: Column;
+    align-items: center;
+}
+.nav-logo {
+    width: 130px;
+    object-fit:contain;
+}
+@media (max-width: 900px) {
+    .toolbarContainer {
+        display: none; 
+    }
+}

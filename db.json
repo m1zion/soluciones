@@ -1,0 +1,155 @@
+{
+  "marcas": [
+    {
+      "id": "1",
+      "marca":"NISSAN"
+    },
+    {
+      "id": "2",
+      "marca":"CHEVROLET"
+    },
+    {
+      "id": "3",
+      "marca":"TOYOTA"
+    }
+  ],
+  "modelos": [
+    {
+      "id": "1",
+      "marca":"TOYOTA",
+      "modelo":"RAV4",
+      "Anio":"2010"
+    },
+    {
+      "id": "2",
+      "marca":"TOYOTA",
+      "modelo":"COROLLA",
+      "Anio":"2012"
+    },
+    {
+      "id": "3",
+      "marca":"TOYOTA",
+      "modelo":"HIGHLANDER",
+      "Anio":"2019"
+    },
+    {
+      "id": "4",
+      "marca":"TOYOTA",
+      "modelo":"RAV4",
+      "Anio":"2011"
+    },
+    {
+      "id": "5",
+      "marca":"TOYOTA",
+      "modelo":"RAV4",
+      "Anio":"2012"
+    },
+    {
+      "id": "6",
+      "marca":"TOYOTA",
+      "modelo":"RAV4",
+      "Anio":"2013"
+    }
+  ],
+  "detalleCompra": [
+    {
+      "id": "1",
+      "ordenCompraId": "1",
+      "fecha": "2023-01-22T00:00:00.000Z",
+      "referencia": "1",
+      "total": "100.50"
+    }
+  ],
+  "menuItems": [
+    {
+      "id": "1",
+      "title": "Car Audio",
+      "link": "",
+      "url_image": "",
+      "order": 1,
+      "parent_id": "",
+      "rol": "1",
+      "level": 1
+    },
+    {
+      "id": "2",
+      "title": "Autoestereos",
+      "link": "/productCategory/1",
+      "url_image": "",
+      "order": 1,
+      "parent_id": "1",
+      "rol": "1",
+      "level": 2
+    },
+    {
+      "id": "3",
+      "title": "Doble Din",
+      "link": "/productCategory/1/2",
+      "url_image": "",
+      "order": 1,
+      "parent_id": "2",
+      "rol": "1",
+      "level": 3
+    },
+    {
+      "title": "Instalacion",
+      "link": "#",
+      "url_image": "",
+      "order": "",
+      "parent_id": "",
+      "rol": "",
+      "level": 1,
+      "id": "5"
+    },
+    {
+      "title": "Rayos de Cable",
+      "link": "#",
+      "url_image": "",
+      "order": "",
+      "parent_id": "5",
+      "rol": "",
+      "level": 2,
+      "id": "6"
+    },
+    {
+      "title": "Bocina",
+      "link": "#",
+      "url_image": "",
+      "order": "",
+      "parent_id": "6",
+      "rol": "",
+      "level": 3,
+      "id": "7"
+    },
+    {
+      "title": "Blog 24/7",
+      "link": "#",
+      "url_image": "",
+      "order": "",
+      "parent_id": "",
+      "rol": "",
+      "level": 1,
+      "id": "8"
+    },
+    {
+      "title": "Un Din",
+      "link": "/productCategory/1/1",
+      "url_image": "",
+      "order": "2",
+      "parent_id": "2",
+      "rol": "",
+      "level": 3,
+      "id": "SEBLflY"
+    },
+    {
+      "id": "KDX35LD",
+      "title": "Tipo Original",
+      "link": "/productCategory/1",
+      "url_image": "",
+      "order": "3",
+      "parent_id": "2",
+      "rolCliente": "",
+      "level": ""
+    }
+  ]
+}

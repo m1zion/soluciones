@@ -1,0 +1,94 @@
+:root {
+    --white: #FFFFFF;
+    --almost-white: #FDFDFD;
+    --black: #000000;
+    --black247: #1D1D1B;
+    --white247: #f5f5f1;
+    --black247-light: #383835;
+    --very-light-pink: #C7C7C7;
+    --gray-letter: #707575;
+    --text-input-field: #F7F7F7;
+    --hospital-green: #ACD9B2;
+    --background-green: #F2F2E1;
+    --border-green: #D2D3AE;
+    --logo-green: #C4CC04;
+    --logo-green-darker: #B1B803;
+    --link-blue: #1a0dab;
+    --logo-green-darker2: #888d03;
+    --greenConfigurador: #0f4353;
+    --greenConfigurador2: #e1eaec;
+
+ /*****************************************************************************/   
+    --background-bluex: ##F5F6FA;
+    --blueConfiguradorx: #5499C7; /*#7FB3D5 #5499C7 #2980B9 #2471A3*/
+    --blueConfiguradorHoverx: #2980B9; /*#7FB3D5 #5499C7 #2980B9 #2471A3*/
+    /**************************************************************************/
+
+    /*https://coolors.co/palette/134074-13315c-0b2545-8da9c4-eef4ed*/ /*#134074 #13315C #0B2545 #8DA9C4 #EEF4ED*/
+    --gray600 : hsla(0,0%,10%,.5);
+    --gray900: hsla(0,0%,10%,.7);
+    --background-blue: #F2F2E1;
+    --blueConfigurador:   #B1B803;
+    --blueConfigurador2:    #888d03;
+    --blueConfigurador3:    #6B6F04;
+    --blueConfigurador4:   #4E5102;
+    --blueConfigurador5:    #C9CE87;
+    --blueConfiguradorHover: #A0A604; 
+    --background-form: #F7F8E9;
+/*#4A55A2 7895CB*/
+    --admin5:#333A6B;
+    --admin5Hover: #53587C;
+    --admin4:#333A6B; 
+    --admin3:#4E5588;
+    --adminHover:#ebedf8;
+    --admin2: #9599B4;
+    --admin1:#C5DFF8;
+    --admin0:#E0F0FF;
+    --admin00:#F2F9FF;
+    --nav-item-color: #9DA4AE;
+    /*--gray600 : hsla(0,0%,10%,.5);
+    --gray900: hsla(0,0%,10%,.7);
+    --background-blue: #F2F2E1;
+    --blueConfigurador:   #114F96;
+    --blueConfigurador2:    #888d03;
+    --blueConfigurador3:    #6B6F04;
+    --blueConfigurador4:   #4E5102;
+    --blueConfigurador5:    #C9CE87;
+    --blueConfiguradorHover: #A0A604; 
+    --background-form: #F7F8E9;*/
+
+
+    --black-green: #1D1D1B;
+    --price: #ED690A;
+    --border-item: #DADAC2; /*B8B992;*/
+    --background-item: #F8F8F8;
+    --background-formx: #F5F6FA;
+    --smm: 13px;
+    --sm: 14px;
+    --mdd: 15px;
+    --md: 16px;
+    --lg: 18px;
+    --xl: 24px;
+  }
+
+
+.Category-line{
+    color: var(--logo-green-darker2);    
+    background-color:  var(--logo-green-darker2);
+    height:2px;
+    border-width:0;
+}
+.Category-line{
+  color: var(--logo-green-darker2);    
+  background-color:  var(--logo-green-darker2);
+  height:1px;
+  border-width:0;
+}
+
+  /*
+    xs, extra-small: 0px
+    sm, small: 600px
+    md, medium: 900px
+    lg, large: 1200px
+    xl, extra-large: 1536px
+  */

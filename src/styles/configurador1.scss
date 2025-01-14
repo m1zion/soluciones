@@ -1,0 +1,53 @@
+.Configurador_Container{
+    margin-top: 5rem; 
+}
+.hero-image{
+    background-color: black;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../assets/images/Slide-configurador.jpg");
+    height: 400px;
+    /* Position and center the image to scale nicely on all screens */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: relative;    
+    display: none;
+}
+.configurador_formControl{
+    width: 95%;
+    background-color: white;
+    border-radius: 10px;
+}
+.configurador1_titulo{
+    font-weight: 600 !important;
+    margin: 5px 15px !important;
+}
+.Configurador_Form2 {
+    margin: 0rem 0 0 0;
+    background-color: var(--white247);
+}
+.configurador1_stack{
+    padding-bottom: 6em;
+    background-image: url("../assets/images/Slide-configurador_min.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+@media (min-width: 600px) {
+    .Configurador_Container{
+      //padding-top: 145px; 
+    }
+    .hero-image{
+        display: block;
+    }
+    .configurador_formControl{
+        width: 50%;
+    }
+    .Configurador_Form2 {
+        margin: 0rem 0 0 0;
+        background-color: var(--white247);
+    }
+    .configurador1_stack{
+        padding-bottom: 2em;
+        background-image: none;
+    }
+}

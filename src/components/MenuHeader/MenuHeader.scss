@@ -1,0 +1,39 @@
+@use '../../styles/_vars.css' as vars;
+
+.totalCompra{
+    color:var(--logo-green);
+    font-size: 14px !important;
+}
+.navbar-email {
+    color: var(--very-light-pink);
+    font-size: var(--sm);
+    margin-right: 8px !important;
+    cursor: pointer;
+}
+.itemNumber {
+    width: 16px;
+    height: 16px;
+    background-color: var(--logo-green);
+    border-radius: 50%;
+    font-size: var(--sm) !important;
+    font-weight: bold !important;
+    position: absolute;
+    top: -6px;
+    right: -3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+@media (max-width: 600px) {
+    .navbar-email {
+      display: none;
+    }
+}
+
+@media (max-width: 899px) {
+    .menuAppBar{
+      height:unset;
+    }
+}
