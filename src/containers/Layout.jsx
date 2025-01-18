@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '@components/Header/';  //Header 2 en el original
+import Footer from '@components/Footer/';
 import '@styles/Layout.scss';
 import { Box } from '@mui/material';
 //import Header2 from '@components/Header2';
@@ -9,7 +10,7 @@ const Layout = ({ children }) => {  //Esto indica que puede contener un Hijo
         <Box className='Layout'>
             <Header />
             {children}
-            {/*<Footer />*/}
+            <Footer />
         </Box>
     );
 }

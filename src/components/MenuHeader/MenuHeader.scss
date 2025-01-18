@@ -25,7 +25,10 @@
     align-items: center;
 }
 
-
+.custom-menu ul {
+    padding: 0 !important; /* Force padding to be 0 */
+    margin: 0 !important;  /* Optional: remove margins */
+}
 @media (max-width: 600px) {
     .navbar-email {
       display: none;

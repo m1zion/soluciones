@@ -1,0 +1,136 @@
+.footer {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;    
+    color: var(--white);
+    background-color: var(--black247);
+    position: relative;
+    bottom: 0;
+  }
+.footer > * {
+    flex:  1 100%;
+}
+.footer__logo {
+    font-weight: 400;
+    font-size: var(--xl);
+}
+.footer__addr_info{
+    padding-bottom: 10px;
+}
+.footer__addr{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-around;
+}
+@media (max-width: 600px) {
+    .footer__addr{
+        //background-color: #3b5998;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+.legal {
+    padding: .5rem;
+    display: flex;
+    flex-wrap: wrap;
+    color: #999;
+}
+
+.legal__links {
+    display: flex;
+    align-items: center;
+}
+.footer__btn {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    max-width: max-content;
+    background-color: var(--logo-green-darker);
+    border-radius: 8px;
+    line-height: 0;
+    margin: 0.6em 0;
+    font-size: 1rem;
+    padding: 0 1.3em;
+    border: none;
+    color: var(--white);
+    font-weight: 400;
+    text-decoration: none;
+  }
+.footer__btn:hover {
+    background-color: var(--logo-green);
+}
+.social-icons
+{
+  display: flex;
+  justify-content: start;
+  padding-top: 1em;
+  padding-left:0;
+  margin-bottom:0;
+  list-style:none
+}
+.social-icons li
+{
+  display:inline-block;
+  margin-bottom:4px;
+}
+.social-icons a{
+  background-color:#eceeef;
+  color:#818a91;
+  font-size:20px;
+  display:inline-block;
+  line-height:44px;
+  width:42px;
+  height:42px;
+  text-align:center;
+  margin-right:8px;
+  border-radius:100%;
+  -webkit-transition:all .2s linear;
+  -o-transition:all .2s linear;
+  transition:all .2s linear
+}
+.social-icons a:hover
+{
+  color:#fff;
+}
+.social-icons.size-sm a
+{
+  line-height:34px;
+  height:34px;
+  width:34px;
+  font-size:14px
+}
+.social-icons a.facebook:hover
+{
+    background-color:#3b5998;
+}
+.facebook {
+    font-size: 15px;
+}
+.social-icons a.tiktok:hover
+{
+    background-color:black
+}
+.social-icons a.instagram:hover
+{
+    background: #833ab4;
+    background: linear-gradient(
+    to right,
+    #833ab4,#fd1d1d,#fcb045
+    );
+}
+
+.social-icons a.twitter:hover
+{
+    background-color:#00aced
+}
+.social-icons a.linkedin:hover
+{
+    background-color:#007bb6
+}
+.social-icons a.dribbble:hover
+{
+    background-color:#ea4c89
+}
+

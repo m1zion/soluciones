@@ -1,4 +1,4 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
 import '@styles/configurador1.scss';
 import React, { useState, useEffect, useRef, useContext } from "react";
 import useGet7 from '@hooks/useGet7';
@@ -9,6 +9,8 @@ const Configurador1 = () => {
   //const APIMODELOS = API+'configurador/modelos/?offset=0&limit=300';
   const APIMARCAS = 'http://localhost:3001/marcas';//<=================CAMBIAR CUANDO SE REESTABLEZCA LA API
   const APIMODELOS = 'http://localhost:3001/modelos';//<=================CAMBIAR CUANDO SE REESTABLEZCA LA API
+  const [errMsg, setErrMsg] = useState('');
+  const [success, setSuccess] = useState(false);
   const [marca, setMarca] = useState('');
   const [marcas,setMarcas] = useState([]);
   const [modelo,setModelo] = useState('');
@@ -71,7 +73,48 @@ const handleAnio = (event) => {
   setAge3(event.target.value);
 };
 //==================================================================================
-
+//===== Submit ======================================================================
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  if (!marca) { setErrorMarca(true); } else { setErrorMarca(false); }
+  if (!modelo) { setErrorModelo(true); } else { setErrorModelo(false); }
+  if (!age3) { setErrorAnio(true); } else { setErrorAnio(false); }
+  if (!marca || !modelo || !age3) {
+      return;
+  }
+  //Verificar si existe una orden de configurador de el usuario, si es asi resetearla, de lo contrrario crear una nueva
+  //SI NO EXISTE ORDEN CREAMOS LA ORDEN ACTIVA CON ESTOS DATOS
+  try {  
+    const activeOrderId =  await verifyActiveCart(); //Verificamos orden activa de configurador y monto 
+    if (activeOrderId) {
+      //AQUI BORRAREMOS LOS ARTICULOS Y actualizaremos LA NUEVA CONFIGURACION
+      console.log("Orden Activa"+activeOrderId);
+      const deletedSuccess = await deleteAllItems(activeOrderId);
+      if(!deletedSuccess){
+        console.error("No se pudo actualizar la orden");
+        return;
+      }
+      const dataConfCaracteristicas = createConfiguradorData();
+      const updatedConfiguradorResponse = await updateConfigurador(dataConfCaracteristicas,activeOrderId);
+      if(updatedConfiguradorResponse){
+        alert("Configuracion actualizada con exito");            
+        //setConfigurador(dataPost);  //Hay que mandarlo al estado y al localStorage?
+        navigate("/configurador2");
+      }          
+    }
+    else { 
+      const newOrderId = await createNewOrder();
+      if (newOrderId) {
+        console.log("Se creo la nueva orden del configurador:"+newOrderId);
+      }
+      //CREAMOS LA ORDEN NUEVA
+    }
+  } catch (error) {
+    setErrorMessage("Error al generar la orden. code:002");
+    console.log("Error al generar la orden. code:002");
+    console.log(error);
+  }
+}
   return (
     <Box className="Configurador_Container">
       <Box className="hero-image">
@@ -152,6 +195,28 @@ const handleAnio = (event) => {
                 }
                 </Select>
                 </FormControl>
+
+
+                <Box className="BotonesContainer">
+                {
+                  //Si tiene almenos un estereo puede editar la configuracion
+                  //state.estereoC.id_item != undefined || state.estereoC.id != undefined || state.orderType == 'openshow'
+                (
+                  (1 == 2))? //
+                    (
+                      <Box sx={{display: 'flex', alignItems: 'center', gap:'1rem', justifyContent: 'center', width: '90%', flexWrap: 'wrap'}}>
+                        <Button variant="contained" onClick={handleSubmit} className="NextStepButton2" >Nueva Configuración</Button> 
+                        <Button variant="contained" onClick={handleSubmitModificar} className="NextStepButton2Bright" >Modificar Configuración</Button> 
+                      </Box>
+                       ) :
+                    (
+                      <Button variant="contained" onClick={handleSubmit} className="NextStepButton2" >Nueva Configuración</Button> 
+                   
+                  )
+                }
+                </Box>
+
+
              </Stack>
       </form>
     </Box>

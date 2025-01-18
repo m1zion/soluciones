@@ -32,6 +32,25 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+.BotonesContainer {
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.NextStepButton2{
+    background-color: var(--blueConfigurador) !important;
+    font-weight: 500 !important;
+    align-self: center;
+    margin-top: 35px !important;
+    text-transform: none !important;
+    border-radius: 11px !important;
+    height: 45px;
+    width: 200px !important;
+}
+.NextStepButton2:hover{
+    background-color: var(--blueConfiguradorHover) !important;
+  }
 @media (min-width: 600px) {
     .Configurador_Container{
       //padding-top: 145px; 
@@ -49,5 +68,14 @@
     .configurador1_stack{
         padding-bottom: 2em;
         background-image: none;
+    }    
+}
+@media (max-width: 600px) {
+    .NextStepButton, .NextStepButtonBright {
+        width: 100%;
+    }
+    .NextStepButton2, .NextStepButton2Bright {
+      width: 90% !important;
+      margin-top: 15px !important;
     }
 }
