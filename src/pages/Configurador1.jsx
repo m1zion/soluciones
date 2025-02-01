@@ -7,10 +7,11 @@ const Configurador1 = () => {
   const API = process.env.REACT_APP_API_URL;
   //const APIMARCAS =  API+'configurador/marcas/?offset=0&limit=30';
   //const APIMODELOS = API+'configurador/modelos/?offset=0&limit=300';
-  const APIMARCAS = 'http://localhost:3001/marcas';//<=================CAMBIAR CUANDO SE REESTABLEZCA LA API
-  const APIMODELOS = 'http://localhost:3001/modelos';//<=================CAMBIAR CUANDO SE REESTABLEZCA LA API
+  const APIMARCAS = 'http://localhost:5000/marcas/';//<=================CAMBIAR CUANDO SE REESTABLEZCA LA API
+  const APIMODELOS = 'http://localhost:5000/modelos/?offset=0&limit=300';//<=================CAMBIAR CUANDO SE REESTABLEZCA LA API
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [marca, setMarca] = useState('');
   const [marcas,setMarcas] = useState([]);
   const [modelo,setModelo] = useState('');
@@ -22,6 +23,7 @@ const Configurador1 = () => {
   const [errorMarca, setErrorMarca] = useState(false);
   const [errorModelo, setErrorModelo] = useState(false);
   const [errorAnio, setErrorAnio] = useState(false);
+
 
   //===== Carga las Marcas ======================================================================
   const { data: marcasFetchData, loading: loadingMa, error:errorMa } = useGet7(APIMARCAS);
@@ -41,14 +43,12 @@ const Configurador1 = () => {
     setAge3('')
     setMarca(event.target.value);
     try {
-      //const response = await fetch(`${APIMODELOS}&marca=${event.target.value}`);  //<=================CAMBIAR CUANDO SE REESTABLEZCA LA API
-      const response = await fetch(APIMODELOS);
+     const response = await fetch(`${APIMODELOS}&marca=${event.target.value}`);
       if (response.status === 404) {
           setModelos([]);
       } else {
         const data = await response.json();
-        const datafiltered = data.filter(item => item.marca == event.target.value); //<=================CAMBIAR CUANDO SE REESTABLEZCA LA API
-        const modelos = datafiltered; //<=================CAMBIAR POR data.modelos CUANDO SE REESTABLEZCA LA API
+        const modelos = data.modelos; //<=================CAMBIAR POR data.modelos CUANDO SE REESTABLEZCA LA API
         setModelosAnios(modelos); //Aqui vamos a traer los del año
         //QUITAMOS LOS DUPLICADOS
         if (Array.isArray(modelos)) {
@@ -65,6 +65,7 @@ const Configurador1 = () => {
 const handleModelo = (event) =>{  //Para los años hay que volver a filtrar los modelos pero ahora por modelo
   setModelo(event.target.value);
   const data = modelosAnios.filter(x => x.modelo === event.target.value);
+  console.log(data);
   const dt = [...new Set(data.map(item => item.Anio))]; // [ 'A', 'B']
   setAnio(dt);
 }
@@ -89,7 +90,7 @@ const handleSubmit = async (event) => {
     if (activeOrderId) {
       //AQUI BORRAREMOS LOS ARTICULOS Y actualizaremos LA NUEVA CONFIGURACION
       console.log("Orden Activa"+activeOrderId);
-      const deletedSuccess = await deleteAllItems(activeOrderId);
+      /*const deletedSuccess = await deleteAllItems(activeOrderId);
       if(!deletedSuccess){
         console.error("No se pudo actualizar la orden");
         return;
@@ -100,13 +101,14 @@ const handleSubmit = async (event) => {
         alert("Configuracion actualizada con exito");            
         //setConfigurador(dataPost);  //Hay que mandarlo al estado y al localStorage?
         navigate("/configurador2");
-      }          
+      }  */        
     }
     else { 
-      const newOrderId = await createNewOrder();
+      console.log("Creamos la nueva order");
+     /* const newOrderId = await createNewOrder();
       if (newOrderId) {
         console.log("Se creo la nueva orden del configurador:"+newOrderId);
-      }
+      }*/
       //CREAMOS LA ORDEN NUEVA
     }
   } catch (error) {
@@ -115,6 +117,37 @@ const handleSubmit = async (event) => {
     console.log(error);
   }
 }
+
+ //HELPER FUNCTIONS=============================================================
+ const verifyActiveCart = async () =>{
+  console.log("Verificara ordenes activas");
+  const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador`; 
+  console.log(APICart);
+  const response = await fetch(APICart, {
+    headers: {
+      //'Authorization': `Bearer ${state.token}`,  
+      'Content-Type': 'application/json',
+    },
+  });
+  if (response.status === 404) {
+    return null;
+  }
+  if (!response.ok) throw new Error("Error fetching detalle venta");
+
+  const orden = await response.json();
+  console.log(orden);
+  if (orden && orden.orders && orden.orders.length > 0 && orden.orders[0].id) {
+    return orden.orders[0].id;
+  } else {
+    return null;
+  }
+}
+
+
+
+
+
+
   return (
     <Box className="Configurador_Container">
       <Box className="hero-image">

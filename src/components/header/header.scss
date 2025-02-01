@@ -24,9 +24,26 @@
     object-fit:contain;
 }
 
-
+//---------Estilos para el menu basico
+.menu_list_container {
+    width: 280px;
+    margin-top:2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    color:var(--white);
+    background-color: var(--black247);
+}
+.social_container{
+    display: flex;
+    justify-content: flex-start;
+    gap:1rem;
+    margin-left: 1rem;
+}
 //---------Estilos para el menu de hamburguesa
-.menu-items {
+/*.menu-items {
     position: relative;
     font-size: 14px;
 }
@@ -95,8 +112,7 @@
     top: -7px;
   }
 
-
-
+*/
 @media (max-width: 899px) {
 .button-menu-secondary{
     display: flex;
