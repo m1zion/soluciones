@@ -4,11 +4,10 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import useGet7 from '@hooks/useGet7';
 import { useNavigate } from "react-router-dom";
 const Configurador1 = () => {
+  const { state,fetchOrderData } = useContext(AppContext);
   const API = process.env.REACT_APP_API_URL;
-  //const APIMARCAS =  API+'configurador/marcas/?offset=0&limit=30';
-  //const APIMODELOS = API+'configurador/modelos/?offset=0&limit=300';
-  const APIMARCAS = 'http://localhost:3001/marcas';//<=================CAMBIAR CUANDO SE REESTABLEZCA LA API
-  const APIMODELOS = 'http://localhost:3001/modelos';//<=================CAMBIAR CUANDO SE REESTABLEZCA LA API
+  const APIMARCAS =  API+'configurador/marcas/?offset=0&limit=30';
+  const APIMODELOS = API+'configurador/modelos/?offset=0&limit=300';
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
   const [marca, setMarca] = useState('');
@@ -22,7 +21,7 @@ const Configurador1 = () => {
   const [errorMarca, setErrorMarca] = useState(false);
   const [errorModelo, setErrorModelo] = useState(false);
   const [errorAnio, setErrorAnio] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState("");
   //===== Carga las Marcas ======================================================================
   const { data: marcasFetchData, loading: loadingMa, error:errorMa } = useGet7(APIMARCAS);
   useEffect(() => {
@@ -30,8 +29,8 @@ const Configurador1 = () => {
           setSuccess(false);
           setErrMsg("Ocurrio un error al cargar el configurador");
       }
-      if (Array.isArray(marcasFetchData) && marcasFetchData.length > 0) {
-        setMarcas(marcasFetchData);
+      if (Array.isArray(marcasFetchData.marcas) && marcasFetchData.marcas.length > 0) {
+        setMarcas(marcasFetchData.marcas);
       }  
   }, [marcasFetchData,errorMa]);
  //===== Handle Marca ================================================================
@@ -41,14 +40,13 @@ const Configurador1 = () => {
     setAge3('')
     setMarca(event.target.value);
     try {
-      //const response = await fetch(`${APIMODELOS}&marca=${event.target.value}`);  //<=================CAMBIAR CUANDO SE REESTABLEZCA LA API
-      const response = await fetch(APIMODELOS);
+      const response = await fetch(`${APIMODELOS}&marca=${event.target.value}`); 
+      //const response = await fetch(APIMODELOS);
       if (response.status === 404) {
           setModelos([]);
       } else {
         const data = await response.json();
-        const datafiltered = data.filter(item => item.marca == event.target.value); //<=================CAMBIAR CUANDO SE REESTABLEZCA LA API
-        const modelos = datafiltered; //<=================CAMBIAR POR data.modelos CUANDO SE REESTABLEZCA LA API
+        const modelos = data.modelos;
         setModelosAnios(modelos); //Aqui vamos a traer los del año
         //QUITAMOS LOS DUPLICADOS
         if (Array.isArray(modelos)) {
@@ -115,6 +113,30 @@ const handleSubmit = async (event) => {
     console.log(error);
   }
 }
+//HELPER FUNCTIONS=============================================================
+const verifyActiveCart = async () =>{
+  const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador`; 
+  console.log('APICart');
+  console.log(APICart);
+  const response = await fetch(APICart, {
+    headers: {
+      'Authorization': `Bearer ${state.token}`,  
+      'Content-Type': 'application/json',
+    },
+  });
+  if (response.status === 404) {
+    return null;
+  }
+  if (!response.ok) throw new Error("Error fetching detalle venta");
+
+  const orden = await response.json();
+  if (orden && orden.orders && orden.orders.length > 0 && orden.orders[0].id) {
+    return orden.orders[0].id;
+  } else {
+    return null;
+  }
+}
+
   return (
     <Box className="Configurador_Container">
       <Box className="hero-image">
