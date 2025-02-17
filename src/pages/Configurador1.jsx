@@ -10,6 +10,7 @@ const Configurador1 = () => {
   const APIMODELOS = API+'configurador/modelos/?offset=0&limit=300';
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [marca, setMarca] = useState('');
   const [marcas,setMarcas] = useState([]);
   const [modelo,setModelo] = useState('');
@@ -21,7 +22,6 @@ const Configurador1 = () => {
   const [errorMarca, setErrorMarca] = useState(false);
   const [errorModelo, setErrorModelo] = useState(false);
   const [errorAnio, setErrorAnio] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   //===== Carga las Marcas ======================================================================
   const { data: marcasFetchData, loading: loadingMa, error:errorMa } = useGet7(APIMARCAS);
   useEffect(() => {
@@ -63,6 +63,7 @@ const Configurador1 = () => {
 const handleModelo = (event) =>{  //Para los años hay que volver a filtrar los modelos pero ahora por modelo
   setModelo(event.target.value);
   const data = modelosAnios.filter(x => x.modelo === event.target.value);
+  console.log(data);
   const dt = [...new Set(data.map(item => item.Anio))]; // [ 'A', 'B']
   setAnio(dt);
 }
@@ -87,7 +88,7 @@ const handleSubmit = async (event) => {
     if (activeOrderId) {
       //AQUI BORRAREMOS LOS ARTICULOS Y actualizaremos LA NUEVA CONFIGURACION
       console.log("Orden Activa"+activeOrderId);
-      const deletedSuccess = await deleteAllItems(activeOrderId);
+      /*const deletedSuccess = await deleteAllItems(activeOrderId);
       if(!deletedSuccess){
         console.error("No se pudo actualizar la orden");
         return;
@@ -98,13 +99,14 @@ const handleSubmit = async (event) => {
         alert("Configuracion actualizada con exito");            
         //setConfigurador(dataPost);  //Hay que mandarlo al estado y al localStorage?
         navigate("/configurador2");
-      }          
+      }  */        
     }
     else { 
-      const newOrderId = await createNewOrder();
+      console.log("Creamos la nueva order");
+     /* const newOrderId = await createNewOrder();
       if (newOrderId) {
         console.log("Se creo la nueva orden del configurador:"+newOrderId);
-      }
+      }*/
       //CREAMOS LA ORDEN NUEVA
     }
   } catch (error) {
