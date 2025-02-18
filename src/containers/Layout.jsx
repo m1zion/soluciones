@@ -9,7 +9,9 @@ const Layout = ({ children }) => {  //Esto indica que puede contener un Hijo
     return (
         <Box className='Layout'>
             <Header />
-            {children}
+            <Box flex="1"> 
+                {children} {/* Main content expands to push footer down */}
+            </Box>
             <Footer />
         </Box>
     );

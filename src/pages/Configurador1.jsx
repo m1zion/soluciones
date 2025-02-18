@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import useGet7 from '@hooks/useGet7';
 import { useNavigate } from "react-router-dom";
 const Configurador1 = () => {
-  const { state,fetchOrderData } = useContext(AppContext);
+  //const { state,fetchOrderData } = useContext(AppContext);
   const API = process.env.REACT_APP_API_URL;
   const APIMARCAS =  API+'configurador/marcas/?offset=0&limit=30';
   const APIMODELOS = API+'configurador/modelos/?offset=0&limit=300';

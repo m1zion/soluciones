@@ -10,6 +10,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { useNavigate } from 'react-router-dom';
 import AppContext from '@context/AppContext';
+import { LoginContext } from '../../context/LoginContext';
 import { Avatar, createTheme, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Paper, styled, ThemeProvider } from '@mui/material';
 import { ArrowRight, Dns, Home, KeyboardArrowDown, People, PermMedia, Public, Settings } from '@mui/icons-material';
 var formatter = new Intl.NumberFormat('en-US', {
@@ -38,7 +39,7 @@ const FireNav = styled(List)({
     },
   });
 const MenuHeader = () => {
-
+    const loginContext = useContext(LoginContext);
     const { state, logout } = useContext(AppContext);
     const isAuthenticated = state.token ? true : false;
     const navigate = useNavigate();
@@ -82,7 +83,7 @@ const MenuHeader = () => {
                         aria-expanded={open ? 'true' : undefined}                 
                     >
                         <Typography className="navbar-email">
-                        Nombre Usuario{/*state.userName*/}
+                            {loginContext.userName}
                         </Typography>
                         <AccountCircleOutlinedIcon 
                             sx={{ 
