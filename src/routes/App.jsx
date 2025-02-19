@@ -7,11 +7,13 @@ import AppContext from '@context/AppContext';
 import '@styles/global.css';
 import Layout from '@containers/Layout';
 import NewAccount from "../pages/NewAccount";
-import { LoginProvider } from "../context/LoginContext";
+//import { LoginProvider } from "../context/LoginContext";
+//<LoginProvider>
+//</LoginProvider>
 const App = () => {
     const initialState = useInitialState();
     return (
-        <LoginProvider>
+   
             <AppContext.Provider value={initialState}>
                 <BrowserRouter>
                     <Routes>                        
@@ -21,7 +23,6 @@ const App = () => {
                     </Routes>
                 </BrowserRouter>
             </AppContext.Provider>
-        </LoginProvider>
         
     );
 }

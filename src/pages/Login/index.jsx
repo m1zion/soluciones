@@ -9,8 +9,8 @@ import './Login.scss';
 import '../NewAccount/NewAccount.scss';
 import googleIcon from '@icons/google-color-icon.svg';
 import { useNavigate } from 'react-router-dom';
-import { LoginContext } from '../../context/LoginContext';
-//import AppContext from '@context/AppContext';
+//import { LoginContext } from '../../context/LoginContext';
+import AppContext from '@context/AppContext';
 //import { useAuth } from '@context/AuthContext'; // Importa el hook de AuthContext
 const baseURL = process.env.REACT_APP_API_URL; 
 const Login = () => {
@@ -21,9 +21,9 @@ const Login = () => {
   const [token, setToken] = useState(null); // Estado para almacenar el token
   const [user, setUser] = useState(null); // Estado para almacenar el token
   const [proveedorId, setProveedorId] = useState(null); // Estado para almacenar el token
-   const loginContext = useContext(LoginContext);
-  //const {setLogin} = useContext(AppContext);
-  //const setDataLogin = item =>{setLogin(item);};
+  //const loginContext = useContext(LoginContext);
+  const {setLogin} = useContext(AppContext);
+  const setDataLogin = item =>{setLogin(item);};
   const [message, setMessage] = useState(''); 
   const navigate = useNavigate();
   const form = useRef(null);
@@ -49,9 +49,6 @@ const Login = () => {
       const { token, user} = data; 
       // Guardar el token en el estado
       //console.log(token);
-      console.log("Haciendo el Login");
-      console.log(user);
-      console.log(token);
       setToken(token);
       setUser(user.correo);
       setProveedorId(user.proveedorId)
@@ -63,24 +60,21 @@ const Login = () => {
         role: user.role,
         //clienteId: clienteId,
       }
-      //console.log(dataLogin);
-      
       localStorage.setItem('authToken', token);
       localStorage.setItem('authUser', user.correo);
       localStorage.setItem('roleL', user.role);
       localStorage.setItem('proveedorIdL', user.proveedorId);
       localStorage.setItem('userIdL', user.id);
-      loginContext.setLogin(dataLogin);
-      console.log(loginContext.login);
+      //loginContext.setLogin(dataLogin);
+      setDataLogin(dataLogin);  //State (setLogin)
       //setDataLogin(dataLogin);  //State (setLogin)
-      /*if (user.role == 'cliente'){
+      if (user.role == 'cliente'){
         navigate('/');
       }
       else {
         navigate('/Dashboard');
       }
       setMessage('¡Has iniciado sesión exitosamente!');
-      */
     } catch (error) {
       setMessage('Error al iniciar sesión. Verifica tus credenciales.');
       console.error('Error en el login:', error);

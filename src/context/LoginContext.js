@@ -1,3 +1,4 @@
+//Esta es la forma del curso de vite
 import { createContext, useEffect, useState } from "react"
 import React from "react";
 const API = process.env.REACT_APP_API_URL;
@@ -7,6 +8,7 @@ export const LoginContext = createContext();
 export const LoginProvider  = ({children}) => {
     const [count,setCount]= useState(1);
     const [userName,setUserName] = useState ('Invitado');
+
     const setLogin = async(payloadLogin) =>{
         //Aqui dependiendo si es cliente cargo los carritos, si no solo el token 
         if(payloadLogin.role != 'cliente'){

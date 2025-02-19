@@ -1,5 +1,121 @@
 =CONCATENAR(B2,"  VALUES ('",C2,"','",D2,"','",E2,"','",F2,"','",G2,"','",H2,"','",I2,"','",J2,"','",K2,"','",L2,"','",M2,"','",N2,"','",P2,"','",Q2,"','",R2,"','",S2,"','",T2,"','",U2,"','",W2,"','",X2,"','",Y2,"','",Z2,"','",AA2,"','",AB2,"','",AD2,"','",AF2,"','",AG2,"','",AH2,"','",AI2,"');")
-
-
 MLd1234_
 
+Proces Login 
+
+A) setLogin()
+
+B) fetchOrderData(payloadLogin)
+    1. Verifica si hay ordenes activas del Cart o del Configurador
+    2. Si no hay ninguna
+        Resetea LocalStorage
+            localStorage.removeItem('totalCompraL');
+            localStorage.removeItem('confOrderIdL');
+            localStorage.removeItem('cartOrderIdL');
+            localStorage.removeItem('cart');
+            localStorage.removeItem('anioL');
+        Resetea State
+            totalCompra --Total de la compra
+            confOrderId --Id del configurador
+            cartOrderId --Id del carrito
+            cart        --Arreglo del carrito
+            cartConf    --Arreglo del configurador
+            marcaC      --Marca
+            modeloC     --Modelo
+            anioC       --Año
+    3. Si hay alguna, 
+        Calcula el Total de los carritos
+        Trae los datos de los carritos
+        handlematchOrdersTodas(dataConf, dataCart, montoTotal,cartOrderId,confOrderId,payloadLogin);
+
+C) handlematchOrdersTodas(dataConf, dataCart, montoTotal,cartOrderId,confOrderId,payloadLogin);
+    1. En dataPost guarda toda la configuracion del dataConf
+
+D) setMatchOrdersTodas(data.items,               dataPost,              dataCart,             montoTotal,cartOrderId,confOrderId,payloadLogin);
+                      Articulos del configurador-Datos del configurador-Articulos del Carrito-Configurador + carrito 
+    updatedState:
+        user = payloadLogin.user;
+        token = payloadLogin.token;
+        role = payloadLogin.roleM;
+        proveedorId = payloadLogin.proveedorId;
+        //====================================
+        cartOrderId = cartOrderId;
+        confOrderId = confOrderId;
+        cart = carrito.items; 
+        dinesC = configuracion.dines;
+
+        totalCompra = montoTotal;
+
+    LocaStorage:
+        localStorage.setItem('cart', JSON.stringify(carrito.items));
+        localStorage.setItem('cartOrderIdL', cartOrderId);  
+        localStorage.setItem('confOrderIdL', confOrderId); 
+        localStorage.setItem('totalCompraL', montoTotal);  
+
+
+
+
+Estado Inicial cuando Inicia Sesion desde 0
+
+{
+    "userId": "1",
+    "user": "misaelzion@gmail.com",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJjbGllbnRlIiwiaWF0IjoxNzM5OTE2NzY0fQ.oGib3ft_i5dSoq61lcm4ApEkataQf8oMe7OZDoMLOSY",
+    "userName": "",
+    "role": "cliente",
+    "proveedorId": "undefined",
+    "totalCompra": "",
+    "cartOrderId": "",
+    "cart": [],
+    "confOrderId": "",
+    "cartConf": [],
+    "marcaC": [],
+    "modeloC": [],
+    "anioC": [],
+    "configC": [],
+    "dinesC": [],
+    "estereoC": [],
+    "ocultaBotonUnDinC": true,
+    "ocultaBotonDobleDinC": true,
+    "ocultaBotonC": true,
+    "ocultaBotonOriginalC": true,
+    "mensajeC": "",
+    "numItems": 0,
+    "tipoConfiguracionC": [],
+    "orderConf": [],
+    "cartConfOrder": [],
+    "baseC": [],
+    "arnesC": [],
+    "adaptadorC": [],
+    "mejorarAudio": [],
+    "tieneBocinaReemplazo": [],
+    "bocinaReemplazoDelanteraC": [],
+    "calzaBocinaReemplazoDelanteraC": [],
+    "bocinaReemplazoTraseraC": [],
+    "calzaBocinaReemplazoTraseraC": [],
+    "terminaConfiguracion1": [],
+    "amplificadorC": [],
+    "tieneBocinaOriginal": [],
+    "bocinaPremiumDelanteraC": [],
+    "calzaBocinaPremiumDelanteraC": [],
+    "bocinaPremiumTraseraC": [],
+    "calzaBocinaPremiumTraseraC": [],
+    "tieneAmplificadorBajos": [],
+    "amplificadorWooferC": [],
+    "amplificador3en1C": [],
+    "wooferC": [],
+    "cajonAcusticoC": [],
+    "kitCablesC": [],
+    "tieneEcualizador": [],
+    "ecualizadorC": [],
+    "epicentroC": [],
+    "procesadorC": [],
+    "tweeterC": [],
+    "tweeterCP": [],
+    "accesorioC": [],
+    "tieneEstereoOriginalC": [],
+    "tieneEstereoTipoOriginalC": [],
+    "adaptadorImpedanciaC": [],
+    "medioRangoO": [],
+    "setComponentesO": []
+}

@@ -118,8 +118,6 @@ const handleSubmit = async (event) => {
 //HELPER FUNCTIONS=============================================================
 const verifyActiveCart = async () =>{
   const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador`; 
-  console.log('APICart');
-  console.log(APICart);
   const response = await fetch(APICart, {
     headers: {
       'Authorization': `Bearer ${state.token}`,  
