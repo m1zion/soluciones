@@ -2,9 +2,10 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, Typograp
 import '@styles/configurador1.scss';
 import React, { useState, useEffect, useRef, useContext } from "react";
 import useGet7 from '@hooks/useGet7';
+import AppContext from '@context/AppContext';
 import { useNavigate } from "react-router-dom";
 const Configurador1 = () => {
-  //const { state,fetchOrderData } = useContext(AppContext);
+  const { state,fetchOrderData } = useContext(AppContext);
   const API = process.env.REACT_APP_API_URL;
   const APIMARCAS =  API+'configurador/marcas/?offset=0&limit=30';
   const APIMODELOS = API+'configurador/modelos/?offset=0&limit=300';
@@ -103,10 +104,10 @@ const handleSubmit = async (event) => {
     }
     else { 
       console.log("Creamos la nueva order");
-     /* const newOrderId = await createNewOrder();
+      const newOrderId = await createNewOrder();
       if (newOrderId) {
         console.log("Se creo la nueva orden del configurador:"+newOrderId);
-      }*/
+      }
       //CREAMOS LA ORDEN NUEVA
     }
   } catch (error) {
@@ -116,8 +117,11 @@ const handleSubmit = async (event) => {
   }
 }
 //HELPER FUNCTIONS=============================================================
+//VERIFICA SI HAY UNA ORDEN ACTIVA
 const verifyActiveCart = async () =>{
   const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador`; 
+  console.log(APICart);
+  console.log(state.token);
   const response = await fetch(APICart, {
     headers: {
       'Authorization': `Bearer ${state.token}`,  
@@ -136,6 +140,25 @@ const verifyActiveCart = async () =>{
     return null;
   }
 }
+//CREA NUEVA ORDEN
+const createNewOrder = async () => {
+  const ordenVentaData = {
+    orderType: "configurador",
+    status: "activo",
+    marca: marca,
+    modelo: modelo,
+    anio: age3
+  };
+  const APIPost = API + 'ordenesUsuario/';
+  const { success, data, error } = await usePost2V(APIPost, ordenVentaData, state.token);
+  if (!success) {
+    setErrMsg(error || "Error occurred while creating a new order");
+    return null;
+  }
+  //console.log("Nueva orden creada: " + data.id);
+  return data.id;
+};
+
 
   return (
     <Box className="Configurador_Container">

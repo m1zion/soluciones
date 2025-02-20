@@ -11,6 +11,15 @@ body {
   padding-bottom: 20px;
   background-color: var(--white);
 }
+.Form_ContainerLoading {
+  padding-top: 16px;
+  border-radius: 8px;
+  padding-bottom: 20px;
+  background-color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .InputBasic {
   width : 90%;
   background: white;

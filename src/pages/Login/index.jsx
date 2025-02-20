@@ -1,8 +1,8 @@
 //Instalar npm install @auth0/auth0-react
 // Manejador del submit  https://www.youtube.com/watch?v=raJjjm3rhhU 
 // https://www.youtube.com/watch?v=oUZjO00NkhY&t=143s
-import React, { useRef, useState, useContext } from 'react';
-import { IconButton, Stack, TextField, InputAdornment, Button, Typography, Box, Divider,Alert} from "@mui/material"; 
+import React, { useRef, useState, useContext, useEffect } from 'react';
+import { IconButton, Stack, TextField, InputAdornment, Button, Typography, Box, Divider,Alert, CircularProgress} from "@mui/material"; 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import './Login.scss';
@@ -11,6 +11,7 @@ import googleIcon from '@icons/google-color-icon.svg';
 import { useNavigate } from 'react-router-dom';
 //import { LoginContext } from '../../context/LoginContext';
 import AppContext from '@context/AppContext';
+import { SubscriptionsOutlined } from '@mui/icons-material';
 //import { useAuth } from '@context/AuthContext'; // Importa el hook de AuthContext
 const baseURL = process.env.REACT_APP_API_URL; 
 const Login = () => {
@@ -22,12 +23,62 @@ const Login = () => {
   const [user, setUser] = useState(null); // Estado para almacenar el token
   const [proveedorId, setProveedorId] = useState(null); // Estado para almacenar el token
   //const loginContext = useContext(LoginContext);
-  const {setLogin} = useContext(AppContext);
+  const {setLogin,state} = useContext(AppContext);
   const setDataLogin = item =>{setLogin(item);};
   const [message, setMessage] = useState(''); 
   const navigate = useNavigate();
   const form = useRef(null);
   //const { state } = useContext(AppContext);
+  const [loading,setLoading] = useState(true);
+  const [error,setError] = useState(false); 
+  //Persistencia de datos
+  //Verificamos si tiene una sesion activa en el local storage -------------------------
+  useEffect(() =>
+    {
+      setTimeout(() => {
+        try{
+          const localStorageToken = localStorage.getItem('authToken');    
+          const localStorageUser = localStorage.getItem('authUser');  
+          const localStorageproveedorId = localStorage.getItem('proveedorIdL');
+          const localStorageUserId = localStorage.getItem('userIdL');  
+          const localStorageRole = localStorage.getItem('roleL');
+          //Adicionalmente hay que validar que el token es valido     
+          
+          if(localStorageToken != '' && localStorageUser != '' ){
+            setToken(localStorageToken);
+            setUser(localStorageUser);
+            setProveedorId(localStorageproveedorId)
+            const dataLogin = {
+              token: localStorageToken,
+              user: localStorageUser,
+              userId: localStorageUserId,
+              proveedorId: localStorageproveedorId,
+              role: localStorageRole,
+            }
+            //Enviando datos de sesion del local storage'
+            setDataLogin(dataLogin);  //State (setLogin)
+            //setDataLogin(dataLogin);  //State (setLogin)
+            if (localStorageRole == 'cliente'){
+              navigate('/');
+            }
+            else {
+              navigate('/Dashboard');
+            }
+  
+          }
+          setLoading(false);
+        }
+        catch(error){
+          setLoading(false);
+          setError(true);
+          console.error("No se pudo encontrar la sesion");
+          console.log(error);
+        }
+      },1000) 
+    },[]
+  );
+  //------------------------------------------------------------------------
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -48,7 +99,6 @@ const Login = () => {
       const data = await response.json();
       const { token, user} = data; 
       // Guardar el token en el estado
-      //console.log(token);
       setToken(token);
       setUser(user.correo);
       setProveedorId(user.proveedorId)
@@ -104,6 +154,8 @@ const Login = () => {
     <Box className="LoginBoxContainer" >
       <Stack className="LoginFormContainer" spacing={2} direction = {{xs:"column", md:"column"}} >
         <Alert ref={errRef}  severity={errMsg ? "error" : "info"} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</Alert>
+        {loading && <Box className="Form_ContainerLoading"> <CircularProgress /></Box>}
+        {(!loading && !error && user == '') &&
         <Box
           className="Form_Container"
           component="form"
@@ -174,6 +226,7 @@ const Login = () => {
             </button>*/}
           </Stack>
         </Box>
+      } 
       </Stack>
     </Box>
   );

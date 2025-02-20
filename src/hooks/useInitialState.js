@@ -2,6 +2,8 @@ import { useState } from "react";
 const API = process.env.REACT_APP_API_URL;
 const initialState = {  //
     //VARIABLES DE SESION
+    loading: true,
+    error: false,
     userId: localStorage.getItem('userIdL') || '',
     user: localStorage.getItem('authUser') || '',
     token: localStorage.getItem('authToken') || '',
@@ -70,8 +72,13 @@ const initialState = {  //
     setComponentesO: []
 }
 const useInitialState = () =>{  //Funcion para inicializar el estado
+
     console.log("Loading state...");
     const [state, setState] = useState(initialState); 
+    /*useEffect(() => {
+        console.log("Se ejecuta fetchOrderData");
+        fetchOrderData(dataLogin);
+    }, [state.token]); */
     const resetLocalStorage = () => {
         localStorage.removeItem('totalCompraL');
         localStorage.removeItem('confOrderIdL');
@@ -357,12 +364,10 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //Aqui dependiendo si es cliente cargo los carritos, si no solo el token 
         //Traemos el nombre del usuario
         const clientData = await getClientData(payloadLogin.userId);
-        console.log(clientData);
         let nombreUsuario = '';
         if (clientData){
             nombreUsuario = clientData.nombre;
         }
-        console.log(clientData);
         if(payloadLogin.role != 'cliente'){
             setState({
                 ...state, 
@@ -405,13 +410,11 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                     }
                 })
             ]);    
-            console.log(state.token);
-            console.log(APICart);
             const cartData = await cartResponse.json();
             const confData = await confResponse.json();
             const cartOrderId = cartData.orders?.[0]?.id;
             const confOrderId = confData.orders?.[0]?.id;
-            console.log("Vemos si me trajo algun dato");
+            //console.log("Vemos si me trajo algun dato");
             if (!cartOrderId && !confOrderId) {
                 console.log("reseteamos el localStorage y el state");
                 //setDataCarrito([]);
@@ -429,7 +432,6 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 updatedState.userName = nombreUsuario;
                 setState(updatedState); 
                 console.log("Estado Vacio");
-                console.log(updatedState);
                 return;
             }
             // 2. If I have any of them, then retrieve the full data 
