@@ -3,9 +3,14 @@ import '@styles/configurador1.scss';
 import React, { useState, useEffect, useRef, useContext } from "react";
 import useGet7 from '@hooks/useGet7';
 import AppContext from '@context/AppContext';
+import usePost2V from '@hooks/usePost2V';
+import useDelete2V from '@hooks/useDelete2V';
+import usePut2V from '@hooks/usePut2V'; 
 import { useNavigate } from "react-router-dom";
 const Configurador1 = () => {
-  const { state,fetchOrderData } = useContext(AppContext);
+  const { state,fetchOrderData,setConfigInicial} = useContext(AppContext);
+  const setConfigurador = item =>{setConfigInicial(item);};
+  const navigate = useNavigate();
   const API = process.env.REACT_APP_API_URL;
   const APIMARCAS =  API+'configurador/marcas/?offset=0&limit=30';
   const APIMODELOS = API+'configurador/modelos/?offset=0&limit=300';
@@ -64,7 +69,6 @@ const Configurador1 = () => {
 const handleModelo = (event) =>{  //Para los años hay que volver a filtrar los modelos pero ahora por modelo
   setModelo(event.target.value);
   const data = modelosAnios.filter(x => x.modelo === event.target.value);
-  console.log(data);
   const dt = [...new Set(data.map(item => item.Anio))]; // [ 'A', 'B']
   setAnio(dt);
 }
@@ -88,19 +92,20 @@ const handleSubmit = async (event) => {
     const activeOrderId =  await verifyActiveCart(); //Verificamos orden activa de configurador y monto 
     if (activeOrderId) {
       //AQUI BORRAREMOS LOS ARTICULOS Y actualizaremos LA NUEVA CONFIGURACION
-      console.log("Orden Activa"+activeOrderId);
-      /*const deletedSuccess = await deleteAllItems(activeOrderId);
+      console.log("Orden Activa "+activeOrderId);
+      const deletedSuccess = await deleteAllItems(activeOrderId);
       if(!deletedSuccess){
         console.error("No se pudo actualizar la orden");
         return;
       }
+      console.log("Creamos array de la orden");
       const dataConfCaracteristicas = createConfiguradorData();
       const updatedConfiguradorResponse = await updateConfigurador(dataConfCaracteristicas,activeOrderId);
       if(updatedConfiguradorResponse){
         alert("Configuracion actualizada con exito");            
         //setConfigurador(dataPost);  //Hay que mandarlo al estado y al localStorage?
         navigate("/configurador2");
-      }  */        
+      }       
     }
     else { 
       console.log("Creamos la nueva order");
@@ -143,6 +148,7 @@ const verifyActiveCart = async () =>{
 //CREA NUEVA ORDEN
 const createNewOrder = async () => {
   const ordenVentaData = {
+    clienteId: state.userId,
     orderType: "configurador",
     status: "activo",
     marca: marca,
@@ -150,6 +156,8 @@ const createNewOrder = async () => {
     anio: age3
   };
   const APIPost = API + 'ordenesUsuario/';
+  console.log(APIPost);
+  console.log(ordenVentaData);
   const { success, data, error } = await usePost2V(APIPost, ordenVentaData, state.token);
   if (!success) {
     setErrMsg(error || "Error occurred while creating a new order");
@@ -158,8 +166,56 @@ const createNewOrder = async () => {
   //console.log("Nueva orden creada: " + data.id);
   return data.id;
 };
-
-
+const deleteAllItems = async (orderId) => {
+  const APIDeleteAll2 = API+'ordenesUsuario/delete-all-items/'+orderId;
+  const { success: successDelete, error: errorDelete } = await useDelete2V(APIDeleteAll2, state.token); 
+  if (successDelete) {
+    return true;
+  }
+  else {
+    return false;
+  }
+};
+const createConfiguradorData = () => ({
+  orderType: 'configurador',
+  status: 'activo',
+  marca: marca,
+  modelo: modelo,
+  anio:  age3,
+  tieneBocinaReemplazo: '',
+  tieneBocinaOriginal: '',
+  terminaConfiguracion1: '',
+  mejorarAudio: '',
+  tieneEcualizador: '',
+  tieneAmplificadorBajos: '',
+  tieneEstereoOriginalC: '',
+  tieneEstereoTipoOriginalC: '',
+  bocinaReemplazoDelanteraC: '',
+  calzaBocinaReemplazoDelanteraC: '',
+  bocinaReemplazoTraseraC: '',
+  calzaBocinaReemplazoTraseraC: '',
+  bocinaPremiumDelanteraC: '',
+  calzaBocinaPremiumDelanteraC: '',
+  bocinaPremiumTraseraC: '',
+  calzaBocinaPremiumTraseraC: '',
+  ecualizadorC: '',
+  epicentroC: '',
+  procesadorC: '',
+  tweeterC: '',
+  accesorioC: '',
+  setMediosO: '',
+  medioRangoO: '',
+  amplificadorWooferC: '',
+  wooferC: '',
+  cajonAcusticoC: '',
+  kitCablesC: ''
+});
+const updateConfigurador = async (ordenVentaData,ordenVentaId) => {
+  const APIPut = API + "ordenesUsuario/" + ordenVentaId;
+  const { success, data, error } = await usePut2V(APIPut, ordenVentaData, state.token); 
+  if (!success) throw new Error(error || "Error occurred during the request");
+  return success;
+};
   return (
     <Box className="Configurador_Container">
       <Box className="hero-image">
@@ -167,13 +223,13 @@ const createNewOrder = async () => {
       <form action="/" className="Configurador_Form2">
         <Stack alignItems="center" spacing={2} direction="column" className="configurador1_stack"  > 
           <Typography className = "configurador1_titulo"  variant="h6">Configura el mejor equipo de audio para tu <Typography sx={{fontWeight: 600, color: "var(--blueConfigurador3)"}} variant="h7">Vehiculo</Typography></Typography> 
-             { /*
+             { 
               (
                 (state.estereoC.id_item != undefined || state.estereoC.id != undefined || state.orderType == 'openshow')? //Si tiene almenos un estereo puede editar la configuracion
                 (<Box><Alert severity="warning">Tienes una configuracion pendiente</Alert></Box>) :
                 ('')
               )
-                */
+                
             }
                 <FormControl  error={errorMarca} className="configurador_formControl"  size="small" variant="standard">
                     <InputLabel  id="ddl-marca-label"  sx={{paddingLeft:"10px"}}>Marca</InputLabel>
@@ -245,9 +301,9 @@ const createNewOrder = async () => {
                 <Box className="BotonesContainer">
                 {
                   //Si tiene almenos un estereo puede editar la configuracion
-                  //state.estereoC.id_item != undefined || state.estereoC.id != undefined || state.orderType == 'openshow'
+                  //
                 (
-                  (1 == 2))? //
+                  (state.estereoC.id_item != undefined || state.estereoC.id != undefined || state.orderType == 'openshow'))? //
                     (
                       <Box sx={{display: 'flex', alignItems: 'center', gap:'1rem', justifyContent: 'center', width: '90%', flexWrap: 'wrap'}}>
                         <Button variant="contained" onClick={handleSubmit} className="NextStepButton2" >Nueva Configuración</Button> 

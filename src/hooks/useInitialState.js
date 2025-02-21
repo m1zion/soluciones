@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const API = process.env.REACT_APP_API_URL;
 const initialState = {  //
     //VARIABLES DE SESION
-    loading: true,
     error: false,
     userId: localStorage.getItem('userIdL') || '',
     user: localStorage.getItem('authUser') || '',
     token: localStorage.getItem('authToken') || '',
-    userName: 'Invitado',
+    userName: localStorage.getItem('userName') || 'Invitado',
     role: localStorage.getItem('roleL') || '',
     proveedorId: localStorage.getItem('proveedorIdL') || '',
     //VARIABLES DE LOS CARRITOS
@@ -72,9 +71,54 @@ const initialState = {  //
     setComponentesO: []
 }
 const useInitialState = () =>{  //Funcion para inicializar el estado
-
+    const [loading,setLoading] = useState(true);
+    const [error,setError] = useState(false); 
     console.log("Loading state...");
     const [state, setState] = useState(initialState); 
+    useEffect(() =>
+        {
+            console.log("Verificando si tiene una sesion activa");
+           // setTimeout(() => {
+            try{
+              const localStorageToken = localStorage.getItem('authToken');    
+              const localStorageUser = localStorage.getItem('authUser');  
+              const localStorageproveedorId = localStorage.getItem('proveedorIdL');
+              const localStorageUserId = localStorage.getItem('userIdL');  
+              const localStorageRole = localStorage.getItem('roleL');
+              //Adicionalmente hay que validar que el token es valido     
+              
+              if(localStorageToken != '' && localStorageUser != '' ){
+                const dataLogin = {
+                  token: localStorageToken,
+                  user: localStorageUser,
+                  userId: localStorageUserId,
+                  proveedorId: localStorageproveedorId,
+                  role: localStorageRole,
+                }
+                console.log(dataLogin);
+                //Enviando datos de sesion del local storage'
+                setLogin(dataLogin);  //State (setLogin)
+                //setDataLogin(dataLogin);  //State (setLogin)
+                /*if (localStorageRole == 'cliente'){
+                  navigate('/');
+                }
+                else {
+                  navigate('/Dashboard');
+                }*/
+      
+              }
+              setLoading(false);
+            }
+            catch(error){
+              //setLoading(false);
+              //setError(true);
+              console.error("No se pudo encontrar la sesion");
+              console.log(error);
+            }
+         // },2000) 
+        },[]
+    );
+
     /*useEffect(() => {
         console.log("Se ejecuta fetchOrderData");
         fetchOrderData(dataLogin);
@@ -87,7 +131,6 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         localStorage.removeItem('anioL');
         // Add more localStorage.removeItem('key') if needed
     };
-
     const getClientData = async (userId) => {
         try {
             const response = await fetch(`${API}clientes/${userId}`);
@@ -101,7 +144,6 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             return null;
         }
     };
-
 
      /*FUNCIONES PARA TRAER EL CARRITO****************************/
     const fetchFullData = async (orderId, authToken) => {
@@ -177,6 +219,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         updatedState.token = payloadLogin.token;
         updatedState.role = payloadLogin.roleM;
         updatedState.proveedorId = payloadLogin.proveedorId;
+        updatedState.userName = payloadLogin.userName;
         //====================================
         updatedState.cartOrderId = cartOrderId;
         updatedState.confOrderId = confOrderId;
@@ -187,6 +230,9 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         localStorage.setItem('confOrderIdL', confOrderId); 
         localStorage.setItem('totalCompraL', montoTotal);       
         updatedState.totalCompra = montoTotal;
+        updatedState.marcaC = configuracion.marca;
+        updatedState.modeloC = configuracion.modelo;
+        updatedState.anioC = configuracion.anio;
         if(state.cartConf.length > 0){ //Si tiene algo en el configurador no hacemos nada
             console.log("03 CONFIGURADOR LLENO");
         }  //REVISAAAARRRRRR ****************************** puede que si tenga algo y aun asi hay que actualizarlo
@@ -364,10 +410,16 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //Aqui dependiendo si es cliente cargo los carritos, si no solo el token 
         //Traemos el nombre del usuario
         const clientData = await getClientData(payloadLogin.userId);
-        let nombreUsuario = '';
+        let nombreUsuarioAux = '';
         if (clientData){
-            nombreUsuario = clientData.nombre;
+            nombreUsuarioAux = clientData.nombre;
+            payloadLogin.userName = nombreUsuarioAux;
         }
+        // Store values in localStorage
+        localStorage.setItem('authUser', payloadLogin.user);
+        localStorage.setItem('authToken', payloadLogin.token);
+        localStorage.setItem('payloadLogin', payloadLogin.role);
+        localStorage.setItem('userName', payloadLogin.userName);
         if(payloadLogin.role != 'cliente'){
             setState({
                 ...state, 
@@ -375,20 +427,15 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 token: payloadLogin.token,
                 role: payloadLogin.role,
                 proveedorId: payloadLogin.proveedorId,
-                userName: nombreUsuario,
-            });
-           
-            // Store values in localStorage
-            localStorage.setItem('authUser', payloadLogin.user);
-            localStorage.setItem('authToken', payloadLogin.token);
-            localStorage.setItem('payloadLogin', payloadLogin.role);
+                userName: payloadLogin.userName,
+            });           
         }
         else{
-            await fetchOrderData(payloadLogin,nombreUsuario);  //Caragar los datos de la compra
+            await fetchOrderData(payloadLogin);  //Caragar los datos de la compra
         }
     }
 
-    const fetchOrderData = async (payloadLogin,nombreUsuario) => {
+    const fetchOrderData = async (payloadLogin) => {
         console.log("Inicia fetchOrderData");
         try {
             // 1. Check if I have active orders of cart and configurador
@@ -429,7 +476,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 updatedState.marcaC = [];
                 updatedState.modeloC = [];
                 updatedState.anioC = [];
-                updatedState.userName = nombreUsuario;
+                updatedState.userName = payloadLogin.userName;
                 setState(updatedState); 
                 console.log("Estado Vacio");
                 return;

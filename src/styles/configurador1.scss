@@ -50,7 +50,31 @@
 }
 .NextStepButton2:hover{
     background-color: var(--blueConfiguradorHover) !important;
-  }
+}
+.configurador_tuAuto {
+    color: white;
+    background-color: var(--black247);
+    padding: 5px;
+    font-weight: 600 !important;
+    width: 100%;
+}
+.configurador_tuAuto1{
+    display: flex;
+}
+.tipoConfiguracion_Button{
+    align-self: center;
+    margin-top: 10px !important;
+    width: 90%;
+    height: 3rem;
+    background-color: var(--blueConfigurador) !important;
+    color:var(--white) !important;
+    border-radius: 8px !important;
+}
+.tipoConfiguracion_Button:hover{
+    background-color: var(--blueConfiguradorHover) !important; 
+    color: var(--white) !important;
+}
+  
 @media (min-width: 600px) {
     .Configurador_Container{
       //padding-top: 145px; 
@@ -69,6 +93,9 @@
         padding-bottom: 2em;
         background-image: none;
     }    
+    .tipoConfiguracion_Button, .tipoConfiguracion_ButtonDisabled, .btn-grad{
+        width: 450px;
+    }
 }
 @media (max-width: 600px) {
     .NextStepButton, .NextStepButtonBright {
