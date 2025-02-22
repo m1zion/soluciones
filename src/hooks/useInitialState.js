@@ -77,8 +77,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     const [state, setState] = useState(initialState); 
     useEffect(() =>
         {
-            console.log("Verificando si tiene una sesion activa");
-           // setTimeout(() => {
+        //console.log("Verificando si tiene una sesion activa");
+           //setTimeout(() => {
             try{
               const localStorageToken = localStorage.getItem('authToken');    
               const localStorageUser = localStorage.getItem('authUser');  
@@ -95,7 +95,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                   proveedorId: localStorageproveedorId,
                   role: localStorageRole,
                 }
-                console.log(dataLogin);
+                //console.log(dataLogin);
                 //Enviando datos de sesion del local storage'
                 setLogin(dataLogin);  //State (setLogin)
                 //setDataLogin(dataLogin);  //State (setLogin)
@@ -110,12 +110,12 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
               setLoading(false);
             }
             catch(error){
-              //setLoading(false);
+              setLoading(false);
               //setError(true);
               console.error("No se pudo encontrar la sesion");
               console.log(error);
             }
-         // },2000) 
+          //},3000) 
         },[]
     );
 
@@ -166,7 +166,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         }, 0);
     };
     const handlematchOrdersTodas = (data,dataCart,montoTotal,cartOrderId,confOrderId,payloadLogin) =>{ //data= orden configurador,dataCart = carrito Normal
-        console.log("Inicia handlematchOrdersTodas");
+        //console.log("Inicia handlematchOrdersTodas");
         const  dataPost = {
           marca: data.marca, 
           modelo: data.modelo, 
@@ -214,6 +214,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //AQUI CARGAMOS TODOS LOS ESTADOS:
         //Este es el que haria en el login ya que no podemos actualizar el setState 2 veces
         console.log("Inicia setMatchOrdersTodas");
+        console.log(configuracion);
         const updatedState = { ...state };
         updatedState.user = payloadLogin.user;
         updatedState.token = payloadLogin.token;
@@ -399,9 +400,16 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 localStorage.setItem('anioL', anioCC);
                        
             }
+            else{
+                let tipoConfiguracionCC = '';
+                if (configuracion.tipoConfiguracion != ''){ 
+                    tipoConfiguracionCC = configuracion.tipoConfiguracion; 
+                    updatedState.tipoConfiguracionC = tipoConfiguracionCC;
+                } 
+            }
         }
-        console.log("Actualizara el Estado");
-        console.log(updatedState);
+        //console.log("Actualizara el Estado");
+        //console.log(updatedState);
         setState(updatedState);  //Solo vendria lleno el cart
     }; 
      //-------------------------------------------
@@ -436,7 +444,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     }
 
     const fetchOrderData = async (payloadLogin) => {
-        console.log("Inicia fetchOrderData");
+        //console.log("Inicia fetchOrderData");
         try {
             // 1. Check if I have active orders of cart and configurador
             const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=tienda`; 
@@ -463,7 +471,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             const confOrderId = confData.orders?.[0]?.id;
             //console.log("Vemos si me trajo algun dato");
             if (!cartOrderId && !confOrderId) {
-                console.log("reseteamos el localStorage y el state");
+                //console.log("reseteamos el localStorage y el state");
                 //setDataCarrito([]);
                 //setDataConfigurador([]);
                 resetLocalStorage();
@@ -478,7 +486,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 updatedState.anioC = [];
                 updatedState.userName = payloadLogin.userName;
                 setState(updatedState); 
-                console.log("Estado Vacio");
+                //console.log("Estado Vacio");
                 return;
             }
             // 2. If I have any of them, then retrieve the full data 
@@ -505,6 +513,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
 
     return {
         setLogin,
+        loading,
+        error,
         //logout,
         //addToCart,
         //removeFromCart,

@@ -1,6 +1,14 @@
 .Configurador_Container{
     margin-top: 5rem; 
 }
+.Loading_Container{
+    width: 100vw;
+    height: 60vh;
+    margin-top: 5rem; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .hero-image{
     background-color: black;
     background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../assets/images/Slide-configurador.jpg");
