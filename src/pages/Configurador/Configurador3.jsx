@@ -33,8 +33,8 @@ const Configurador3 = () => {
     const [hideBotonOriginal, setHideBotonOriginal] = useState(false);
     */
     // Main useEffect
-    console.log("----------");
-    console.log(state);
+    //console.log("----------");
+    //console.log(state);
     useEffect(() => {
         const fetchData = async () => {
             //console.log("Se ejecuta en use Effect");
@@ -56,7 +56,7 @@ const Configurador3 = () => {
                 setHasItemsUnDin(unDin.length > 0);
                 setHasItemsDobleDin(dobleDin.length > 0);
                 setHideBotones(tipoOriginal.length > 0);
-               
+               //Podemos validar que si state.marcaC no esta definida no ejecute nada aun
                 const configuracion = await fetchConfiguracion(API);
                 if (!configuracion){
                     console.error("No se pudo recuperar la informacion de la configuracion");
@@ -70,9 +70,9 @@ const Configurador3 = () => {
                 const pantallaHF = configuracion.pantallaHF;
                 const unDinAI = configuracion.unDinAI;
                 const unDinHF = configuracion.unDinHF;
-                /*const tieneArnesAI = await fetchArneses(API+'products/arneses/getmodel?administrador=false&model='+arnesAI);//true/false
+                const tieneArnesAI = await fetchArneses(API+'products/arneses/getmodel?administrador=false&model='+arnesAI);//true/false
                 const tieneArnesHF = await fetchArneses(API+'products/arneses/getmodel?administrador=false&model='+arnesHF);
-                if ((!tieneArnesAI && !tieneArnesHF) || (arnesAI === 'N/A' && arnesHF === 'N/A')) {
+                /*if ((!tieneArnesAI && !tieneArnesHF) || (arnesAI === 'N/A' && arnesHF === 'N/A')) {
                     setHideUnDin(true);
                     setHideDobleDin(true);
                     console.log("No tiene arneses: "+arnesAI+' / '+arnesHF);
