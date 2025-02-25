@@ -213,8 +213,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //Articulos del configurador-Datos del configurador-Articulos del Carrito-Configurador + carrito        
         //AQUI CARGAMOS TODOS LOS ESTADOS:
         //Este es el que haria en el login ya que no podemos actualizar el setState 2 veces
-        console.log("Inicia setMatchOrdersTodas");
-        console.log(configuracion);
+        //console.log("Inicia setMatchOrdersTodas");
+        //console.log(configuracion);
         const updatedState = { ...state };
         updatedState.user = payloadLogin.user;
         updatedState.token = payloadLogin.token;
@@ -240,7 +240,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         else { //Si el estado no tiene nada llenamos el configurador
             if(payload.length > 0 || configuracion.length > 0)  //Llenamos las variables del configurador si no vienen vacias
             {
-                console.log("Entra b");
+                //console.log("Entra b");
                 let marcaCC = [];
                 let modeloCC = [];
                 let anioCC = [];
@@ -408,8 +408,6 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 } 
             }
         }
-        //console.log("Actualizara el Estado");
-        //console.log(updatedState);
         setState(updatedState);  //Solo vendria lleno el cart
     }; 
      //-------------------------------------------
@@ -486,7 +484,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 updatedState.anioC = [];
                 updatedState.userName = payloadLogin.userName;
                 setState(updatedState); 
-                //console.log("Estado Vacio");
+                console.log("Estado Vacio");
                 return;
             }
             // 2. If I have any of them, then retrieve the full data 

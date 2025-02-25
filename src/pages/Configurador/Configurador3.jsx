@@ -15,10 +15,11 @@ const Configurador3 = () => {
     const [activeOrderId, setActiveOrderId] = useState(null);
     const [activeOrder, setActiveOrder] = useState([]);
     const [loadingLocal,setLoadingLocal] = useState(false);
-    const [tipoConfiguracion,setTipoConfiguracion] = useState(true);
-   /* const { state, setConfig } = useContext(AppContext);
+    const [tipoConfiguracion,setTipoConfiguracion] = useState(true); 
     const [hasItemsUndin, setHasItemsUnDin] = useState(false);
     const [hasItemsDobledin, setHasItemsDobleDin] = useState(false);
+   /* const { state, setConfig } = useContext(AppContext);
+   
     //var hideBotenes = state.ocultaBotonC;
     const classesBasica = `basica_Button, tipoConfiguracion_Button`;
     const classesDisabled = `tipoConfiguracion_ButtonDisabled`;
@@ -32,34 +33,36 @@ const Configurador3 = () => {
     const [hideBotonOriginal, setHideBotonOriginal] = useState(false);
     */
     // Main useEffect
-    console.log("Active Order");
-    console.log(state.confOrderId);
+    console.log("----------");
+    console.log(state);
     useEffect(() => {
-        console.log("Entra al use Effect");
         const fetchData = async () => {
+            //console.log("Se ejecuta en use Effect");
             //setLoading(true);
             //const { order, tipoConfiguracion } = await fetchActiveCart(API, state.token);
             if (state.confOrderId) {
-                setActiveOrder(state.confOrderId);
-                console.log("Buscamos el tipo de configuracions");
-                
-                console.log(state.tipoConfiguracionC);
-                setTipoConfiguracion(state.tipoConfiguracionC);
+                //console.log("state en el useEffect");
+                //console.log(state);
+                //setActiveOrder(state.confOrderId);
+                //console.log("Buscamos el tipo de configuracions");                
+                //console.log(state.tipoConfiguracionC);
+                //setTipoConfiguracion(state.tipoConfiguracionC);
                 /*setTipoConfiguracion(tipoConfiguracion);
                 setActiveOrderId(order.id);
                 // Fetch estereos only if there's a valid active order and tipoConfiguracion
                 */
-               const { unDin, dobleDin, tipoOriginal } = await fetchEstereos(API, tipoConfiguracion);
-               console.log(unDin);
-                /*
+                const { unDin, dobleDin, tipoOriginal } = await fetchEstereos(API, state.tipoConfiguracionC);
+               
                 setHasItemsUnDin(unDin.length > 0);
                 setHasItemsDobleDin(dobleDin.length > 0);
                 setHideBotones(tipoOriginal.length > 0);
-                const configuracion = await fetchConfiguracion(API, order);
+               
+                const configuracion = await fetchConfiguracion(API);
                 if (!configuracion){
                     console.error("No se pudo recuperar la informacion de la configuracion");
                     return;
                 }
+                console.log(configuracion);
                 const arnesAI = configuracion.arnesAI;
                 const arnesHF = configuracion.arnesHF;
                 const dobleDinAI = configuracion.dobleDinAI;
@@ -67,7 +70,7 @@ const Configurador3 = () => {
                 const pantallaHF = configuracion.pantallaHF;
                 const unDinAI = configuracion.unDinAI;
                 const unDinHF = configuracion.unDinHF;
-                const tieneArnesAI = await fetchArneses(API+'products/arneses/getmodel?administrador=false&model='+arnesAI);//true/false
+                /*const tieneArnesAI = await fetchArneses(API+'products/arneses/getmodel?administrador=false&model='+arnesAI);//true/false
                 const tieneArnesHF = await fetchArneses(API+'products/arneses/getmodel?administrador=false&model='+arnesHF);
                 if ((!tieneArnesAI && !tieneArnesHF) || (arnesAI === 'N/A' && arnesHF === 'N/A')) {
                     setHideUnDin(true);
@@ -92,7 +95,7 @@ const Configurador3 = () => {
             setLoadingLocal(false);
         };        
         fetchData();
-    }, []);
+    }, [state]);
     /*
     // HELPER FUNCTIONS ============================================================
     const fetchActiveCart = async (API, token) => {
@@ -145,8 +148,9 @@ const Configurador3 = () => {
             return { unDin: [], dobleDin: [], tipoOriginal: [] };
         }
     };
-    /*const fetchConfiguracion = async (API, order) => {
-        const APIconf = API+'configurador/detalleModelo/?marca='+order.marca+'&modelo='+order.modelo+'&Anio='+order.anio;
+    const fetchConfiguracion = async (API) => {
+        const APIconf = API+'configurador/detalleModelo/?marca='+state.marcaC+'&modelo='+state.modeloC+'&Anio='+state.anioC;
+        console.log(APIconf);
         try {
             const response = await fetch(APIconf);
             if (!response.ok) {
@@ -162,7 +166,7 @@ const Configurador3 = () => {
             return null;
         }
     };
-
+/*
     const fetchArneses = async (APIArneses) => {
         try {
             const response = await fetch(APIArneses);
@@ -232,11 +236,14 @@ const Configurador3 = () => {
                     <Box className="configurador_tuAuto">
                        <Box className="configurador_tuAuto1">
                             <Typography sx={{paddingLeft:"6px", minWidth:"70px"}}>Tu Auto:</Typography>
-                            <Typography sx={{paddingLeft:"6px"}}>{state.marcaC} {state.modeloC} {state.anio}</Typography>
+                            <Typography sx={{paddingLeft:"6px"}}>{state.marcaC} {state.modeloC} {state.anioC}</Typography>
                         </Box>  
                         <Box className="configurador_tuAuto1">
                             <Typography sx={{paddingLeft:"6px"}}>No. Orden: {state.confOrderId}</Typography> 
-                        </Box>   
+                        </Box>    
+                        <Box className="configurador_tuAuto1">
+                            <Typography sx={{paddingLeft:"6px"}}>Tipo de Configuración: {state.tipoConfiguracionC}</Typography> 
+                        </Box>  
                     </Box>
                     <Typography sx={{fontWeight: 600, pb:3}} variant="h6">Selecciona tu <Typography variant="h7" sx={{fontWeight: 600}}>Configuración</Typography></Typography>
                     {hideBotenes && (
