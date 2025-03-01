@@ -73,7 +73,7 @@ const initialState = {  //
 const useInitialState = () =>{  //Funcion para inicializar el estado
     const [loading,setLoading] = useState(true);
     const [error,setError] = useState(false); 
-    console.log("Loading state...");
+    //console.log("Loading state...");
     const [state, setState] = useState(initialState); 
     useEffect(() =>
         {
@@ -107,7 +107,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 }*/
       
               }
-              setLoading(false);
+              //setLoading(false);
             }
             catch(error){
               setLoading(false);
@@ -167,40 +167,66 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     };
     const handlematchOrdersTodas = (data,dataCart,montoTotal,cartOrderId,confOrderId,payloadLogin) =>{ //data= orden configurador,dataCart = carrito Normal
         //console.log("Inicia handlematchOrdersTodas");
+        //console.log(data);
         const  dataPost = {
-          marca: data.marca, 
-          modelo: data.modelo, 
-          anio: data.anio,
-          version: null,
-          dines: data.dines,
-          tipoConfiguracion: data.tipoConfiguracion,//data.tipoConfiguracion || 'Basica',
-          orderType: data.orderType,
-          bocinaReemplazoTraseraC:'',
-          mejorarAudio: data.mejorarAudio, //Quitar Luis, poner como espacio vacio mientras
-          tieneEstereoOriginalC: data.tieneEstereoOriginalC,
-          tieneBocinaReemplazo: data.tieneBocinaReemplazo, 
-          terminaConfiguracion1: data.terminaConfiguracion1,
-          tieneAmplificadorBajos: data.tieneAmplificadorBajos,
-          tieneEcualizador: data.tieneEcualizador,
-          tieneBocinaOriginal: data.tieneBocinaOriginal,
-          bocinaReemplazoDelanteraC: data.bocinaReemplazoDelanteraC,
-          calzaBocinaReemplazoDelanteraC: data.calzaBocinaReemplazoDelanteraC,
-          bocinaReemplazoTraseraC: data.bocinaReemplazoTraseraC,
-          calzaBocinaReemplazoTraseraC: data.calzaBocinaReemplazoTraseraC,
-          bocinaPremiumDelanteraC: data.bocinaPremiumDelanteraC,
-          calzaBocinaPremiumDelanteraC: data.calzaBocinaPremiumDelanteraC,
-          bocinaPremiumTraseraC: data.bocinaPremiumTraseraC,
-          calzaBocinaPremiumTraseraC: data.calzaBocinaPremiumTraseraC,
-          cajonAcusticoC: data.cajonAcusticoC,
-          amplificadorWooferC: data.amplificadorWooferC,
-          amplificador3en1C: data.amplificador3en1C,
-          wooferC: data.wooferC,
-          kitCablesC: data.kitCablesC,
-          ecualizadorC: data.ecualizadorC,
-          epicentroC: data.epicentroC,
-          procesadorC: data.procesadorC,
-          tweeterC: data.tweeterC,
-          accesorioC: data.accesorioC,
+            marca: data.marca, 
+            modelo: data.modelo, 
+            anio: data.anio,
+            version: null,
+            dines: data.dines,
+            tipoConfiguracion: data.tipoConfiguracion,//data.tipoConfiguracion || 'Basica',
+            orderType: data.orderType,
+            bocinaReemplazoTraseraC:'',
+            mejorarAudio: data.mejorarAudio, //Quitar Luis, poner como espacio vacio mientras
+            tieneEstereoOriginalC: data.tieneEstereoOriginalC,
+            tieneBocinaReemplazo: data.tieneBocinaReemplazo, 
+            terminaConfiguracion1: data.terminaConfiguracion1,
+            tieneAmplificadorBajos: data.tieneAmplificadorBajos,
+            tieneEcualizador: data.tieneEcualizador,
+            tieneBocinaOriginal: data.tieneBocinaOriginal,
+            bocinaReemplazoDelanteraC: data.bocinaReemplazoDelanteraC,
+            calzaBocinaReemplazoDelanteraC: data.calzaBocinaReemplazoDelanteraC,
+            bocinaReemplazoTraseraC: data.bocinaReemplazoTraseraC,
+            calzaBocinaReemplazoTraseraC: data.calzaBocinaReemplazoTraseraC,
+            bocinaPremiumDelanteraC: data.bocinaPremiumDelanteraC,
+            calzaBocinaPremiumDelanteraC: data.calzaBocinaPremiumDelanteraC,
+            bocinaPremiumTraseraC: data.bocinaPremiumTraseraC,
+            calzaBocinaPremiumTraseraC: data.calzaBocinaPremiumTraseraC,
+            cajonAcusticoC: data.cajonAcusticoC,
+            amplificadorWooferC: data.amplificadorWooferC,
+            amplificador3en1C: data.amplificador3en1C,
+            wooferC: data.wooferC,
+            kitCablesC: data.kitCablesC,
+            ecualizadorC: data.ecualizadorC,
+            epicentroC: data.epicentroC,
+            procesadorC: data.procesadorC,
+            tweeterC: data.tweeterC,
+            accesorioC: data.accesorioC,
+            //Se agregaron estos campos para completar el array
+            id:data.order_id,
+            precioTotal:data.precioTotal,
+            precioPromoTotal:data.precioPromoTotal,
+            totalItems:data.totalItems,
+            status:data.status,
+            direccionId:data.direccionId,
+            tieneEstereoTipoOriginalC:data.tieneEstereoTipoOriginalC,
+            setMediosO:data.setMediosO,
+            medioRangoO:data.medioRangoO,
+            amplificadorVozC:data.amplificadorVozC,
+            paymentId:data.paymentId,
+            clienteId:data.clienteId,
+            referencia:data.referencia,
+            notas:data.notas,
+            noGuia:data.noGuia,
+            paqueteria:data.paqueteria,
+            total:data.total,
+            saldo:data.saldo,
+            saldoVenta:data.saldoVenta,
+            descuento:data.descuento,
+            emailEnviado:data.emailEnviado,
+            metodoPago:data.metodoPago,
+            createdAt:data.createdAt,
+            lastmodified:data.lastmodified,
         }
         if (data.orderType == 'configurador' || data.orderType == 'openshow'){
           setMatchOrdersTodas(data.items,dataPost,dataCart,montoTotal,cartOrderId,confOrderId,payloadLogin);
@@ -210,6 +236,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         }
     };
     const setMatchOrdersTodas = (payload,configuracion,carrito,montoTotal,cartOrderId,confOrderId,payloadLogin) =>{ 
+        //Payload: Items(articulos) del configurador
+        //configuracion: Elementos del carrito del configurador sin los items
         //Articulos del configurador-Datos del configurador-Articulos del Carrito-Configurador + carrito        
         //AQUI CARGAMOS TODOS LOS ESTADOS:
         //Este es el que haria en el login ya que no podemos actualizar el setState 2 veces
@@ -234,6 +262,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         updatedState.marcaC = configuracion.marca;
         updatedState.modeloC = configuracion.modelo;
         updatedState.anioC = configuracion.anio;
+        updatedState.configuracion = configuracion;
         if(state.cartConf.length > 0){ //Si tiene algo en el configurador no hacemos nada
             console.log("03 CONFIGURADOR LLENO");
         }  //REVISAAAARRRRRR ****************************** puede que si tenga algo y aun asi hay que actualizarlo
@@ -394,21 +423,23 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 updatedState.bocinaPremiumTraseraC = state.cartConf.length === 0 ? bocinaPremiumTraseraCC : state.bocinaPremiumTraseraC;
                 updatedState.calzaBocinaPremiumTraseraC = state.cartConf.length === 0 ? calzaBocinaPremiumTraseraCC : state.calzaBocinaPremiumTraseraC;
                 updatedState.cartConf = payload;
+                //console.log("Carga los datos del carrito del congurador 1");
                 updatedState.totalCompra = montoTotal;
-
-
                 localStorage.setItem('anioL', anioCC);
                        
             }
             else{
                 let tipoConfiguracionCC = '';
                 if (configuracion.tipoConfiguracion != ''){ 
+                    //console.log("Carga los datos del carrito del congurador 3");
                     tipoConfiguracionCC = configuracion.tipoConfiguracion; 
                     updatedState.tipoConfiguracionC = tipoConfiguracionCC;
+                    updatedState.cartConf = payload;
                 } 
             }
         }
         setState(updatedState);  //Solo vendria lleno el cart
+        setLoading(false);
     }; 
      //-------------------------------------------
      const setLogin = async(payloadLogin) =>{

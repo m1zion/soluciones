@@ -50,6 +50,7 @@ module.exports = {
             '@icons': path.resolve(__dirname, 'src/assets/icons/'),
             '@logos': path.resolve(__dirname, 'src/assets/logos/'),
             '@context':    path.resolve(__dirname, 'src/context/'),
+            '@images':     path.resolve(__dirname, 'src/assets/images/'),            
         }
     },
     

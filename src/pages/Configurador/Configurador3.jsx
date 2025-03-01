@@ -1,12 +1,13 @@
 import React, {useRef, useContext,useState, useEffect} from "react";
 import { Box, Typography, Stack, Button } from "@mui/material";
-import '@styles/configurador1.scss';
+import '@styles/Configurador1.scss';
 import AppContext from '@context/AppContext';
 import Alert from '@mui/material/Alert';
+import GradientCircularProgress from "./GradientCircularProgress";
 const API = process.env.REACT_APP_API_URL;
-/*import { useNavigate } from 'react-router-dom';
 import usePut2V from '@hooks/usePut2V';
-import useGet7 from '@hooks/useGet7';
+import { useNavigate } from 'react-router-dom';
+/*import useGet7 from '@hooks/useGet7';
 import { CircularProgress } from "@mui/material";*/
 const Configurador3 = () => {
     
@@ -18,19 +19,19 @@ const Configurador3 = () => {
     const [tipoConfiguracion,setTipoConfiguracion] = useState(true); 
     const [hasItemsUndin, setHasItemsUnDin] = useState(false);
     const [hasItemsDobledin, setHasItemsDobleDin] = useState(false);
+    const [hideUnDin, setHideUnDin] = useState(false);
+    const [hideDobleDin, setHideDobleDin] = useState(false);
+    const classesDisabled = `tipoConfiguracion_ButtonDisabled`;
+    const classesBasica = `basica_Button, tipoConfiguracion_Button`;
+    const [hideBotonOriginal, setHideBotonOriginal] = useState(false);
+    const navigate = useNavigate();
    /* const { state, setConfig } = useContext(AppContext);
    
     //var hideBotenes = state.ocultaBotonC;
-    const classesBasica = `basica_Button, tipoConfiguracion_Button`;
-    const classesDisabled = `tipoConfiguracion_ButtonDisabled`;
     const [success, setSuccess] = useState(false);    
     const [errMsg, setErrMsg] = useState('');
     const form = useRef(null);
     const setConfigurador = item =>{setConfig(item);};
-    const navigate = useNavigate();
-    const [hideUnDin, setHideUnDin] = useState(false);
-    const [hideDobleDin, setHideDobleDin] = useState(false);
-    const [hideBotonOriginal, setHideBotonOriginal] = useState(false);
     */
     // Main useEffect
     //console.log("----------");
@@ -38,21 +39,10 @@ const Configurador3 = () => {
     useEffect(() => {
         const fetchData = async () => {
             //console.log("Se ejecuta en use Effect");
-            //setLoading(true);
+            setLoadingLocal(true);
             //const { order, tipoConfiguracion } = await fetchActiveCart(API, state.token);
-            if (state.confOrderId) {
-                //console.log("state en el useEffect");
-                //console.log(state);
-                //setActiveOrder(state.confOrderId);
-                //console.log("Buscamos el tipo de configuracions");                
-                //console.log(state.tipoConfiguracionC);
-                //setTipoConfiguracion(state.tipoConfiguracionC);
-                /*setTipoConfiguracion(tipoConfiguracion);
-                setActiveOrderId(order.id);
-                // Fetch estereos only if there's a valid active order and tipoConfiguracion
-                */
-                const { unDin, dobleDin, tipoOriginal } = await fetchEstereos(API, state.tipoConfiguracionC);
-               
+            if (state.confOrderId) { //Si hay una orden activa
+                const { unDin, dobleDin, tipoOriginal } = await fetchEstereos(API, state.tipoConfiguracionC);               
                 setHasItemsUnDin(unDin.length > 0);
                 setHasItemsDobleDin(dobleDin.length > 0);
                 setHideBotones(tipoOriginal.length > 0);
@@ -62,7 +52,7 @@ const Configurador3 = () => {
                     console.error("No se pudo recuperar la informacion de la configuracion");
                     return;
                 }
-                console.log(configuracion);
+                //console.log(configuracion);
                 const arnesAI = configuracion.arnesAI;
                 const arnesHF = configuracion.arnesHF;
                 const dobleDinAI = configuracion.dobleDinAI;
@@ -72,23 +62,24 @@ const Configurador3 = () => {
                 const unDinHF = configuracion.unDinHF;
                 const tieneArnesAI = await fetchArneses(API+'products/arneses/getmodel?administrador=false&model='+arnesAI);//true/false
                 const tieneArnesHF = await fetchArneses(API+'products/arneses/getmodel?administrador=false&model='+arnesHF);
-                /*if ((!tieneArnesAI && !tieneArnesHF) || (arnesAI === 'N/A' && arnesHF === 'N/A')) {
+                if ((!tieneArnesAI && !tieneArnesHF) || (arnesAI === 'N/A' && arnesHF === 'N/A')) {
                     setHideUnDin(true);
                     setHideDobleDin(true);
-                    console.log("No tiene arneses: "+arnesAI+' / '+arnesHF);
+                    console.log("No tiene arneses: "+arnesAI+' / '+arnesHF +" , Se oculta boton de Un din y doble din");
                 }
+                
                 if (unDinHF == 'N/A' && unDinAI == 'N/A'){
                     setHideUnDin(true);
-                    console.log("No tiene bases de un Din");
+                    console.log("No tiene bases de un Din, Se oculta boton de Un din");
                 }
                 if (dobleDinHF == 'N/A' && dobleDinAI == 'N/A'){
                     setHideDobleDin(true);
-                    console.log("No tiene bases de doble Din");
+                    console.log("No tiene bases de doble Din, Se oculta doble din");
                 }
                 if(pantallaHF != 'N/A' && pantallaHF){
                     console.log("Habilita el boton de conservar porque pantallaHF != N/A"+pantallaHF);
                     setHideBotonOriginal(false);
-                }  */
+                }
             } else {
                 setActiveOrderId(null);
             }
@@ -96,35 +87,6 @@ const Configurador3 = () => {
         };        
         fetchData();
     }, [state]);
-    /*
-    // HELPER FUNCTIONS ============================================================
-    const fetchActiveCart = async (API, token) => {
-        const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador`;
-        try {
-            const response = await fetch(APICart, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,  
-                    'Content-Type': 'application/json',
-                },
-            });            
-            if (response.status === 404) {
-                alert("No tienes ninguna configuracion");
-                return { order: null, tipoConfiguracion: null };
-            }            
-            if (!response.ok) {
-                throw new Error("Error fetching detalle venta");
-            }            
-            const orden = await response.json();
-            if (orden?.orders?.length > 0) {
-                const activeOrder = orden.orders[0];
-                return { order: activeOrder, tipoConfiguracion: activeOrder.tipoConfiguracion };
-            }
-            return { order: null, tipoConfiguracion: null };
-        } catch (error) {
-            console.error("Error:", error.message);
-            return { order: null, tipoConfiguracion: null };
-        }
-    };*/
     const fetchEstereos = async (API, tipoConfiguracion) => {
         const APIestereos = `${API}products/estereos/?offset=0&limit=400&administrador=false`;
         try {
@@ -166,7 +128,6 @@ const Configurador3 = () => {
             return null;
         }
     };
-/*
     const fetchArneses = async (APIArneses) => {
         try {
             const response = await fetch(APIArneses);
@@ -181,25 +142,16 @@ const Configurador3 = () => {
             return false;
         }
     };
-
-
     // END HELPER FUNCTIONS ============================================================
     const handleSubmit = (configuracion) => {
-        const APIconfCaracteristicas = API+'orders/'+activeOrderId;
+        setLoadingLocal(true);
+        const APIconfCaracteristicas = API+'orders/'+ state.confOrderId;
         let data = {};
-        let dataPost = {};
         if (configuracion == 4){
             data = {
                 orderType: 'configurador',
                 status: 'activo',
                 tieneEstereoOriginalC : 'si'
-            }
-            dataPost = {
-                marca: state.marcaC,
-                modelo: state.modeloC,
-                anio: state.anioC,
-                tipoConfiguracionC: tipoConfiguracion,  
-                tieneEstereoOriginalC: 'si',          
             }
         }
         else {
@@ -208,27 +160,24 @@ const Configurador3 = () => {
                 status: 'activo',
                 dines: configuracion,
             }
-            dataPost = {
-                marca: state.marcaC,
-                modelo: state.modeloC,
-                anio: state.anioC,
-                tipoConfiguracionC: tipoConfiguracion,
-                dines: configuracion
-            }
         }
-        usePut2V(APIconfCaracteristicas,data, state.token); //Actualiza los items API
-        //setConfigurador(dataPost);  //Actualiza los elementos en el state
-        navigate("/configurador4");
+        try {
+            usePut2V(APIconfCaracteristicas,data, state.token); //Actualiza los items API
+            //setConfigurador(dataPost);  //Actualiza los elementos en el state
+            //navigate("/configurador4");    
+        } catch (error) {
+            console.error("Error al generar la orden. code:002");
+            console.error(error);
+        } finally {
+            setLoadingLocal(false);  // Ensure loading state is reset
+        }
+
+       
     }
-    if (loading) {  
-        return(
-            <Box className="Configurador_Container">
-                <Box className="hero-image"></Box>
-                 <CircularProgress/>
-            </Box>               
-        )
-    }*/
 	return (
+        <React.Fragment>
+        {(loading || loadingLocal) && <Box className="Loading_Container"> <GradientCircularProgress /></Box>}
+        {(!loading && !error && !loadingLocal) &&
         <Box className="Configurador_Container">
             <Box className="hero-image"></Box>
             <form action="/" className="Configurador_Form2">
@@ -250,19 +199,20 @@ const Configurador3 = () => {
                     <Alert severity="warning" sx={{width:"90%", mb:"20px !important", textAlign:"center"}}>
                         Lo sentimos, por el momento no contamos con todas las configuraciones disponibles {state.mensajeC}</Alert>
                     )}
-                    {/*<Button disabled = {hideUnDin || !hasItemsUndin} onClick={() => handleSubmit('1')} className={hideUnDin || !hasItemsUndin ? classesDisabled: classesBasica }>Estereo Un Din</Button>
+                    <Button disabled = {hideUnDin || !hasItemsUndin} onClick={() => handleSubmit('1')} className={hideUnDin || !hasItemsUndin ? classesDisabled: classesBasica }>Estereo Un Din</Button>
                     <Button disabled = {hideDobleDin || !hasItemsDobledin} onClick={() => handleSubmit('2')} className={hideDobleDin || !hasItemsDobledin  ? classesDisabled: classesBasica }>Pantalla Doble Din</Button>
-                    <Button disabled = {hideBotenes} onClick={() => handleSubmit('tipoOriginal')} className={hideBotenes ? classesDisabled: classesBasica }>Estereo Tipo Original</Button>
+                    <Button disabled = {hideBotenes} onClick={() => handleSubmit('3')} className={hideBotenes ? classesDisabled: classesBasica }>Estereo Tipo Original</Button>
                     <Button disabled = {hideBotonOriginal} onClick={() => handleSubmit('4')} className={hideBotonOriginal ? classesDisabled: classesBasica }>
                         Conservar mi Estereo Original 
                         {
                         //Lo desactivamos cuando pantallaHF venaga en N/A
                         }
-                    </Button>*/}
+                    </Button>
                 </Stack>
             </form>
         </Box>
+        }
+        </React.Fragment>
 	);
 }
 export default Configurador3;
-

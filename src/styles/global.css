@@ -50,3 +50,25 @@ primary-button-login:hover {
   /*font-weight: bold !important;*/
   height: 50px;
 }
+.primary-basic {
+  background-color: var(--logo-green-darker) !important;
+  border-radius: 6px;
+  border: none;
+  color: var(--white) !important;
+  cursor: pointer !important;
+}
+.primary-basic:hover {
+  background-color: var(--logo-green-darker2) !important;
+}
+.primary-basic_disabled {
+  background-color: var(--blueConfigurador5) !important;
+}
+
+.trashCanConf{
+  width: 14px;
+  height: 16px;
+}
+.trashCanConf:hover{
+  transform: scale(1.1); 
+  cursor: pointer;
+}

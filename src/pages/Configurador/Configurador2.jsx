@@ -1,6 +1,6 @@
 import React, {useRef, useContext, useState, useEffect} from "react";
 import { Box, Typography, Stack, Button } from "@mui/material";
-import '@styles/configurador1.scss';
+import '@styles/Configurador1.scss';
 import AppContext from '@context/AppContext';
 import usePut2V from '@hooks/usePut2V';
 import { useNavigate } from 'react-router-dom';

@@ -62,9 +62,10 @@
 .configurador_tuAuto {
     color: white;
     background-color: var(--black247);
+    margin: 1px solid var(--black247);
     padding: 5px;
     font-weight: 600 !important;
-    width: 100%;
+    width: -webkit-fill-available;
 }
 .configurador_tuAuto1{
     display: flex;
@@ -82,10 +83,65 @@
     background-color: var(--blueConfiguradorHover) !important; 
     color: var(--white) !important;
 }
-  
+.Configurador_Form {
+    padding-top: 16px;
+    margin: 175px auto;
+    border-radius: 8px;
+    width: 95%;
+    padding-bottom: 20px;
+    background-color: var(--background-form);
+    display: block;
+}
+.configurador_header{
+    padding-top: 10px;
+    border: 1px solid var(--border-green);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+    width: 100%;
+    background-color: white;
+}
+.configurador_header div:nth-child(1){
+    padding-bottom: 10px;
+}
+.configurador_header div:nth-child(2){
+    display: flex;
+    justify-content:space-around;
+}
+.configurador-accordionSummary{
+    display: flex;
+    background-color: var(--blueConfigurador5);
+} 
+.configurador-button-borrar{
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    background-color: var(--blueConfigurador5);
+}
+.configurador-accordion-header-disabled{
+    background:  #999E54 !important;
+    color: white !important;
+    width: 85%;
+}
+.configurador-accordion-header div:nth-child(2){
+color:white !important
+}
+.configurador-accordion-header img{
+margin-left: auto !important;
+}
+.configurador-accordion-header-disabled img{
+margin-left: auto !important;
+}
+.configurador-item-selected{
+    color: white;
+    margin-left: 5px !important;
+}
 @media (min-width: 600px) {
     .Configurador_Container{
       //padding-top: 145px; 
+    }  
+    .Configurador_Form {
+        width: 100%;
     }
     .hero-image{
         display: block;
@@ -104,7 +160,44 @@
     .tipoConfiguracion_Button, .tipoConfiguracion_ButtonDisabled, .btn-grad{
         width: 450px;
     }
+    .tipoConfiguracion_ButtonDisabled{
+        font-weight:500 !important;
+        align-self: center;
+        margin-top: 10px !important;
+        width: 90%;
+        height: 3.5rem;
+        background-color: var(--very-light-pink)!important;
+        color:var(--gray-letter) !important;
+        border-radius: 12px !important;
+      }
+      .basica_Button{
+        background-color: var(--white);
+      }
+      .configurador_header {
+        flex-direction: row;
+      }
+      .configurador_header div:nth-child(1){
+        width: 40%;
+        padding-bottom: 0;
+      }
+      .configurador_header div:nth-child(2){
+        align-items:flex-end;
+        width: 60%;
+        justify-content: end;
+        margin-right: 2em;
+      }
+      
 }
+
+.nextButton_container{
+    background-color: var(--background-formx);
+    border: 1px solid var(--border-green);
+    display: flex;
+    justify-content: end;
+    padding: 10px 10px 10px;
+    margin: auto 20px !important;
+}
+
 @media (max-width: 600px) {
     .NextStepButton, .NextStepButtonBright {
         width: 100%;
@@ -112,5 +205,23 @@
     .NextStepButton2, .NextStepButton2Bright {
       width: 90% !important;
       margin-top: 15px !important;
+    }
+
+}
+
+@media (min-width: 600px) {
+    .tipoConfiguracion_Button, .tipoConfiguracion_ButtonDisabled, .btn-grad{
+        width: 450px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .Configurador_Form {
+      width: 100%;    
+      display: grid;
+      grid-template-columns: 60% 40%;
+    }
+    .nextButton_container{
+        margin: -0 20px !important;
     }
 }

@@ -1,0 +1,99 @@
+
+//https://hygraph.com/blog/react-pagination
+//https://bbbootstrap.com/snippets/bootstrap-awesome-round-pagination-50703662
+//https://csshint.com/bootstrap-pagination/
+.pagination_rounded_container {
+    display: flex;
+    justify-content:center;
+}
+.pagination_rounded, .pagination_square {
+    //display: inline-block;
+
+    margin-right:20px;
+    margin-top:20px;
+    font-weight: 400;
+    border: 1px solid var(--border-green) !important;
+    border-radius: 7px;
+}
+
+.pagination_rounded ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pagination_rounded li:first-child {
+    margin-left: 5px;
+}
+
+.pagination_rounded ul li {
+    float: left;
+    margin-left: 3px;
+}
+
+.pagination_rounded ul li a:hover {
+    //background: #4285f4 !important; 
+    //border: 1px solid #4285f4;
+    background: var(--background-form); 
+    //color: #fff !important;
+    //border: 1px solid var(--logo-green-darker);
+    cursor: pointer;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+.pagination_rounded .prev {
+    margin-left: 0px;
+    border-radius: 35px;
+    width: 45px;
+    height: 34px;
+    line-height: 34px;
+}
+
+
+.pagination_rounded ul li a {
+    //color: #4285f4 !important;
+    color: var(--logo-green-darker2);
+    float: left;
+    border-radius: 50%;
+    line-height: 30px;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    margin: 7px;
+    //margin-bottom: 40px;
+    border: 1px solid #e0e0e0;
+}
+.currentNumber{
+    //background: var(--logo-green-darker2) !important; 
+    //background: red !important; 
+    //color: white !important;
+    color: #fff !important;
+    background: var(--logo-green-darker) !important; 
+    border: 1.5px solid #c2c2c2 !important;
+    font-weight: 500 !important;
+    //box-shadow: 2px 3px 8px #c2c2c2;
+}
+
+.pagination_rounded .prev i {
+    //margin-right: 10px;
+}
+
+.pagination_rounded .next {
+    border-radius: 35px;
+    width: 45px;
+    height: 34px;
+    line-height: 34px;
+}
+
+.visible-xs {
+    display: none!important;
+}
+
+@media (min-width: 600px) {
+    .pagination_rounded ul li {
+        margin-left: 10px;
+    }
+}

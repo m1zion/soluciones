@@ -1,0 +1,55 @@
+@import '../../../styles/_vars.css';
+
+.boton_bloqueado{
+    border: 1px solid var(--border-item);
+    padding: 2px 4px;
+    background-color:  var(--background-green);
+}
+.boton_bloqueado p {
+    font-size: 14px;
+    color: var(--gray-letter);
+}
+.botonMas, .botonMenos{
+    border: 1px solid var(--border-item);
+    color: var(--logo-green-darker);
+    font-size: 20px;
+    line-height: initial;
+    background-color: white;
+    width: 30px;
+}
+.botonMas{
+    border-top-left-radius:15%;
+    border-bottom-left-radius: 15%;
+}
+.botonMenos{
+    border-top-right-radius:15%;
+    border-bottom-right-radius: 15%;
+}
+.NumItems{
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--logo-green-darker);
+    color: var(--white);
+    font-weight: 400;
+}
+
+.numProductos{
+    margin-top: 1rem;
+}
+.NumProductosContador{
+    width: 100%;
+    background-color: transparent;
+    color: white;
+    border: none;
+    text-align: center;
+
+
+
+
+}
+
+.NumProductosContador:focus{
+    outline:none;
+}
