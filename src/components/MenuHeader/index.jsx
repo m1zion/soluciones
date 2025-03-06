@@ -104,9 +104,9 @@ const MenuHeader = () => {
                         <Typography sx={{ width : '38px',lineHeight:'0', position: 'relative'}}>
                             <ShoppingCartOutlinedIcon sx={{ color: 'white', position: 'relative' }}></ShoppingCartOutlinedIcon> 
                             {
-                                state.cart && state.cart.length> 0 ? 
+                                ((state.cartConf && state.cartConf.length > 0) || (state.cart && state.cart.length> 0)) ? 
                                 (<Typography component={'span'} className='itemNumber'>
-                                    {state.cart.length}
+                                    {state.cart.length + state.cartConf.length}
                                 </Typography>  
                                 ) : null
                             }

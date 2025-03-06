@@ -6,6 +6,7 @@ import usePut from '@hooks/usePut';
 import ProductItemConfigurador from '../components/ProductItemConfigurador';
 import useGet7 from '@hooks/useGet7';
 import '@styles/Pagination2.scss';
+import '@styles/ProductList.scss';
 import { CircularProgress } from "@mui/material";
 import Paginate from '@components/Paginate'; 
 const API = process.env.REACT_APP_API_URL;
@@ -20,7 +21,6 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     var categoryAPI;
     var categoriaOpcional = category;    
     let categoryComplement = "";
-    /*const orderId = config.id;*/
     const { state } = useContext(AppContext);
     const [success, setSuccess] = useState(false); 
     const [errMsg, setErrMsg] = useState('');  
@@ -31,10 +31,9 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     const [loadingP,setLoadingP] = useState(true);
     let dines = state.dinesC; //config.dines;
     let tipoConfiguracion = state.tipoConfiguracionC;
-    /*let editarCantidad = true;
-    //let cantidadFija = 1;
-  
-    const APICajones = `${API}products/cajones/getmodel?model=${state.cajonAcusticoC.modelo}`;  
+    let editarCantidad = true;
+    let cantidadFija = 1;
+    /*const APICajones = `${API}products/cajones/getmodel?model=${state.cajonAcusticoC.modelo}`;  
     let caracteristicas = carFeatures;*/
     switch (category){
         case '1': categoryAPI = 'accesorios'; categoriaOpcional = 'Accesorios'; break;  //26
@@ -584,9 +583,9 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                 </>);
       }
       */
-     console.log(currentProducts);
+     //console.log(currentProducts);
      return(     
-        <React.Fragment> 
+        <> 
             {
             (currentProducts?.length > 0) ? (
            
@@ -595,7 +594,13 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     <Box className="ProductListConf">
                         {
                             currentProducts.map((product) => (
-                                <Typography>producto</Typography>
+                                <ProductItemConfigurador 
+                                product={product} 
+                                key={product.sku} 
+                                category={category} 
+                                editarCantidad={editarCantidad} 
+                                cantidadFija={cantidadFija}
+                                orderId={state.confOrderId}/>
                             ))    
                         }   
                         {
@@ -623,7 +628,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                 </Box>
                 )
             }  
-        </React.Fragment>    
+        </>    
      
     );
 }

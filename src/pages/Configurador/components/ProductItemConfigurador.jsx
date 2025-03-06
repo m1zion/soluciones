@@ -3,6 +3,7 @@ import React, {useState,useContext,useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppContext from '@context/AppContext';
 import './ProductItemConfigurador.scss';
+import '@styles/ProductItem.scss';
 import sale from '@images/sale_tag.png';
 import { Box, Typography } from '@mui/material';
 import usePostOrderItem from '@hooks/usePostOrderItem';
@@ -37,6 +38,7 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
     tipoMoneda: product.tipoMoneda,
     SKU: product.sku,
     id_categoria: product.id_categoria,
+    precio:product.precio,
   };
   //console.log("--Producto2");
   //console.log(product2);
@@ -68,9 +70,35 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
       modelo: item.Modelo,
       amount: numberProducts
     };
+
+    /*const data = {
+      id_item: item.id, // Matches id from item
+      sku_producto: item.SKU,
+      Nombre: item.Nombre,
+      Categoria: item.Categoria,
+      descripcionProducto: item.descripcionProducto,
+      precio: item.precio, // Default price since it's not in item
+      precioTotal: item.precioTotal,
+      precioPromoTotal: item.precioPromoTotal,
+      tipoMoneda: item.tipoMoneda,
+      fotos: [], // Assuming empty array for now
+      SKU: item.SKU,
+      categoryIdConfigurador: parseInt(item.categoryIdConfigurador), // Ensure it's a number
+      id_categoria: item.categoryId,
+      amount: item.amount,
+      modelo: item.modelo,
+      marcaVehiculo: null,
+      modeloVehiculo: null,
+      anioVehiculo: null
+  };*/
+
+
+
     item['categoryConf']= category; //Le agregamos la categoria propia del configurador
     item['amount'] = numberProducts; //   formData.get('contador');
+    item['precio'] = numberProducts; //   formData.get('contador');
     item2['amount'] =  numberProducts; // formData.get('contador');
+    
     usePostOrderItem(APIaddItem,data,state.token); //Se manda al backend y posteriormente al estado 
     switch (item2.categoryIdConfigurador){
       case '1': handleAccesorios(item2,data,amountProducts); break;
@@ -105,35 +133,38 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
   const form = useRef(null);
   const {addToCartConf} = useContext(AppContext); //Llamamos el estado
   /*Agregamos los productos del configurador*/
-  const {addToOrder} = useContext(AppContext);
-  const {setEstereo} = useContext(AppContext);
-  const {setBase} = useContext(AppContext);
-  const {setArnes} = useContext(AppContext);
-  const {setAdaptador} = useContext(AppContext);
-  const {setBocinaReemplazoDelantera} = useContext(AppContext);
-  const {setCalzaBocinaReemplazoDelantera} = useContext(AppContext);
-  const {setCalzaBocinaReemplazoTrasera} = useContext(AppContext);
-  const {setBocinaReemplazoTrasera} = useContext(AppContext);
-  const {setAmplificador} = useContext(AppContext);
-  const {setBocinaPremiumDelantera} = useContext(AppContext);
-  const {setCalzaBocinaPremiumDelantera} = useContext(AppContext);
-  const {setCalzaBocinaPremiumTrasera} = useContext(AppContext);
-  const {setBocinaPremiumTrasera} = useContext(AppContext);
-  const {setEcualizador} = useContext(AppContext);
-  const {setAmplificadorWoofer} = useContext(AppContext);
-  const {setAmplificador3en1} = useContext(AppContext);
-  const {setWoofer} = useContext(AppContext);
-  const {setCajonAcustico} = useContext(AppContext);
-  const {setKitCables} = useContext(AppContext);
-  const {setEpicentro} = useContext(AppContext);
-  const {setProcesador} = useContext(AppContext);
-  const {setTweeter} = useContext(AppContext);
-  const {setTweeterP} = useContext(AppContext);
-  const {setAccesorio} = useContext(AppContext);
-  const {setAdaptadorImpedancia} = useContext(AppContext);
-  const {setMedioRango} = useContext(AppContext);
-  const {setComponentes} = useContext(AppContext);
-  const {setSetMedios} = useContext(AppContext);
+  const {
+    addToOrder,
+    setEstereo,
+    setBase,
+    setArnes,
+    setAdaptador,
+    setBocinaReemplazoDelantera,
+    setCalzaBocinaReemplazoDelantera,
+    setCalzaBocinaReemplazoTrasera,
+    setBocinaReemplazoTrasera,
+    setAmplificador,
+    setBocinaPremiumDelantera,
+    setCalzaBocinaPremiumDelantera,
+    setCalzaBocinaPremiumTrasera,
+    setBocinaPremiumTrasera,
+    setEcualizador,
+    setAmplificadorWoofer,
+    setAmplificador3en1,
+    setWoofer,
+    setCajonAcustico,
+    setKitCables,
+    setEpicentro,
+    setProcesador,
+    setTweeter,
+    setTweeterP,
+    setAccesorio,
+    setAdaptadorImpedancia,
+    setMedioRango,
+    setComponentes,
+    setSetMedios
+  } = useContext(AppContext);
+  
   const handleOrder = item =>{ addToOrder(item); };
   const handleEstereo = (item2,data,amountProducts) =>{ setEstereo(item2,data,amountProducts); };
   const handleBase = (item2,data,amountProducts) =>{ setBase(item2,data,amountProducts); };
@@ -170,7 +201,7 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
         <Box>
           <img  className="ProductItemImageConfig"  src={fotoDefault} alt={product.title}/>
           {
-          product.precioPromoTotal != null ? 
+          (product.precioPromoTotal != null && product.precioTotal > 0 ) ? 
             (<Typography className='ProductItem-sale-text-green'>{((product.precioTotal - product.precioPromoTotal) * 100 / product.precioTotal).toFixed(0)}% Off</Typography>)
           : 
             ('')
@@ -186,8 +217,7 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
       <Box className="product-info-Config-container">
         <Box className="product-info-Config">
           <Box>
-            <Typography onClick={() => navigate("/productDetail/"+product.categoryId+"/"+product.Modelo)}  product={product}>{product.Nombre} - {product.Modelo}</Typography>
-            {/*<Typography onClick={navigateToProductDetail}>${product.precioTotal != null ? product.precioTotal : ''}</Typography>*/}
+            <Typography className="descripcion-Producto" onClick={() => navigate("/productDetail/"+product.categoryId+"/"+product.Modelo)}  product={product}>{product.Nombre} - {product.Modelo}</Typography>
             <Typography onClick={() => navigate("/productDetail/"+product.categoryId+"/"+product.Modelo)}>${product.precioTotal != null ? product.precioTotal : ''}</Typography>
             <Typography>${product.precioPromoTotal != null ? product.precioPromoTotal: product.precioTotal}</Typography>
           </Box>

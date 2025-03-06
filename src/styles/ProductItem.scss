@@ -1,0 +1,102 @@
+@import './_vars.css';
+
+.ProductItem {
+width: 240px;
+background-color: var(--background-item);
+border-radius:5px;
+border: 1px solid var(--border-item);
+position: relative;
+}
+.ProductItem:hover {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+}
+//.ProductItem img:nth-child(1) {
+.ProductItemImage {
+//width: 240px;
+width: 100%;
+height: 240px;
+//border-radius:20px 20px 0 0;
+object-fit: cover;
+background-color: white;
+/*border: 1px solid red;*/
+}
+.ProductItem-sale{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+.ProductItem-sale-text-red{
+    position: absolute;
+    left: 5px;
+    top: 21px;
+    transform: rotate(-45deg);
+    color: var(--white);
+    font-size: var(--smm);
+}
+.ProductItem-sale-text-green{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    color: var(--white);
+    font-size: var(--smm);
+    background-color: var(--logo-green);
+    width: 120px;
+    text-align: end;
+    padding-right: 5px;
+    //border-top-right-radius:20px;
+}
+.product-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 12px 18px 12px;
+}
+.product-info figure {
+margin: 0;
+}
+.product-info figure img {
+width: 35px;
+height: 35px;
+}
+
+.product-info div p:nth-child(1) { //Titulo del producto
+    font-weight: 550;
+    font-size: var(--mdd);
+    margin-top: 0;
+    margin-bottom: 4px;
+    color: var(--gray900);
+}
+.product-info div p:nth-child(2) {
+    font-size: var(--sm);
+    margin-top: 8px;
+    margin-bottom: 2px;
+    color: var(--gray-letter);
+    text-decoration:line-through;
+}
+.product-info div p:nth-child(3) {
+    font-size: var(--lg);
+    margin-top: 0;
+    margin-bottom: 0;
+    //color: var(--price);
+    color: var(--gray-letter);
+}
+@media (max-width: 640px) {
+.cards-container {
+/*grid-template-columns: repeat(auto-fill, 140px);*/
+grid-template-columns: 240px; /*creo que no lo utiliza aun*/
+}
+/*.ProductItem {
+width: 240px; 
+}*/
+.product-info figure img {
+    width: 35px;
+    height: 35px;
+}
+//.ProductItem img:nth-child(1) {
+.ProductItemImage {
+width: 100%;/*240px; 140*/
+height: 240px;
+}
+}

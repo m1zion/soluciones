@@ -5,7 +5,7 @@ import { Box } from "@mui/system";
 //import useDelete from '@hooks/useDelete';
 //import useDeleteOrderItem from '@hooks/useDeleteOrderItem';
 import '@styles/Configurador1.scss';
-//import '@styles/ProductList.scss';
+import '@styles/ProductList.scss';
 //import usePut from '@hooks/usePut';
 import AppContext from '@context/AppContext';
 //import ProductCartConf from "@containers/ProductCartConf";
@@ -13,7 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import CircularProgress from "@mui/material/CircularProgress";
 import GradientCircularProgress from "./GradientCircularProgress";
 import ConfiguradorCategoria from "./containers/ConfiguradorCategoria";
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import { DeleteForever, DeleteOutline } from "@mui/icons-material";
 const Configurador4 = () => {
   const APIConf = API+'orders/9';
   const APICart = API+'orders/3';
@@ -91,7 +92,9 @@ const Configurador4 = () => {
     state.estereoC.length === 0 &&
     state.tieneEstereoOriginalC !== 'si' &&
     state.tieneEstereoTipoOriginalC != true;
-
+  const expandBases = 
+    state.estereoC.SKU != undefined && 
+    state.baseC.length === 0;
   const toggleAcordion = () => {
     setExpand((prev) => !prev);
   };
@@ -100,7 +103,8 @@ const Configurador4 = () => {
 
   console.log("loading");
   console.log(loading);
-  //console.log(state.configuracion);
+  console.log(state.cartConf);
+  console.log(state.cart);
   return (
     <React.Fragment>
       {(loading || loadingLocal) && <Box className="Loading_Container"> <GradientCircularProgress /></Box>}
@@ -118,20 +122,21 @@ const Configurador4 = () => {
             <Box className="configurador_tuAuto1">
                 <Typography sx={{paddingLeft:"6px", minWidth:"70px"}}>Tu Auto:</Typography>
                 <Typography sx={{paddingLeft:"6px"}}>{state.marcaC} {state.modeloC} {state.anioC}</Typography>
-              </Box>  
-              <Box className="configurador_tuAuto1">
-                  <Typography sx={{paddingLeft:"6px"}}>No. Orden: {state.confOrderId}</Typography> 
-              </Box>    
-              <Box className="configurador_tuAuto1">
-                  <Typography sx={{paddingLeft:"6px"}}>Tipo de Configuración: {state.tipoConfiguracionC}</Typography> 
-              </Box>         
+            </Box>  
+            <Box className="configurador_tuAuto1">
+                <Typography sx={{paddingLeft:"6px"}}>No. Orden: {state.confOrderId}</Typography> 
+            </Box>    
+            <Box className="configurador_tuAuto1">
+                <Typography sx={{paddingLeft:"6px"}}>Tipo de Configuración: {state.tipoConfiguracionC}</Typography> 
+            </Box>         
           </Box>  
           {
           //------------------------------------------------------ESTEREO--------------------------------------------------------------
           }                   
           <Accordion expanded={expandEstereo || expanded === 'panel1'}  
             disabled = {state.tieneEstereoOriginalC === 'si' || state.tieneEstereoTipoOriginalC === true}
-            onChange={handleChange('panel1')} >
+            onChange={handleChange('panel1')} 
+            sx={{width:"90%"}}>
               <Box className="configurador-accordionSummary">
                 <AccordionSummary 
                   className="configurador-accordion-header" 
@@ -141,7 +146,8 @@ const Configurador4 = () => {
                   </AccordionSummary>
                 <Box className="configurador-button-borrar">
                 {(state.estereoC.length != 0) ?
-                  <img className = "trashCanConf" src={trash} alt="close"  onClick={() => handleRemove('20','1')} />:  ''
+                 <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('20','1')}  />:  ''
+                
                 }             
                 </Box>
               </Box>
@@ -150,7 +156,29 @@ const Configurador4 = () => {
                   <ConfiguradorCategoria category="20" value={valor} value2= {valor2} optional="false" carFeatures={caracteristicas}/>
                 )}
               </AccordionDetails>
-          </Accordion>        
+          </Accordion>  
+          {/*------------------------------------------------------BASES--------------------------------------------------------------*/}
+          <Accordion expanded={expandBases || expanded === 'panel2'}  onChange={handleChange('panel2')} 
+          disabled = {state.estereoC.length === 0} id="accordion_base">{/* disabled={enabledBase}*/}
+           <Box className="configurador-accordionSummary">
+            <AccordionSummary className="configurador-accordion-header" aria-controls="panel2d-content" id="panel2d-header">
+              <Typography>Bases</Typography><Typography className="configurador-item-selected"> - {state.baseC.modelo} </Typography>
+            </AccordionSummary>
+            <Box className="configurador-button-borrar">
+              {(state.baseC.length != 0) ?
+                <img className = "trashCanConf" src={trash} alt="close"  onClick={() => handleRemove('8','13')} />:  ''
+              }
+              </Box>
+            </Box>
+            <AccordionDetails>
+            {(expandBases || expanded === 'panel2') && (     
+              <ConfiguradorCategoria category="8"  value={valor} value2= {valor2} optional="false" carFeatures={caracteristicas}/>
+            )}
+            </AccordionDetails>
+          </Accordion>
+
+
+
         </Stack>
         <Box>
           {/*<ProductCartConf/>*/}

@@ -476,7 +476,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //console.log("Inicia fetchOrderData");
         try {
             // 1. Check if I have active orders of cart and configurador
-            const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=tienda`; 
+            const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=tienda`; //MANDAR TASK A LUIS, NO SIRVE FILTRO DE TYPE
             const APIConf = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador`; 
             const [cartResponse, confResponse] = await Promise.all([
                 fetch(APICart, {
@@ -539,7 +539,17 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         }
     };
 
-
+    const setEstereo = (payload,payload2,amountProducts) =>{
+        //console.log(payload);
+        //console.log(payload2);
+        setState({
+            ...state, 
+            estereoC:payload, 
+            cartConf:[...state.cartConf, payload],   //Agrega un arreglo con los productos del configurador
+            orderConf:[...state.orderConf, payload2], //Agrega un arreglo igual al de la BD, este solo queda en el estado
+            totalCompra:state.totalCompra+amountProducts
+        });
+    };
     return {
         setLogin,
         loading,
@@ -548,7 +558,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //addToCart,
         //removeFromCart,
         fetchOrderData,
-        //setEstereo,  //Empiezan las funcions del configurador
+        setEstereo,  //Empiezan las funcions del configurador
         //setBase,
         state,
     }
