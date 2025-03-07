@@ -95,16 +95,18 @@ const Configurador4 = () => {
   const expandBases = 
     state.estereoC.SKU != undefined && 
     state.baseC.length === 0;
+  const expandArneses = state.baseC.SKU != undefined && 
+    state.arnesC.length === 0;
   const toggleAcordion = () => {
     setExpand((prev) => !prev);
   };
   //https://www.freakyjolly.com/react-material-ui-accordion-tabs-tutorial-with-example/  */
   //console.log(activeOrder);
 
-  console.log("loading");
-  console.log(loading);
-  console.log(state.cartConf);
-  console.log(state.cart);
+  //console.log("loading");
+  //console.log(loading);
+  //console.log(state.cartConf);
+  //console.log(state.cart);
   return (
     <React.Fragment>
       {(loading || loadingLocal) && <Box className="Loading_Container"> <GradientCircularProgress /></Box>}
@@ -159,14 +161,15 @@ const Configurador4 = () => {
           </Accordion>  
           {/*------------------------------------------------------BASES--------------------------------------------------------------*/}
           <Accordion expanded={expandBases || expanded === 'panel2'}  onChange={handleChange('panel2')} 
-          disabled = {state.estereoC.length === 0} id="accordion_base">{/* disabled={enabledBase}*/}
+          disabled = {state.estereoC.length === 0} id="accordion_base"
+          sx={{width:"90%",mt:"0px"}}>{/* disabled={enabledBase}*/}
            <Box className="configurador-accordionSummary">
             <AccordionSummary className="configurador-accordion-header" aria-controls="panel2d-content" id="panel2d-header">
               <Typography>Bases</Typography><Typography className="configurador-item-selected"> - {state.baseC.modelo} </Typography>
             </AccordionSummary>
             <Box className="configurador-button-borrar">
               {(state.baseC.length != 0) ?
-                <img className = "trashCanConf" src={trash} alt="close"  onClick={() => handleRemove('8','13')} />:  ''
+                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('8','13')}  />:  ''
               }
               </Box>
             </Box>
@@ -176,7 +179,26 @@ const Configurador4 = () => {
             )}
             </AccordionDetails>
           </Accordion>
-
+          {/*------------------------------------------------------ARNESES--------------------------------------------------------------*/}
+          <Accordion expanded={expandArneses || expanded === 'panel3'} onChange={handleChange('panel3')} 
+          disabled = {state.baseC.length === 0}
+          sx={{width:"90%"}}>
+            <Box className="configurador-accordionSummary">
+            <AccordionSummary className="configurador-accordion-header" aria-controls="panel3d-content" id="panel3d-header">
+              <Typography>Arneses</Typography><Typography className="configurador-item-selected"> - {state.arnesC.modelo} </Typography>
+            </AccordionSummary>
+            <Box className="configurador-button-borrar">
+              {(state.arnesC.length != 0) ?
+                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('7','14')}  />:  ''
+              }
+              </Box>
+            </Box>
+            <AccordionDetails>
+            {(expandArneses || expanded === 'panel3') && ( 
+              <ConfiguradorCategoria category="7" value={arnesHF} optional="false" carFeatures={caracteristicas}/>
+            )}
+            </AccordionDetails>
+          </Accordion>
 
 
         </Stack>

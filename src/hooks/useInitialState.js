@@ -550,6 +550,15 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             totalCompra:state.totalCompra+amountProducts
         });
     };
+    const setBase = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            baseC:payload,
+            cartConf:[...state.cartConf, payload], 
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
     return {
         setLogin,
         loading,
@@ -559,7 +568,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //removeFromCart,
         fetchOrderData,
         setEstereo,  //Empiezan las funcions del configurador
-        //setBase,
+        setBase,
         state,
     }
 }
