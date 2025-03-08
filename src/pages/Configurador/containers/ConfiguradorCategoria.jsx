@@ -18,11 +18,19 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     const { state } = useContext(AppContext);
     const [success, setSuccess] = useState(false); 
     const [errMsg, setErrMsg] = useState('');  
-    const [productosFinal,setProductosFinal] = useState([]);
+    const [productosFinal,setProductosFinal] = useState(null);
     /*const [productosModelo,setProductosModelo] = useState([]);    
     const [cantidadFija,setCantidadFija] = useState(1);*/
-    const [loadingQ, setLoadingQ] = useState(true);
-    const [loadingP, setLoadingP] = useState(true); // Only for pagination updates
+    const [loadingP, setLoadingP] = useState(true);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [productsPerPage] = useState(6);
+    const [currentProducts,setCurrentProducts] = useState(null);
+    const [numeroDeProductos,setNumeroDeProductos] = useState(0);
+    const [noHayProductos, setNohayProductos] = useState(false);
+    const indexOfLastPost = currentPage * productsPerPage;
+    const indexOfFirstPost = indexOfLastPost - productsPerPage;
+
     let dines = state.dinesC; //config.dines;
     let tipoConfiguracion = state.tipoConfiguracionC;
     let editarCantidad = true;
@@ -39,8 +47,9 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     //==============================CONSULTAMOS LOS PRODUCTOS==========================================
     const { data: productFetchData, loading, error:errorE } = useGet7(API2);
     useEffect(() => {
-        //console.log("COnsulta productos");
-        setLoadingQ(true);
+        if (!productFetchData) return; 
+        console.log("Consulta productos");
+        setLoadingP(true);
         if(errorE){
             setSuccess(false);
             setErrMsg("Error al consultar los productos");
@@ -68,15 +77,15 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                         //Para las bocinas agregamos tambien los componentes
                         console.log("ErrorA02");
                     })
-                    .finally(() => setLoadingQ(false));
+                    .finally(() => setLoadingP(false));
                 }
                 else {
                     filterAndSetProductosFinal(productos);
-                    setLoadingQ(false);
+                    setLoadingP(false);
                 }
             }
             else {
-                setLoadingQ(false);
+                setLoadingP(false);
             }
         }
         setLoadingP(false);
@@ -177,14 +186,9 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         }
     };
     //-----PAGINATION------/
-    const [currentPage, setCurrentPage] = useState(1);
-    const [productsPerPage] = useState(6);
-    const [currentProducts,setCurrentProducts] = useState([]);
-    const [numeroDeProductos,setNumeroDeProductos] = useState(0);
-    const [noHayProductos, setNohayProductos] = useState(false);
-    const indexOfLastPost = currentPage * productsPerPage;
-    const indexOfFirstPost = indexOfLastPost - productsPerPage;
     useEffect(() => {
+        console.log(productosFinal);
+        if (!productosFinal) return; 
         console.log("Actualiza productos")
         setLoadingP(true);
         if (productosFinal && productosFinal.length > 0) {
@@ -215,7 +219,9 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     };
     //---------------------------------------------
     //     /*const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };*/
-    if (loadingP || loadingQ) {
+    //console.log(loading);
+    //console.log(currentProducts);
+    if (loading || currentProducts  === null) {
         return <CircularProgress />;
     }
     if (!success && errMsg) {
@@ -279,4 +285,4 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
      
     );
 }
-export default ConfiguradorCategoria;
+export default React.memo(ConfiguradorCategoria);
