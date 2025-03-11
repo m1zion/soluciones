@@ -136,6 +136,23 @@ margin-left: auto !important;
     color: white;
     margin-left: 5px !important;
 }
+.NextStepButton2Bright{
+    background-color: white !important;
+    font-weight: 500 !important;
+    align-self: center;
+    margin-top: 35px !important;
+    text-transform: none !important;
+    border-radius: 11px !important;
+    box-shadow: none  !important;
+    height: 45px;
+    width: 200px !important;
+    color: var(--blueConfiguradorHover) !important;
+    border: 1px solid var(--blueConfiguradorHover) !important;
+  }
+  .NextStepButton2Bright:hover{
+    color: var(--blueConfigurador) !important;
+  }
+  
 @media (min-width: 600px) {
     .Configurador_Container{
       //padding-top: 145px; 
@@ -197,6 +214,7 @@ margin-left: auto !important;
     padding: 10px 10px 10px;
     margin: auto 20px !important;
 }
+
 
 @media (max-width: 600px) {
     .NextStepButton, .NextStepButtonBright {

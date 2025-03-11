@@ -185,7 +185,7 @@ const Configurador4 = () => {
           sx={{width:"90%"}}>
             <Box className="configurador-accordionSummary">
             <AccordionSummary className="configurador-accordion-header" aria-controls="panel3d-content" id="panel3d-header">
-              <Typography>Arneses</Typography><Typography className="configurador-item-selected"> - {state.arnesC.modelo} </Typography>
+              <Typography>Arneses</Typography><Typography className="configurador-item-selected"> - {(state.arnesC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.arnesC.modelo}</Typography>
             </AccordionSummary>
             <Box className="configurador-button-borrar">
               {(state.arnesC.length != 0) ?

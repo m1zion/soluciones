@@ -15,14 +15,13 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     var categoryAPI;
     var categoriaOpcional = category;    
     let categoryComplement = "";
-    const { state } = useContext(AppContext);
+    const { state,setProductoOpcional } = useContext(AppContext);
     const [success, setSuccess] = useState(false); 
     const [errMsg, setErrMsg] = useState('');  
     const [productosFinal,setProductosFinal] = useState(null);
     /*const [productosModelo,setProductosModelo] = useState([]);    
     const [cantidadFija,setCantidadFija] = useState(1);*/
     const [loadingP, setLoadingP] = useState(true);
-
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage] = useState(6);
     const [currentProducts,setCurrentProducts] = useState(null);
@@ -30,7 +29,6 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     const [noHayProductos, setNohayProductos] = useState(false);
     const indexOfLastPost = currentPage * productsPerPage;
     const indexOfFirstPost = indexOfLastPost - productsPerPage;
-
     let dines = state.dinesC; //config.dines;
     let tipoConfiguracion = state.tipoConfiguracionC;
     let editarCantidad = true;
@@ -43,12 +41,16 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         case '8': categoryAPI = 'bases'; categoriaOpcional = 'Bases'; break; //13
         case '20': categoryAPI = 'estereos';  categoriaOpcional = 'Estereo'; break; //1
     }    
+
+    const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };
+
+
     let API2 = APIProducts.concat(categoryAPI,"/?administrador=false&offset=0&limit=700"); 
     //==============================CONSULTAMOS LOS PRODUCTOS==========================================
     const { data: productFetchData, loading, error:errorE } = useGet7(API2);
     useEffect(() => {
         if (!productFetchData) return; 
-        console.log("Consulta productos");
+        //console.log("Consulta productos");
         setLoadingP(true);
         if(errorE){
             setSuccess(false);
@@ -101,7 +103,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                         if (caracteristicas){ 
                             const arnesAI = caracteristicas?.arnesAI;
                             const arnesHF = caracteristicas?.arnesHF; 
-                            //console.log('Filtrara los arneses de acuerdo a los siguientes modelos '+arnesAI+' '+arnesHF);
+                            console.log('Filtrara los arneses de acuerdo a los siguientes modelos '+arnesAI+' '+arnesHF);
                             productosModeloAux = productos?.filter(function(product){ 
                                 return  product.Modelo== arnesAI || product.Modelo == arnesHF;
                             });                       
@@ -110,7 +112,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     else{
                         productosModeloAux = productos?.filter(function(product){ return (product.Modelo==product.Modelo)});
                     }              
-                    console.log(productosModeloAux) ;    
+                    //console.log(productosModeloAux) ;    
                     setProductosFinal(productosModeloAux);
                 break;
                 case '8': //Bases
@@ -185,18 +187,102 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
             setNumeroDeProductos(productosModeloAux.length);
         }
     };
+
+    const handleClickOpcional = category => {
+        const APIconfCaracteristicas = API+'orders/'+state.confOrderId;
+        const activeConfigOrder = state.confOrderId
+        let data;
+        console.log(APIconfCaracteristicas);
+        switch(category){
+            case '1': 
+                data = {orderType:'configurador', accesorioC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data);
+            break;
+            case '11': 
+                data = {orderType:'configurador', bocinaReemplazoDelanteraC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data);
+            break;
+            case '16': 
+                data = {orderType:'configurador', calzaBocinaReemplazoDelanteraC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;
+            case '12': 
+                data = {orderType:'configurador', bocinaReemplazoTraseraC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;
+            case '17': 
+                data = {orderType:'configurador', calzaBocinaReemplazoTraseraC: 'N/A', status: 'activo'}
+                usePut(APIconfCaracteristicas,data); 
+            break;
+            case '9': 
+                data = {orderType:'configurador', bocinaPremiumDelanteraC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data);
+            break;
+            case '14': 
+                data = {orderType:'configurador', calzaBocinaPremiumDelanteraC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;
+            case '10': 
+                data = {orderType:'configurador', bocinaPremiumTraseraC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;
+            case '15': 
+                data = {orderType:'configurador', calzaBocinaPremiumTraseraC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;
+            case '13': 
+                data = {orderType:'configurador', cajonAcusticoC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;
+            case '18': 
+                data = {orderType:'configurador', ecualizadorC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;
+            case '19': 
+                data = {orderType:'configurador', epicentroC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;
+            case '21': 
+                data = {orderType:'configurador', kitCablesC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;
+            case '23': 
+                data = {orderType:'configurador', procesadorC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;     
+            case '25': 
+            data = {orderType:'configurador', tweeterC: 'N/A', status: 'activo' }
+            usePut(APIconfCaracteristicas,data); 
+            break;   
+            case '25': 
+                data = {orderType:'configurador', componentesC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;         
+            case '26': 
+                data = {orderType:'configurador', wooferC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;
+            case '6': 
+                data = {orderType:'configurador', amplificadorWooferC: 'N/A', status: 'activo' }
+                usePut(APIconfCaracteristicas,data); 
+            break;
+        }
+        handleProductoOpcional(category);
+    }
+
+
     //-----PAGINATION------/
     useEffect(() => {
-        console.log(productosFinal);
+        //console.log(productosFinal);
         if (!productosFinal) return; 
-        console.log("Actualiza productos")
+        //console.log("Actualiza productos")
         setLoadingP(true);
         if (productosFinal && productosFinal.length > 0) {
-            console.log('entroA')
+            //console.log('entroA')
             setCurrentProducts(productosFinal.slice(indexOfFirstPost, indexOfLastPost));
         }
         else if (productosFinal && productosFinal.length == 0) {
-            console.log('entroB')
+            //console.log('entroB')
             setCurrentProducts([]);
         }
         setLoadingP(false);
@@ -218,9 +304,8 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         }
     };
     //---------------------------------------------
-    //     /*const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };*/
-    //console.log(loading);
-    //console.log(currentProducts);
+
+
     if (loading || currentProducts  === null) {
         return <CircularProgress />;
     }

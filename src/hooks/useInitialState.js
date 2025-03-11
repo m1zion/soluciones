@@ -559,6 +559,45 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             totalCompra:state.totalCompra+amountProducts,
         });
     };
+    const setArnes = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state,
+            arnesC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+
+      //PRODUCTOS OPCIONALES
+      const setProductoOpcional = (category) =>{
+        console.log("Set Producto Opcional: ");
+        console.log(category);
+        switch(category) {
+            case '11': setState({...state,bocinaReemplazoDelanteraC:'N/A'}); break;
+            case '16': setState({...state,calzaBocinaReemplazoDelanteraC:'N/A'}); break;
+            case '12': setState({...state,bocinaReemplazoTraseraC:'N/A'}); break;
+            case '17': setState({...state,calzaBocinaReemplazoTraseraC:'N/A'}); break;
+            case '9':  setState({...state,bocinaPremiumDelanteraC:'N/A'}); break;
+            case '14': setState({...state,calzaBocinaPremiumDelanteraC:'N/A'}); break;
+            case '10': setState({...state,bocinaPremiumTraseraC:'N/A'}); break;
+            case '15': setState({...state,calzaBocinaPremiumTraseraC:'N/A'}); break;
+            case '18': setState({...state,ecualizadorC:'N/A'}); break;
+            case '19': setState({...state,epicentroC:'N/A'}); break;
+            case '23': setState({...state,procesadorC:'N/A'}); break;
+            case '25': setState({...state,tweeterC:'N/A'}); break;
+            case '1':  setState({...state,accesorioC:'N/A'}); break;
+            case '24': setState({...state,setComponentesO:'N/A'}); break;
+            case '22': setState({...state,medioRangoO:'N/A'}); break;
+            case '6':  setState({...state,amplificadorWooferC:'N/A'}); break;
+            case '26': setState({...state,wooferC:'N/A'}); break;
+            case '13': setState({...state,cajonAcusticoC:'N/A'}); break;
+            case '21': setState({...state,kitCablesC:'N/A'}); break;
+            
+            case '7': setState({...state,arnesC:'N/A'}); break;
+        }
+    };
+
     return {
         setLogin,
         loading,
@@ -569,6 +608,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         fetchOrderData,
         setEstereo,  //Empiezan las funcions del configurador
         setBase,
+        setArnes,
+        setProductoOpcional,
         state,
     }
 }

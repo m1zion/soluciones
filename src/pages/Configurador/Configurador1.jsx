@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
+import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
 import '@styles/Configurador1.scss';
 import React, { useState, useEffect, useRef, useContext } from "react";
 import useGet7 from '@hooks/useGet7';
@@ -216,6 +216,11 @@ const updateConfigurador = async (ordenVentaData,ordenVentaId) => {
   if (!success) throw new Error(error || "Error occurred during the request");
   return success;
 };
+const handleSubmitModificar = (event) => {
+  event.preventDefault();
+  navigate("/Configurador4");
+}
+
   return (
     <Box className="Configurador_Container">
       <Box className="hero-image">
