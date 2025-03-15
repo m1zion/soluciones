@@ -40,6 +40,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         case '7': categoryAPI = 'arneses'; categoriaOpcional = 'Arnenses'; break; //14
         case '8': categoryAPI = 'bases'; categoriaOpcional = 'Bases'; break; //13
         case '20': categoryAPI = 'estereos';  categoriaOpcional = 'Estereo'; break; //1
+        case '2': categoryAPI = 'adaptadoresAntena'; categoriaOpcional = 'Adaptadores de Antena'; break;  //15
     }    
 
     const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };
@@ -50,7 +51,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     const { data: productFetchData, loading, error:errorE } = useGet7(API2);
     useEffect(() => {
         if (!productFetchData) return; 
-        //console.log("Consulta productos");
+        console.log("Consulta productos");
         setLoadingP(true);
         if(errorE){
             setSuccess(false);
@@ -94,7 +95,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     }, [productFetchData,errorE,categoryComplement]);
     //=======================================================================================================
     const filterAndSetProductosFinal = (productos) => {
-        //console.log("categoria");
+        console.log("filterAndSetProductosFinal");
         if (value !== 'N/A') {  // Esta es la categoria
             let productosModeloAux = [];
             switch (category) {               
@@ -178,7 +179,26 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     );
                     productosModeloAux = productos;
                     setProductosFinal(productosModeloAux);
-                break;              
+                break;  
+                case '2': //Adaptadores
+                    console.log("Entra a adaptadores");
+                    if(typeof caracteristicas !== "undefined"){
+                        if (caracteristicas){ 
+                            const adaptadorAntenaAI = caracteristicas?.adaptadorAntenaAI;
+                            const adaptadorAntenaHF = caracteristicas?.adaptadorAntenaHF; 
+                            console.log("filtrata los adaptadores de acuerdo a estos modelos "+adaptadorAntenaAI+" "+adaptadorAntenaHF);
+                            productosModeloAux = productos?.filter(function(product){ 
+                                return  product.Modelo== adaptadorAntenaAI || product.Modelo == adaptadorAntenaHF || product.Modelo == 'AU';
+                            });
+                        }
+                    }
+                    else{
+                        productosModeloAux = productos?.filter(function(product){ return (product.Modelo==product.Modelo)});
+                    }
+                    setProductosFinal(productosModeloAux);
+                    //setNumeroDeProductos(productosModeloAux.length);
+                break;
+
                 default:
                     productosModeloAux = productos;
                     setProductosFinal(productos);

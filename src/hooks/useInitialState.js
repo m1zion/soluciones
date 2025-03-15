@@ -568,6 +568,20 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             totalCompra:state.totalCompra+amountProducts,
         });
     };
+    const setAdaptador = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            adaptadorC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+
+    const setMejoraAudio = (payload)  => {
+        setState({...state,mejorarAudio:payload})
+    }
+    
 
       //PRODUCTOS OPCIONALES
       const setProductoOpcional = (category) =>{
@@ -598,6 +612,1008 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         }
     };
 
+    const removeFromCartConf = (payload) =>{
+        let payloadOptions = [];
+        let sumTotalPrecioPromo = 0;
+        let data = [];
+        //console.log("Borrara todos los items "+payload);
+        switch(payload) {  //categoryIdConfigurador
+            case 'nuevo':
+                data = [...state.cartConf];
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal ? item.precioPromoTotal : item.precioTotal) * item.amount;
+                });
+                //console.log("State antes de borrar");
+                //console.log(state);
+                setState({...state, 
+                    configC: [],
+                    marcaC: [],   
+                    modeloC: [],
+                    anioC:[],
+                    tipoConfiguracionC: [],             
+                    dinesC:[],
+                    estereoC:[],
+                    baseC: [],
+                    arnesC: [],
+                    adaptadorC: [],
+                    adaptadorImpedanciaC: [],
+                    mejorarAudio: [],
+                    tieneBocinaReemplazo: [],
+                    bocinaReemplazoDelanteraC: [],
+                    calzaBocinaReemplazoDelanteraC: [],
+                    bocinaReemplazoTraseraC: [],
+                    calzaBocinaReemplazoTraseraC: [],
+                    terminaConfiguracion1: [],
+                    amplificadorC: [],
+                    tieneBocinaOriginal: [],
+                    bocinaPremiumDelanteraC: [],
+                    calzaBocinaPremiumDelanteraC: [],
+                    bocinaPremiumTraseraC: [],
+                    calzaBocinaPremiumTraseraC: [],
+                    tieneAmplificadorBajos: [],
+                    amplificadorWooferC: [],
+                    amplificador3en1C: [],
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    tieneEstereoOriginalC: [],
+                    tieneEstereoTipoOriginalC: [],
+                    medioRangoO: [] ,
+                    setComponentesO: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,     
+                    cartConf: []     
+                });
+                //console.log("State despues de borrar");
+                //console.log(state);
+            break;
+            case 'todo':
+            case '20': //Para los estereos borramos todo
+                data = state.cartConf;
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state, 
+                    estereoC:[],
+                    baseC: [],
+                    arnesC: [],
+                    adaptadorC: [],
+                    adaptadorImpedanciaC: [],
+                    mejorarAudio: [],
+                    tieneBocinaReemplazo: [],
+                    bocinaReemplazoDelanteraC: [],
+                    calzaBocinaReemplazoDelanteraC: [],
+                    bocinaReemplazoTraseraC: [],
+                    calzaBocinaReemplazoTraseraC: [],
+                    terminaConfiguracion1: [],
+                    amplificadorC: [],
+                    tieneBocinaOriginal: [],
+                    bocinaPremiumDelanteraC: [],
+                    calzaBocinaPremiumDelanteraC: [],
+                    bocinaPremiumTraseraC: [],
+                    calzaBocinaPremiumTraseraC: [],
+                    tieneAmplificadorBajos: [],
+                    amplificadorWooferC: [],
+                    amplificador3en1C: [],
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],                        
+                    //tieneEstereoOriginalC: [],
+                    medioRangoO: [],
+                    //setMediosO: [],
+                    setComponentesO: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: [], 
+                });
+            break;
+            case '8': //Bases
+                payloadOptions = [20];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state, 
+                    baseC: [],
+                    arnesC: [],
+                    adaptadorC: [],
+                    adaptadorImpedanciaC: [],
+                    mejorarAudio: [],
+                    tieneBocinaReemplazo: [],
+                    bocinaReemplazoDelanteraC: [],
+                    calzaBocinaReemplazoDelanteraC: [],
+                    bocinaReemplazoTraseraC: [],
+                    calzaBocinaReemplazoTraseraC: [],
+                    terminaConfiguracion1: [],
+                    amplificadorC: [],
+                    tieneBocinaOriginal: [],
+                    bocinaPremiumDelanteraC: [],
+                    calzaBocinaPremiumDelanteraC: [],
+                    bocinaPremiumTraseraC: [],
+                    calzaBocinaPremiumTraseraC: [],
+                    tieneAmplificadorBajos: [],
+                    amplificadorWooferC: [],
+                    amplificador3en1C: [],
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20'  //Estereos
+                        )),
+                    });
+            break;
+            case '7': //Arneses
+                payloadOptions = [20,8];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                               data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state, 
+                arnesC: [],
+                adaptadorC: [],
+                adaptadorImpedanciaC: [],
+                mejorarAudio: [],
+                tieneBocinaReemplazo: [],
+                bocinaReemplazoDelanteraC: [],
+                calzaBocinaReemplazoDelanteraC: [],
+                bocinaReemplazoTraseraC: [],
+                calzaBocinaReemplazoTraseraC: [],
+                terminaConfiguracion1: [],
+                amplificadorC: [],
+                tieneBocinaOriginal: [],
+                bocinaPremiumDelanteraC: [],
+                calzaBocinaPremiumDelanteraC: [],
+                bocinaPremiumTraseraC: [],
+                calzaBocinaPremiumTraseraC: [],
+                tieneAmplificadorBajos: [],
+                amplificadorWooferC: [],
+                amplificador3en1C: [],
+                wooferC: [],
+                cajonAcusticoC: [],
+                kitCablesC: [],
+                tieneEcualizador: [],
+                ecualizadorC: [],
+                epicentroC: [],
+                procesadorC: [],
+                tweeterC:[],
+                accesorioC: [],
+                totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                cartConf: state.cartConf.filter(items => (
+                    items.categoryIdConfigurador == '20' ||
+                    items.categoryIdConfigurador == '8'  //Bases
+                    )),
+                });
+            break;
+            case '2': //adaptadores
+                payloadOptions = [20,8,7];               
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                    data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount; 
+                });
+                setState({...state, 
+                adaptadorC: [],
+                adaptadorImpedanciaC: [],
+                mejorarAudio: [],
+                tieneBocinaReemplazo: [],
+                bocinaReemplazoDelanteraC: [],
+                calzaBocinaReemplazoDelanteraC: [],
+                bocinaReemplazoTraseraC: [],
+                calzaBocinaReemplazoTraseraC: [],
+                terminaConfiguracion1: [],
+                amplificadorC: [],
+                tieneBocinaOriginal: [],
+                bocinaPremiumDelanteraC: [],
+                calzaBocinaPremiumDelanteraC: [],
+                bocinaPremiumTraseraC: [],
+                calzaBocinaPremiumTraseraC: [],
+                tieneAmplificadorBajos: [],
+                amplificadorWooferC: [],
+                amplificador3en1C: [],
+                wooferC: [],
+                cajonAcusticoC: [],
+                kitCablesC: [],
+                tieneEcualizador: [],
+                ecualizadorC: [],
+                epicentroC: [],
+                procesadorC: [],
+                tweeterC:[],
+                accesorioC: [],
+                totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                cartConf: state.cartConf.filter(items => (
+                    items.categoryIdConfigurador == '20' ||
+                    items.categoryIdConfigurador == '8'  ||
+                    items.categoryIdConfigurador == '7' // Arneses
+                    )),
+                });
+            break;
+            case '3': //Adaptadores de impedancia (estereo original)
+                payloadOptions = [20,8,7];               
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                    data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount; 
+                });
+                setState({...state, 
+                    adaptadorC: [],
+                    adaptadorImpedanciaC: [],
+                    mejorarAudio: [],
+                    tieneBocinaReemplazo: [],
+                    bocinaReemplazoDelanteraC: [],
+                    calzaBocinaReemplazoDelanteraC: [],
+                    bocinaReemplazoTraseraC: [],
+                    calzaBocinaReemplazoTraseraC: [],
+                    terminaConfiguracion1: [],
+                    amplificadorC: [],
+                    tieneBocinaOriginal: [],
+                    bocinaPremiumDelanteraC: [],
+                    calzaBocinaPremiumDelanteraC: [],
+                    bocinaPremiumTraseraC: [],
+                    calzaBocinaPremiumTraseraC: [],
+                    tieneAmplificadorBajos: [],
+                    amplificadorWooferC: [],
+                    amplificador3en1C: [],
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'
+                        )),
+                    });
+                break;
+
+
+            case '11': //bocinasReemplazoDelantera
+                payloadOptions = [20,8,7,2,3];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state, 
+                mejorarAudio: [],
+                tieneBocinaReemplazo: [],
+                bocinaReemplazoDelanteraC: [],
+                calzaBocinaReemplazoDelanteraC: [],
+                bocinaReemplazoTraseraC: [],
+                calzaBocinaReemplazoTraseraC: [],
+                terminaConfiguracion1: [],
+                amplificadorC: [],
+                tieneBocinaOriginal: [],
+                bocinaPremiumDelanteraC: [],
+                calzaBocinaPremiumDelanteraC: [],
+                bocinaPremiumTraseraC: [],
+                calzaBocinaPremiumTraseraC: [],
+                tieneAmplificadorBajos: [],
+                amplificadorWooferC: [],
+                amplificador3en1C: [],
+                wooferC: [],
+                cajonAcusticoC: [],
+                kitCablesC: [],
+                tieneEcualizador: [],
+                ecualizadorC: [],
+                epicentroC: [],
+                procesadorC: [],
+                tweeterC:[],
+                accesorioC: [],
+                totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                cartConf: state.cartConf.filter(items => (
+                    items.categoryIdConfigurador == '20' ||
+                    items.categoryIdConfigurador == '8'  ||
+                    items.categoryIdConfigurador == '7'  ||
+                    items.categoryIdConfigurador == '2'  ||  //Adaptadores de Voz
+                    items.categoryIdConfigurador == '3' 
+                    )),
+                });
+            break;
+            case '16': //calzasBocinasReemplazoDelantera
+                payloadOptions = [20,8,7,2,3,11];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                           data.forEach((item) => {
+                sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state, 
+                calzaBocinaReemplazoDelanteraC: [],
+                bocinaReemplazoTraseraC: [],
+                calzaBocinaReemplazoTraseraC: [],
+                terminaConfiguracion1: [],
+                amplificadorC: [],
+                tieneBocinaOriginal: [],
+                bocinaPremiumDelanteraC: [],
+                calzaBocinaPremiumDelanteraC: [],
+                bocinaPremiumTraseraC: [],
+                calzaBocinaPremiumTraseraC: [],
+                tieneAmplificadorBajos: [],
+                amplificadorWooferC: [],
+                amplificador3en1C: [],
+                wooferC: [],
+                cajonAcusticoC: [],
+                kitCablesC: [],
+                tieneEcualizador: [],
+                ecualizadorC: [],
+                epicentroC: [],
+                procesadorC: [],
+                tweeterC:[],
+                accesorioC: [],
+                totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                cartConf: state.cartConf.filter(items => (
+                    items.categoryIdConfigurador == '20' ||
+                    items.categoryIdConfigurador == '8'  ||
+                    items.categoryIdConfigurador == '7'  ||
+                    items.categoryIdConfigurador == '2'  ||
+                    items.categoryIdConfigurador == '3'  ||
+                    items.categoryIdConfigurador == '11' //Bocina RD  
+                    )),
+                });
+            break;
+            case '12': //bocinasReemplazoTrasera
+                payloadOptions = [20,8,7,2,3,11,16];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state, 
+                bocinaReemplazoTraseraC: [],
+                calzaBocinaReemplazoTraseraC: [],
+                terminaConfiguracion1: [],
+                amplificadorC: [],
+                tieneBocinaOriginal: [],
+                bocinaPremiumDelanteraC: [],
+                calzaBocinaPremiumDelanteraC: [],
+                bocinaPremiumTraseraC: [],
+                calzaBocinaPremiumTraseraC: [],
+                tieneAmplificadorBajos: [],
+                amplificadorWooferC: [],
+                amplificador3en1C: [],
+                wooferC: [],
+                cajonAcusticoC: [],
+                kitCablesC: [],
+                tieneEcualizador: [],
+                ecualizadorC: [],
+                epicentroC: [],
+                procesadorC: [],
+                tweeterC:[],
+                accesorioC: [],
+                totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                cartConf: state.cartConf.filter(items => (
+                    items.categoryIdConfigurador == '20' ||
+                    items.categoryIdConfigurador == '8'  ||
+                    items.categoryIdConfigurador == '7'  ||
+                    items.categoryIdConfigurador == '2'  ||
+                    items.categoryIdConfigurador == '3'  ||
+                    items.categoryIdConfigurador == '11' ||   
+                    items.categoryIdConfigurador == '16' // Base Bocina RD 
+                    )),
+                });
+            break;
+            case '17': //calzasBocinasReemplazoTrasera
+                payloadOptions = [20,8,7,2,3,11,16,12];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state, 
+                    calzaBocinaReemplazoTraseraC: [],
+                    terminaConfiguracion1: [],
+                    amplificadorC: [],
+                    tieneBocinaOriginal: [],
+                    bocinaPremiumDelanteraC: [],
+                    calzaBocinaPremiumDelanteraC: [],
+                    bocinaPremiumTraseraC: [],
+                    calzaBocinaPremiumTraseraC: [],
+                    tieneAmplificadorBajos: [],
+                    amplificadorWooferC: [],
+                    amplificador3en1C: [],
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' ||  
+                        items.categoryIdConfigurador == '16' || 
+                        items.categoryIdConfigurador == '12'  //Bocina RT
+                    )),
+                });
+            break;
+            case '5': //amplificadorDeVoz
+                payloadOptions = [20,8,7,2,3,11,16,12,17];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state, 
+                    terminaConfiguracion1: [],
+                    amplificadorC: [],
+                    tieneBocinaOriginal: [],
+                    bocinaPremiumDelanteraC: [],
+                    calzaBocinaPremiumDelanteraC: [],
+                    bocinaPremiumTraseraC: [],
+                    calzaBocinaPremiumTraseraC: [],
+                    tieneAmplificadorBajos: [],
+                    amplificadorWooferC: [],
+                    amplificador3en1C: [],
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' || 
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' // Base Bocina RD
+                        )),
+                });
+            break;
+            case '9': //bocinasPremiumDelantera
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state, 
+                    tieneBocinaOriginal: [],
+                    bocinaPremiumDelanteraC: [],
+                    calzaBocinaPremiumDelanteraC: [],
+                    bocinaPremiumTraseraC: [],
+                    calzaBocinaPremiumTraseraC: [],
+                    tieneAmplificadorBajos: [],
+                    amplificadorWooferC: [],
+                    amplificador3en1C: [],
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' || 
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'
+                        )),
+                });
+            break;
+            case '14': //calzasBocinasPremiumDelantera
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,         
+                    calzaBocinaPremiumDelanteraC: [],
+                    bocinaPremiumTraseraC: [],
+                    calzaBocinaPremiumTraseraC: [],
+                    tieneAmplificadorBajos: [],
+                    amplificadorWooferC: [],
+                    amplificador3en1C: [],
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' ||
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  //Bocina PD
+                        )),
+                });
+            break;
+            case '10': //bocinasPremiumTrasera
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9,14];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,                  
+                    bocinaPremiumTraseraC: [],
+                    calzaBocinaPremiumTraseraC: [],
+                    tieneAmplificadorBajos: [],
+                    amplificadorWooferC: [],
+                    amplificador3en1C: [],
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' || 
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  ||
+                        items.categoryIdConfigurador == '14' //Calza Bocina PD
+                        )),
+                });
+            break;
+            case '15': //calzasBocinasPremiumTrasera
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9,14,10];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,
+                    calzaBocinaPremiumTraseraC: [],
+                    tieneAmplificadorBajos: [],
+                    amplificadorWooferC: [],
+                    amplificador3en1C: [],
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' || 
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  ||
+                        items.categoryIdConfigurador == '14' ||
+                        items.categoryIdConfigurador == '10'  //Bocina Premium trasera
+                        )),
+                });
+            break;
+            case '6': //amplificadorWoofer
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9,14,10,15];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,
+                    tieneAmplificadorBajos: [],
+                    amplificadorWooferC: [],
+                    amplificador3en1C: [],
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' || 
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  ||
+                        items.categoryIdConfigurador == '14' ||
+                        items.categoryIdConfigurador == '10' ||
+                        items.categoryIdConfigurador == '15' // Calza Bocina Premium trasera 
+                        )),
+                });
+            break;
+            case '4': //amplificador3en1
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9,14,10,15,6];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,
+                    tieneAmplificadorBajos: [],
+                    amplificadorWooferC: [],
+                    amplificador3en1C: [],
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' ||
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  ||
+                        items.categoryIdConfigurador == '14' ||
+                        items.categoryIdConfigurador == '10' ||
+                        items.categoryIdConfigurador == '15' ||
+                        items.categoryIdConfigurador == '6' // Amplificador de woofer
+                        )),
+                });
+            break;
+            case '13': //cajonAcustico
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9,14,10,15,6,4];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,
+                    wooferC: [],
+                    cajonAcusticoC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' || 
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  ||
+                        items.categoryIdConfigurador == '14' ||
+                        items.categoryIdConfigurador == '10' ||
+                        items.categoryIdConfigurador == '15' ||
+                        items.categoryIdConfigurador == '6'  ||
+                        items.categoryIdConfigurador == '4' // Amplificador 3 en 1
+                        )),
+                });
+            break;
+            case '26': //woofer
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9,14,10,15,6,4,13];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,
+                    wooferC: [],
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' || 
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  ||
+                        items.categoryIdConfigurador == '14' ||
+                        items.categoryIdConfigurador == '10' ||
+                        items.categoryIdConfigurador == '15' ||
+                        items.categoryIdConfigurador == '6'  ||
+                        items.categoryIdConfigurador == '4'  ||
+                        items.categoryIdConfigurador == '13' //Woofers
+                        )),
+                });
+            break;
+            case '21': //kitCables
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9,14,10,15,6,4,26,13];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,
+                    kitCablesC: [],
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' || 
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  ||
+                        items.categoryIdConfigurador == '14' ||
+                        items.categoryIdConfigurador == '10' ||
+                        items.categoryIdConfigurador == '15' ||
+                        items.categoryIdConfigurador == '6'  ||
+                        items.categoryIdConfigurador == '4'  ||
+                        items.categoryIdConfigurador == '26' ||
+                        items.categoryIdConfigurador == '13' //Cajones
+                        )),
+                });
+            break;
+            case '18': //ecualizador'
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9,14,10,15,6,4,26,13,21];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,
+                    tieneEcualizador: [],
+                    ecualizadorC: [],
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' || 
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  ||
+                        items.categoryIdConfigurador == '14' ||
+                        items.categoryIdConfigurador == '10' ||
+                        items.categoryIdConfigurador == '15' ||
+                        items.categoryIdConfigurador == '6'  ||
+                        items.categoryIdConfigurador == '4'  ||
+                        items.categoryIdConfigurador == '26' ||
+                        items.categoryIdConfigurador == '13' ||
+                        items.categoryIdConfigurador == '21' //Kits de cables
+                        )),
+                });
+            break;
+            case '19': //epicentro
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9,14,10,15,6,4,26,13,21,18];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,
+                    epicentroC: [],
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' ||
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  ||
+                        items.categoryIdConfigurador == '14' ||
+                        items.categoryIdConfigurador == '10' ||
+                        items.categoryIdConfigurador == '15' ||
+                        items.categoryIdConfigurador == '6'  ||
+                        items.categoryIdConfigurador == '4'  ||
+                        items.categoryIdConfigurador == '26' ||
+                        items.categoryIdConfigurador == '13' ||
+                        items.categoryIdConfigurador == '21' ||
+                        items.categoryIdConfigurador == '18' //Ecualizadores
+                        )),
+                });
+            break;
+            case '23': //procesador
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9,14,10,15,6,4,26,13,21,18,19];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,
+                    procesadorC: [],
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' || 
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  ||
+                        items.categoryIdConfigurador == '14' ||
+                        items.categoryIdConfigurador == '10' ||
+                        items.categoryIdConfigurador == '15' ||
+                        items.categoryIdConfigurador == '6'  ||
+                        items.categoryIdConfigurador == '4'  ||
+                        items.categoryIdConfigurador == '26' ||
+                        items.categoryIdConfigurador == '13' ||
+                        items.categoryIdConfigurador == '21' ||
+                        items.categoryIdConfigurador == '18' ||
+                        items.categoryIdConfigurador == '19'  //Epicentros
+                        )),
+                });
+            break;
+            case '25': //tweeters
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9,14,10,15,6,4,26,13,21,18,19,23];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,
+                    tweeterC:[],
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' || 
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  ||
+                        items.categoryIdConfigurador == '14' ||
+                        items.categoryIdConfigurador == '10' ||
+                        items.categoryIdConfigurador == '15' ||
+                        items.categoryIdConfigurador == '6'  ||
+                        items.categoryIdConfigurador == '4'  ||
+                        items.categoryIdConfigurador == '26' ||
+                        items.categoryIdConfigurador == '13' ||
+                        items.categoryIdConfigurador == '21' ||
+                        items.categoryIdConfigurador == '18' ||
+                        items.categoryIdConfigurador == '19' ||
+                        items.categoryIdConfigurador == '23' //Procesadores 
+                        )),
+                });
+            break;
+            case '1': //accesorios
+                payloadOptions = [20,8,7,2,3,11,16,12,17,5,9,14,10,15,6,4,26,13,21,18,19,23,25];
+                data = state.cartConf.filter(item => !payloadOptions.includes(parseInt(item.categoryIdConfigurador)));
+                data.forEach((item) => {
+                    sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+                });
+                setState({...state,
+                    accesorioC: [],
+                    totalCompra: state.totalCompra - sumTotalPrecioPromo,
+                    cartConf: state.cartConf.filter(items => (
+                        items.categoryIdConfigurador == '20' ||
+                        items.categoryIdConfigurador == '8'  ||
+                        items.categoryIdConfigurador == '7'  ||
+                        items.categoryIdConfigurador == '2'  ||
+                        items.categoryIdConfigurador == '3'  ||
+                        items.categoryIdConfigurador == '11' ||
+                        items.categoryIdConfigurador == '16' ||
+                        items.categoryIdConfigurador == '12' ||
+                        items.categoryIdConfigurador == '17' ||
+                        items.categoryIdConfigurador == '5'  || 
+                        items.categoryIdConfigurador == '9'  ||
+                        items.categoryIdConfigurador == '14' ||
+                        items.categoryIdConfigurador == '10' ||
+                        items.categoryIdConfigurador == '15' ||
+                        items.categoryIdConfigurador == '6'  ||
+                        items.categoryIdConfigurador == '4'  ||
+                        items.categoryIdConfigurador == '26' ||
+                        items.categoryIdConfigurador == '13' ||
+                        items.categoryIdConfigurador == '21' ||
+                        items.categoryIdConfigurador == '18' ||
+                        items.categoryIdConfigurador == '19' ||
+                        items.categoryIdConfigurador == '23' ||
+                        items.categoryIdConfigurador == '25' //Twetters
+                        )),
+                });
+            break;
+        }
+    }
+
     return {
         setLogin,
         loading,
@@ -605,11 +1621,14 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //logout,
         //addToCart,
         //removeFromCart,
-        fetchOrderData,
+        fetchOrderData,        
+        removeFromCartConf,
         setEstereo,  //Empiezan las funcions del configurador
         setBase,
         setArnes,
         setProductoOpcional,
+        setAdaptador,   
+        setMejoraAudio,     
         state,
     }
 }

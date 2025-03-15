@@ -132,6 +132,24 @@ margin-left: auto !important;
 .configurador-accordion-header-disabled img{
 margin-left: auto !important;
 }
+.configurador_sino_button{
+    background-color: var(--white) !important; 
+    color: var(--blueConfigurador) !important;
+    border: 1.5px solid var(--blueConfigurador) !important; 
+    margin-top: 20px !important;
+    width: 200px !important;
+  }
+.configurador_sino_button_disabled{
+    background-color: var(--background-blue) !important;
+    color: #C0C389 !important;
+    margin-top: 20px !important;
+    width: 200px !important;
+    border: 1.5px solid var(--blueConfigurador) !important; 
+}
+.configurador_sino_button:hover{
+    background-color: var(--blueConfigurador) !important; 
+    color: var(--white) !important;
+}
 .configurador-item-selected{
     color: white;
     margin-left: 5px !important;
