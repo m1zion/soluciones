@@ -12,6 +12,11 @@ const Configurador2 = () => {
     const navigate = useNavigate();
     //VALIDACIONES PARA VER SI EXISTEN BASES,ESTEREOS y ADAPTADORES
     //Buscamos la orden del configurador activa*/
+    useEffect(() => {
+        console.log("Loading data on page navigation...");
+        setConfigInicial(initialState); // Resetting state
+    }, []);
+    
     const handleSubmit = async (configuracion) => {
         setLoadingLocal(true);
         const dataConfCaracteristicas = {
@@ -58,7 +63,7 @@ const Configurador2 = () => {
                         <Box className="configurador_tuAuto">
                             <Box className="configurador_tuAuto1">
                                 <Typography sx={{paddingLeft:"6px", minWidth:"70px"}}>Tu Auto:</Typography>
-                                <Typography sx={{paddingLeft:"6px"}}>{state.marcaC} {state.modeloC} {state.anio}</Typography>
+                                <Typography sx={{paddingLeft:"6px"}}>{state.marcaC} {state.modeloC} {state.anioC}</Typography>
                             </Box>  
                             <Box className="configurador_tuAuto1">
                                 <Typography sx={{paddingLeft:"6px"}}>No. Orden: {state.confOrderId}</Typography> 

@@ -52,7 +52,7 @@ const Configurador3 = () => {
                     console.error("No se pudo recuperar la informacion de la configuracion");
                     return;
                 }
-                //console.log(configuracion);
+                console.log(configuracion);
                 const arnesAI = configuracion.arnesAI;
                 const arnesHF = configuracion.arnesHF;
                 const dobleDinAI = configuracion.dobleDinAI;
@@ -171,9 +171,10 @@ const Configurador3 = () => {
         } finally {
             setLoadingLocal(false);  // Ensure loading state is reset
         }
-
-       
     }
+    console.log(hideUnDin);
+    console.log(hasItemsUndin);
+
 	return (
         <React.Fragment>
         {(loading || loadingLocal) && <Box className="Loading_Container"> <GradientCircularProgress /></Box>}

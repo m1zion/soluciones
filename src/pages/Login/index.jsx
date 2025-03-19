@@ -44,7 +44,10 @@ const Login = () => {
           const localStorageRole = localStorage.getItem('roleL');
           //Adicionalmente hay que validar que el token es valido     
           
-          if(localStorageToken != '' && localStorageUser != '' ){
+          if(localStorageToken && localStorageToken !== 'null' && 
+            localStorageUser && localStorageUser !== 'null'){
+            console.log("Entra aca");
+            console.log(localStorageUser);
             setToken(localStorageToken);
             setUser(localStorageUser);
             setProveedorId(localStorageproveedorId)
@@ -58,6 +61,7 @@ const Login = () => {
             //Enviando datos de sesion del local storage'
             setDataLogin(dataLogin);  //State (setLogin)
             //setDataLogin(dataLogin);  //State (setLogin)
+
             if (localStorageRole == 'cliente'){
               navigate('/');
             }
@@ -81,6 +85,7 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("login");
     try {
       const response = await fetch(`${baseURL}auth/login`, {
         method: 'POST',
@@ -150,12 +155,13 @@ const Login = () => {
   const handleRegister = categoria =>{
     navigate('/newAccount');
   }
+  console.log(user);
   return (
     <Box className="LoginBoxContainer" >
       <Stack className="LoginFormContainer" spacing={2} direction = {{xs:"column", md:"column"}} >
         <Alert ref={errRef}  severity={errMsg ? "error" : "info"} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</Alert>
         {loading && <Box className="Form_ContainerLoading"> <CircularProgress /></Box>}
-        {(!loading && !error && user == '') &&
+        {(!loading && !error && (user == '' || !user)) &&
         <Box
           className="Form_Container"
           component="form"
@@ -210,20 +216,6 @@ const Login = () => {
               <Button variant="contained" sx={{textTransform: 'none'}}  onClick={handleRegister} className="NextStepButtonSecondaryFull" >Registrarse</Button>
             </Box>
             <Typography variant="body2" className="NewAccountSignIn"><a href="/ForgotPassword">¿Olvidaste tu contraseña? </a></Typography>
-            
-            {/*<Box className="loginFormBox">
-              <Box className="loginFormBoxBox">
-                <Divider></Divider>
-              </Box>
-              <Typography>o</Typography>
-              <Box className="loginFormBoxBox">
-                <Divider></Divider>
-              </Box>
-            </Box>    
-            <button className="google-button" onClick={handleGoogleLogin}>
-              <img src={ googleIcon } width="16px" />
-              <Typography>Continuar con Google</Typography>
-            </button>*/}
           </Stack>
         </Box>
       } 

@@ -102,7 +102,17 @@ const handleSubmit = async (event) => {
       const dataConfCaracteristicas = createConfiguradorData();
       const updatedConfiguradorResponse = await updateConfigurador(dataConfCaracteristicas,activeOrderId);
       if(updatedConfiguradorResponse){
-        alert("Configuracion actualizada con exito");            
+        alert("Configuracion actualizada con exito");      
+        
+
+
+        const dataPost = {
+          marca: marca,       // configurador1
+          modelo: modelo,     // configurador1
+          anio: age3,         // configurador1
+          tipoConfiguracionC: "" // configurador1
+        };
+        
         //setConfigurador(dataPost);  //Hay que mandarlo al estado y al localStorage?
         navigate("/configurador2");
       }       
@@ -112,6 +122,7 @@ const handleSubmit = async (event) => {
       const newOrderId = await createNewOrder();
       if (newOrderId) {
         console.log("Se creo la nueva orden del configurador:"+newOrderId);
+        navigate("/configurador2");
       }
       //CREAMOS LA ORDEN NUEVA
     }

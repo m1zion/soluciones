@@ -73,7 +73,7 @@ const initialState = {  //
 const useInitialState = () =>{  //Funcion para inicializar el estado
     const [loading,setLoading] = useState(true);
     const [error,setError] = useState(false); 
-    //console.log("Loading state...");
+    console.log("Loading state...");
     const [state, setState] = useState(initialState); 
     useEffect(() =>
         {
@@ -87,7 +87,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
               const localStorageRole = localStorage.getItem('roleL');
               //Adicionalmente hay que validar que el token es valido     
               
-              if(localStorageToken != '' && localStorageUser != '' ){
+              if(localStorageToken && localStorageToken !== 'null' && 
+                localStorageUser && localStorageUser !== 'null'){
                 const dataLogin = {
                   token: localStorageToken,
                   user: localStorageUser,
@@ -123,6 +124,69 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         console.log("Se ejecuta fetchOrderData");
         fetchOrderData(dataLogin);
     }, [state.token]); */
+
+
+
+    const setConfigInicial = (payload) =>{
+        //En esta funcion borramos toda la configuracion, ya que al llamar 2 funciones que modifican el state, solo hace caso a una
+        //Lo usamoes en el configurador 1
+        //Borramos todo del state
+        console.log("Payload SetConfigInicial");
+        console.log(payload);
+        let data = [];
+        let sumTotalPrecioPromo = 0;
+        data = state.cartConf;
+        data.forEach((item) => {
+            sumTotalPrecioPromo += parseFloat(item.precioPromoTotal) * item.amount;
+        });
+        setState({...state, 
+            configC: [],
+            marcaC:payload.marca, //configurador1
+            modeloC:payload.modelo,  //configurador1
+            anioC:payload.anio, //configurador1
+            tipoConfiguracionC: payload.tipoConfiguracionC, //configurador1
+            dinesC:[],
+            estereoC:[],
+            baseC: [],
+            arnesC: [],
+            adaptadorC: [],
+            adaptadorImpedanciaC: [],
+            mejorarAudio: [],
+            tieneBocinaReemplazo: [],
+            bocinaReemplazoDelanteraC: [],
+            calzaBocinaReemplazoDelanteraC: [],
+            bocinaReemplazoTraseraC: [],
+            calzaBocinaReemplazoTraseraC: [],
+            terminaConfiguracion1: [],
+            amplificadorC: [],
+            tieneBocinaOriginal: [],
+            bocinaPremiumDelanteraC: [],
+            calzaBocinaPremiumDelanteraC: [],
+            bocinaPremiumTraseraC: [],
+            calzaBocinaPremiumTraseraC: [],
+            tieneAmplificadorBajos: [],
+            amplificadorWooferC: [],
+            amplificador3en1C: [],
+            wooferC: [],
+            cajonAcusticoC: [],
+            kitCablesC: [],
+            tieneEcualizador: [],
+            ecualizadorC: [],
+            epicentroC: [],
+            procesadorC: [],
+            tweeterC:[],
+            accesorioC: [],
+            tieneEstereoOriginalC: [],
+            tieneEstereoTipoOriginalC: [],
+            medioRangoO: [],
+            //setMediosO: [],
+            setComponentesO: [],
+            totalCompra: state.totalCompra - sumTotalPrecioPromo,
+            cartConf: [], 
+        });       
+    };
+
+
     const resetLocalStorage = () => {
         localStorage.removeItem('totalCompraL');
         localStorage.removeItem('confOrderIdL');
@@ -132,6 +196,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         // Add more localStorage.removeItem('key') if needed
     };
     const getClientData = async (userId) => {
+        console.log("Entra a getClientData");
         try {
             const response = await fetch(`${API}clientes/${userId}`);
             if (!response.ok) {
@@ -166,8 +231,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         }, 0);
     };
     const handlematchOrdersTodas = (data,dataCart,montoTotal,cartOrderId,confOrderId,payloadLogin) =>{ //data= orden configurador,dataCart = carrito Normal
-        //console.log("Inicia handlematchOrdersTodas");
-        //console.log(data);
+        console.log("Inicia handlematchOrdersTodas");
+        console.log(data);
         const  dataPost = {
             marca: data.marca, 
             modelo: data.modelo, 
@@ -1621,6 +1686,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //logout,
         //addToCart,
         //removeFromCart,
+        setConfigInicial,
         fetchOrderData,        
         removeFromCartConf,
         setEstereo,  //Empiezan las funcions del configurador
