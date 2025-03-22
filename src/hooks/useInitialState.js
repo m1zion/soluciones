@@ -70,11 +70,22 @@ const initialState = {  //
     medioRangoO: [],
     setComponentesO: []
 }
+
+
 const useInitialState = () =>{  //Funcion para inicializar el estado
     const [loading,setLoading] = useState(true);
     const [error,setError] = useState(false); 
     console.log("Loading state...");
     const [state, setState] = useState(initialState); 
+    const [refresh,setRefresh] = useState(true);
+
+
+
+    const refreshState = () => {
+        console.log("Refreshing state...");
+        setRefresh(prev => !prev); // Toggle the refresh state
+    };
+
     useEffect(() =>
         {
         //console.log("Verificando si tiene una sesion activa");
@@ -117,7 +128,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
               console.log(error);
             }
           //},3000) 
-        },[]
+        },[refresh]
     );
 
     /*useEffect(() => {
@@ -199,6 +210,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         console.log("Entra a getClientData");
         try {
             const response = await fetch(`${API}clientes/${userId}`);
+            console.log(`${API}clientes/${userId}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch client data");
             }
@@ -647,9 +659,20 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setState({...state,mejorarAudio:payload})
     }
     
-
-      //PRODUCTOS OPCIONALES
-      const setProductoOpcional = (category) =>{
+    const setTieneBocinaReemplazo = (payload) =>{
+        setState({...state, tieneBocinaReemplazo:payload});
+    };
+    const setBocinaReemplazoDelantera = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            bocinaReemplazoDelanteraC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+    //PRODUCTOS OPCIONALES
+    const setProductoOpcional = (category) =>{
         console.log("Set Producto Opcional: ");
         console.log(category);
         switch(category) {
@@ -1686,6 +1709,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //logout,
         //addToCart,
         //removeFromCart,
+        refreshState,
         setConfigInicial,
         fetchOrderData,        
         removeFromCartConf,
@@ -1694,7 +1718,9 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setArnes,
         setProductoOpcional,
         setAdaptador,   
-        setMejoraAudio,     
+        setMejoraAudio,  
+        setTieneBocinaReemplazo,   
+        setBocinaReemplazoDelantera,
         state,
     }
 }

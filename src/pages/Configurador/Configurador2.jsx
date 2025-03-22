@@ -7,14 +7,15 @@ import { useNavigate } from 'react-router-dom';
 import GradientCircularProgress from "./GradientCircularProgress";
 const Configurador2 = () => {
     const API = process.env.REACT_APP_API_URL; 
-    const {state,loading,error} = useContext(AppContext);
+    const {state,loading,error,refreshState} = useContext(AppContext);
     const [loadingLocal,setLoadingLocal] = useState(false);
     const navigate = useNavigate();
     //VALIDACIONES PARA VER SI EXISTEN BASES,ESTEREOS y ADAPTADORES
     //Buscamos la orden del configurador activa*/
+    
+    //Con esta funcion actualizamos el estado, vuelve a consultar todo desde el useInitialState
     useEffect(() => {
-        console.log("Loading data on page navigation...");
-        setConfigInicial(initialState); // Resetting state
+        refreshState();
     }, []);
     
     const handleSubmit = async (configuracion) => {

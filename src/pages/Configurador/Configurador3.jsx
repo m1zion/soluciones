@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from "@mui/material";*/
 const Configurador3 = () => {
     
-    const {state,loading,error} = useContext(AppContext);
+    const {state,loading,error,refreshState} = useContext(AppContext);
     const [hideBotenes,setHideBotones] = useState(true); //Solo buscamos estereos tipo Original
     const [activeOrderId, setActiveOrderId] = useState(null);
     const [activeOrder, setActiveOrder] = useState([]);
@@ -25,6 +25,12 @@ const Configurador3 = () => {
     const classesBasica = `basica_Button, tipoConfiguracion_Button`;
     const [hideBotonOriginal, setHideBotonOriginal] = useState(false);
     const navigate = useNavigate();
+
+
+    useEffect(() => {
+        refreshState();
+    }, []);
+    
    /* const { state, setConfig } = useContext(AppContext);
    
     //var hideBotenes = state.ocultaBotonC;

@@ -60,7 +60,16 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 const Configurador4 = () => {
   const APIConf = API+'orders/9';
   const APICart = API+'orders/3';
-  const { state,loading,error, setConfig,fetchOrderData,removeFromCartConf,setMejoraAudio } = useContext(AppContext);
+  const { 
+    state,
+    loading,
+    error, 
+    setConfig,
+    fetchOrderData,
+    removeFromCartConf,
+    setMejoraAudio,
+    setTieneBocinaReemplazo
+  } = useContext(AppContext);
   const API = process.env.REACT_APP_API_URL;
   const APIDelete = API+'orders/delete-item/';
   const APIDeleteAll = API+'orders/delete-all-items/';
@@ -139,7 +148,15 @@ const Configurador4 = () => {
     usePut(APIconfCaracteristicas,data);  //Aqui se enviara al backend
     setMejoraAudio(item); //Aqui se enviara al estado 
   }
-  
+  const handleTieneBocina = item =>{ 
+    const data = {
+      orderType: 'configurador',
+      status: 'activo',
+      tieneBocinaReemplazo: item
+    }
+    usePut(APIconfCaracteristicas,data);  //Aqui se enviara al backend
+    setTieneBocinaReemplazo(item); 
+  }
   const expandEstereo =
     state.estereoC.length === 0 &&
     state.tieneEstereoOriginalC !== 'si' &&
@@ -153,12 +170,14 @@ const Configurador4 = () => {
     state.adaptadorC.length === 0;
   const expandAdaptadoresImpedancia = state.tieneEstereoOriginalC == 'si' && 
     state.adaptadorImpedanciaC.length === 0;
-    const expandBocinaRD = (state.tieneEstereoTipoOriginalC == true && state.bocinaReemplazoDelanteraC.length === 0) ||
-    (state.tieneBocinaReemplazo === 'si'  && state.mejorarAudio === 'si' && state.bocinaReemplazoDelanteraC.length === 0) ||
-    (state.mejorarAudio != 'no' &&  state.tieneBocinaReemplazo != 'no' &&
-      ((state.adaptadorC.SKU != undefined && state.bocinaReemplazoDelanteraC.length === 0) ||
-      (state.adaptadorImpedanciaC.SKU != undefined && state.bocinaReemplazoDelanteraC.length === 0)) 
-    );
+  const expandBocinaRD = (state.tieneEstereoTipoOriginalC == true && state.bocinaReemplazoDelanteraC.length === 0) ||
+  (state.tieneBocinaReemplazo === 'si'  && state.mejorarAudio === 'si' && state.bocinaReemplazoDelanteraC.length === 0) ||
+  (state.mejorarAudio != 'no' &&  state.tieneBocinaReemplazo != 'no' &&
+    ((state.adaptadorC.SKU != undefined && state.bocinaReemplazoDelanteraC.length === 0) ||
+    (state.adaptadorImpedanciaC.SKU != undefined && state.bocinaReemplazoDelanteraC.length === 0)) 
+  );
+
+  
   const toggleAcordion = () => {
     setExpand((prev) => !prev);
   };
@@ -844,7 +863,7 @@ const Configurador4 = () => {
             </AccordionSummary>
             <Box className="configurador-button-borrar">
                 {(state.bocinaReemplazoDelanteraC.length != 0) ?
-                  <img className = "trashCanConf" src={trash} alt="close"  onClick={() => handleRemove('11','16')}/>:  ''
+                   <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('11','16')}  />:  ''
                 }
                 </Box>
               </Box>
@@ -871,7 +890,7 @@ const Configurador4 = () => {
                         <>
                           <ConfiguradorCategoria category="11" config="Modelo" value={unDinHF} optional="true" carFeatures={caracteristicas}/>
                         </>
-                        }
+                }
             </AccordionDetails>
           </Accordion>
 

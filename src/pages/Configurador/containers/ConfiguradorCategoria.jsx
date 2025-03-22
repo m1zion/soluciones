@@ -4,6 +4,7 @@ import {Alert, Button, Typography } from "@mui/material";
 import { Box } from '@mui/system';
 import ProductItemConfigurador from '../components/ProductItemConfigurador';
 import useGet7 from '@hooks/useGet7';
+import usePut from '@hooks/usePut';
 import '@styles/Pagination2.scss';
 import '@styles/ProductList.scss';
 import { CircularProgress } from "@mui/material";
@@ -41,6 +42,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         case '8': categoryAPI = 'bases'; categoriaOpcional = 'Bases'; break; //13
         case '20': categoryAPI = 'estereos';  categoriaOpcional = 'Estereo'; break; //1
         case '2': categoryAPI = 'adaptadoresAntena'; categoriaOpcional = 'Adaptadores de Antena'; break;  //15
+        case '11': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas de Reemplazo Delanteras'; categoryComplement = 'componentes'; break; //16  
     }    
 
     const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };
@@ -70,6 +72,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                 const productos = productFetchData.products;
                 if (categoryComplement !== "") {
                     let APIComplement = APIProducts.concat(categoryComplement,"/?administrador=true&offset=0&limit=50"); 
+                    console.log(APIComplement);
                     fetch(APIComplement)
                     .then(response => response.json())
                     .then(dataComplement => {
@@ -198,7 +201,40 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     setProductosFinal(productosModeloAux);
                     //setNumeroDeProductos(productosModeloAux.length);
                 break;
-
+                case '11': //BOCINAS REEMPLAZO DELANTERAS FILTROS:  
+                    //Las bocinas van combinadas con los componentes, cuando es componente quito el filtro de categoria
+                    //console.log("Entra a bocinas delanteras");
+                    //console.log(caracteristicas);
+                    if(typeof caracteristicas !== "undefined"){
+                        //console.log("Entra a filtrar delanteras");
+                        if (caracteristicas){ 
+                            const diametroBocinaFrontal = parseFloat(caracteristicas.diametroBocinaFrontal); console.log(diametroBocinaFrontal);
+                            const diametroBocinaFrontalString = diametroBocinaFrontal.toString().replace('.', 'x'); //console.log(diametroBocinaFrontalString);
+                            const profundidadBocinaFrontal = caracteristicas.profundidadBocinaFrontal; //console.log(profundidadBocinaFrontal);
+                            let categoria = (caracteristicas.bocinaCompatibleFrontal).toLowerCase(); //console.log(categoria);
+                            const tipoBocinaFrontal = (caracteristicas.tipoBocinaFrontal).toLowerCase(); //console.log(tipoBocinaFrontal);                          
+                            productosModeloAux = productos?.filter(function(product){ 
+                                const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';                                    
+                                //console.log(tipoConfiguracion2); //básico
+                                return (
+                                    (product.diametro == diametroBocinaFrontal || (product.diametro ?? '').toLowerCase() == diametroBocinaFrontalString) &&
+                                    (product.Profundidad ?? '').toLowerCase() == profundidadBocinaFrontal.toLowerCase() &&
+                                     //Cuando es componente (bocinaCompatibleFrontal) quito el filtro (categoria) y hago la union con los componentes
+                                    //(product.Categoria ?? '').toLowerCase() == categoria.toLowerCase() &&
+                                    (categoria.toLowerCase() === 'componente' || (product.Categoria ?? '').toLowerCase() == categoria.toLowerCase()) &&
+                                    (product.tipoBocinas ?? '').toLowerCase() == tipoBocinaFrontal.toLowerCase() &&
+                                    (product.tipoCategoria ?? '').toLowerCase() == tipoConfiguracion2.toLowerCase()
+                                );
+                            });                                             
+                        }
+                    }
+                    else{
+                        productosModeloAux = productos?.filter(function(product){ 
+                            return product.Modelo==product.Modelo;
+                        });
+                    }  
+                    setProductosFinal(productosModeloAux);
+                break;
                 default:
                     productosModeloAux = productos;
                     setProductosFinal(productos);
