@@ -43,6 +43,11 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         case '20': categoryAPI = 'estereos';  categoriaOpcional = 'Estereo'; break; //1
         case '2': categoryAPI = 'adaptadoresAntena'; categoriaOpcional = 'Adaptadores de Antena'; break;  //15
         case '11': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas de Reemplazo Delanteras'; categoryComplement = 'componentes'; break; //16  
+        case '16': categoryAPI = 'basesBocina'; categoriaOpcional = 'Base para Bocinas Delanteras'; break; //28
+        case '10': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas Premium Traseras'; categoryComplement = 'componentes'; break; //16
+        case '12': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas de Reemplazo Traseras'; categoryComplement = 'componentes'; break; //16
+        case '17': categoryAPI = 'basesBocina'; categoriaOpcional = 'Base para Bocinas Traseras'; break; //28
+        case '6': categoryAPI = 'amplificadores'; categoriaOpcional = 'Amplificadores'; break;  //17 //Amplificador de Woofer
     }    
 
     const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };
@@ -53,7 +58,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     const { data: productFetchData, loading, error:errorE } = useGet7(API2);
     useEffect(() => {
         if (!productFetchData) return; 
-        console.log("Consulta productos");
+        //console.log("Consulta productos");
         setLoadingP(true);
         if(errorE){
             setSuccess(false);
@@ -72,7 +77,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                 const productos = productFetchData.products;
                 if (categoryComplement !== "") {
                     let APIComplement = APIProducts.concat(categoryComplement,"/?administrador=true&offset=0&limit=50"); 
-                    console.log(APIComplement);
+                    //console.log(APIComplement);
                     fetch(APIComplement)
                     .then(response => response.json())
                     .then(dataComplement => {
@@ -98,7 +103,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     }, [productFetchData,errorE,categoryComplement]);
     //=======================================================================================================
     const filterAndSetProductosFinal = (productos) => {
-        console.log("filterAndSetProductosFinal");
+        //console.log("filterAndSetProductosFinal");
         if (value !== 'N/A') {  // Esta es la categoria
             let productosModeloAux = [];
             switch (category) {               
@@ -107,7 +112,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                         if (caracteristicas){ 
                             const arnesAI = caracteristicas?.arnesAI;
                             const arnesHF = caracteristicas?.arnesHF; 
-                            console.log('Filtrara los arneses de acuerdo a los siguientes modelos '+arnesAI+' '+arnesHF);
+                            //console.log('Filtrara los arneses de acuerdo a los siguientes modelos '+arnesAI+' '+arnesHF);
                             productosModeloAux = productos?.filter(function(product){ 
                                 return  product.Modelo== arnesAI || product.Modelo == arnesHF;
                             });                       
@@ -184,12 +189,12 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     setProductosFinal(productosModeloAux);
                 break;  
                 case '2': //Adaptadores
-                    console.log("Entra a adaptadores");
+                    //console.log("Entra a adaptadores");
                     if(typeof caracteristicas !== "undefined"){
                         if (caracteristicas){ 
                             const adaptadorAntenaAI = caracteristicas?.adaptadorAntenaAI;
                             const adaptadorAntenaHF = caracteristicas?.adaptadorAntenaHF; 
-                            console.log("filtrata los adaptadores de acuerdo a estos modelos "+adaptadorAntenaAI+" "+adaptadorAntenaHF);
+                            //console.log("filtrata los adaptadores de acuerdo a estos modelos "+adaptadorAntenaAI+" "+adaptadorAntenaHF);
                             productosModeloAux = productos?.filter(function(product){ 
                                 return  product.Modelo== adaptadorAntenaAI || product.Modelo == adaptadorAntenaHF || product.Modelo == 'AU';
                             });
@@ -235,6 +240,84 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     }  
                     setProductosFinal(productosModeloAux);
                 break;
+
+                case '16': //Bases para bocina delantera
+                    //console.log("filtra Bases para bocina delantera");
+                    if(typeof caracteristicas !== "undefined"){
+                        if (caracteristicas){ 
+                            const calzaFrontalAI = caracteristicas?.calzaFrontalAI;
+                            const calzaFrontalHF = caracteristicas?.calzaFrontalHF;
+                            //console.log('Filtrara las bases frontales de acuerdo a '+calzaFrontalAI+' '+calzaFrontalHF);
+                            productosModeloAux = productos?.filter(function(product){ 
+                                return  product.Modelo== calzaFrontalAI || product.Modelo == calzaFrontalHF;
+                            });
+                        }
+                    }
+                    else{
+                        productosModeloAux = productos?.filter(function(product){ return (product.Modelo==product.Modelo)});
+                    }
+                    setProductosFinal(productosModeloAux);
+                break;
+                case '10': //BOCINAS PREMIUM TRASERAS                
+                case '12': //BOCINAS REEMPLAZO TRASERAS
+                    //console.log("Entra a bocinas traseras");
+                    if(typeof caracteristicas !== "undefined"){
+                        if (caracteristicas){ 
+                            //console.log("Entra a filtrar traseras");
+                            const diametroBocinaTrasera = parseFloat(caracteristicas.diametroBocinaTrasera); //console.log(diametroBocinaTrasera);
+                            const diametroBocinaTraseraString = diametroBocinaTrasera.toString().replace('.', 'x'); //console.log(diametroBocinaTraseraString);
+                            const profundidadBocinaTrasera = caracteristicas.profundidadBocinaTrasera; //console.log(profundidadBocinaTrasera);
+                            let categoria = (caracteristicas.bocinaCompatibleTrasera).toLowerCase(); //console.log(categoria);        
+                            const tipoBocinaTrasera = (caracteristicas.tipoBocinaTrasera).toLowerCase(); //console.log(tipoBocinaFrontal);                          
+                            productosModeloAux = productos?.filter(function(product){ 
+                                const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';
+                                return (
+                                    (product.diametro == diametroBocinaTrasera || (product.diametro ?? '').toLowerCase() == diametroBocinaTraseraString) &&
+                                    (product.Profundidad ?? '').toLowerCase() == profundidadBocinaTrasera.toLowerCase() &&
+                                    //Cuando es componente (bocinaCompatibleFrontal) quito el filtro (categoria) y hago la union con los componentes
+                                    //(product.Categoria ?? '').toLowerCase() == categoria.toLowerCase() &&
+                                    (categoria.toLowerCase() === 'componente' || (product.Categoria ?? '').toLowerCase() == categoria.toLowerCase()) &&
+                                    (product.tipoBocinas ?? '').toLowerCase() == tipoBocinaTrasera.toLowerCase() &&
+                                    (product.tipoCategoria ?? '').toLowerCase() == tipoConfiguracion2.toLowerCase()
+                                );
+                            });
+                        }                       
+                    }
+                    else{
+                        productosModeloAux = productos?.filter(function(product){ 
+                            return product.diametro==product.diametro;
+                        });
+                    }
+                    setProductosFinal(productosModeloAux);
+                break;
+                case '17': //Bases para bocina trasera
+                    if(typeof caracteristicas !== "undefined"){
+                        if (caracteristicas){ 
+                            const calzaTraseraAI = caracteristicas?.calzaTraseraAI;
+                            const calzaTraseraHF = caracteristicas?.calzaTraseraHF;
+                            console.log('Filtrara las bases traseras de acuerdo a '+calzaTraseraAI +' ' +calzaTraseraHF);
+                            //console.log(productos);
+                            productosModeloAux = productos?.filter(function(product){ 
+                                return  (product.Modelo == calzaTraseraAI || product.Modelo == calzaTraseraHF);
+                            });
+                        }
+                    }
+                    else{
+                        productosModeloAux = productos?.filter(function(product){ return (product.Modelo==product.Modelo)});
+                    }
+                    setProductosFinal(productosModeloAux);
+                break;
+                case '6': //Amplificador de Bajos/Woofer
+                    console.log("Filtra amplificadore de woofer")
+                    productosModeloAux = productos?.filter(function(product){ 
+                        const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';
+                        return (
+                            product.clase=='D' &&
+                            (product.tipoCategoria).toLowerCase() == tipoConfiguracion2
+                        )
+                    });               
+                    setProductosFinal(productosModeloAux);
+                break;
                 default:
                     productosModeloAux = productos;
                     setProductosFinal(productos);
@@ -248,7 +331,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         const APIconfCaracteristicas = API+'orders/'+state.confOrderId;
         const activeConfigOrder = state.confOrderId
         let data;
-        console.log(APIconfCaracteristicas);
+        //console.log(APIconfCaracteristicas);
         switch(category){
             case '1': 
                 data = {orderType:'configurador', accesorioC: 'N/A', status: 'activo' }

@@ -243,8 +243,9 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         }, 0);
     };
     const handlematchOrdersTodas = (data,dataCart,montoTotal,cartOrderId,confOrderId,payloadLogin) =>{ //data= orden configurador,dataCart = carrito Normal
-        console.log("Inicia handlematchOrdersTodas");
-        console.log(data);
+        //console.log("Inicia handlematchOrdersTodas");
+        //console.log(data.tieneBocinaReemplazo_Configurador);
+        //console.log(data.tieneBocinaReemplazo);
         const  dataPost = {
             marca: data.marca, 
             modelo: data.modelo, 
@@ -610,6 +611,10 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             const finalTotalCart = calculateTotal(dataCart.items);
             const finalTotalConf = configuratorCompleted ? calculateTotal(dataConf.items) : 0;
             const montoTotal = finalTotalCart + finalTotalConf;
+
+            
+            console.log("dataConf");
+            console.log(dataConf);
             handlematchOrdersTodas(dataConf, dataCart, montoTotal,cartOrderId,confOrderId,payloadLogin);
         } catch (error) {
             console.error('Error fetching order data:', error);
@@ -670,6 +675,39 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             orderConf:[...state.orderConf, payload2],
             totalCompra:state.totalCompra+amountProducts,
         });
+    };
+    const setCalzaBocinaReemplazoDelantera = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            calzaBocinaReemplazoDelanteraC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+    const setBocinaReemplazoTrasera = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            bocinaReemplazoTraseraC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+    const setCalzaBocinaReemplazoTrasera = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            calzaBocinaReemplazoTraseraC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+    const setTerminaConfiguracion1 = (payload) =>{
+        setState({...state, terminaConfiguracion1:payload});
+    };
+    const setTieneAmplificadorBajos = (payload) =>{
+        setState({...state, tieneAmplificadorBajos:payload});
     };
     //PRODUCTOS OPCIONALES
     const setProductoOpcional = (category) =>{
@@ -1721,6 +1759,11 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setMejoraAudio,  
         setTieneBocinaReemplazo,   
         setBocinaReemplazoDelantera,
+        setCalzaBocinaReemplazoDelantera, 
+        setBocinaReemplazoTrasera,
+        setCalzaBocinaReemplazoTrasera,
+        setTerminaConfiguracion1,
+        setTieneAmplificadorBajos,
         state,
     }
 }

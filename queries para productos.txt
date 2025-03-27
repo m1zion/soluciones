@@ -1,3 +1,17 @@
+Tareas Para Luis:
+
+1. Aceptar el tipo de orden configurador
+2. Verificar que tieneBocinaReemplazo lo acepte
+
+Comandos python
+python -m venv env
+.\env\Scripts\activate
+pip install -r requeriments.txt
+python productos.py add
+
+
+
+
 Pasos para agregar una nueva cateogria al configurador
 En configurador4
 1. Copiar el Acordeon
