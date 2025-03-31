@@ -709,6 +709,53 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     const setTieneAmplificadorBajos = (payload) =>{
         setState({...state, tieneAmplificadorBajos:payload});
     };
+    const setAmplificador3en1 = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state,
+            amplificador3en1C:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+    const setWoofer = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            wooferC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+    const setCajonAcustico = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            cajonAcusticoC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    }; 
+    const setKitCables = (payload,payload2,amountProducts) =>{
+        setState({...state, 
+            kitCablesC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+    const setAccesorio = (payload,payload2,amountProducts) =>{
+        console.log("Set accesorios nuevo total");
+        //console.log(amountProducts);
+        setState({
+            ...state, 
+            accesorioC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+            //totalCompra: newTotal,
+        });
+    };
     //PRODUCTOS OPCIONALES
     const setProductoOpcional = (category) =>{
         console.log("Set Producto Opcional: ");
@@ -1764,6 +1811,11 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setCalzaBocinaReemplazoTrasera,
         setTerminaConfiguracion1,
         setTieneAmplificadorBajos,
+        setAmplificador3en1,
+        setWoofer,
+        setCajonAcustico,
+        setKitCables,
+        setAccesorio,
         state,
     }
 }

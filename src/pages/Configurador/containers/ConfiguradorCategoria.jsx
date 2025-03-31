@@ -20,8 +20,8 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     const [success, setSuccess] = useState(false); 
     const [errMsg, setErrMsg] = useState('');  
     const [productosFinal,setProductosFinal] = useState(null);
-    /*const [productosModelo,setProductosModelo] = useState([]);    
-    const [cantidadFija,setCantidadFija] = useState(1);*/
+    /*const [productosModelo,setProductosModelo] = useState([]);    */
+    const [cantidadFija,setCantidadFija] = useState(1);
     const [loadingP, setLoadingP] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage] = useState(6);
@@ -33,11 +33,12 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     let dines = state.dinesC; //config.dines;
     let tipoConfiguracion = state.tipoConfiguracionC;
     let editarCantidad = true;
-    let cantidadFija = 1;
+    //let cantidadFija = 1;
     let caracteristicas = carFeatures;
     /*const APICajones = `${API}products/cajones/getmodel?model=${state.cajonAcusticoC.modelo}`;  
     */
     switch (category){
+        case '1': categoryAPI = 'accesorios'; categoriaOpcional = 'Accesorios'; break;  //26
         case '7': categoryAPI = 'arneses'; categoriaOpcional = 'Arnenses'; break; //14
         case '8': categoryAPI = 'bases'; categoriaOpcional = 'Bases'; break; //13
         case '20': categoryAPI = 'estereos';  categoriaOpcional = 'Estereo'; break; //1
@@ -48,6 +49,10 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         case '12': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas de Reemplazo Traseras'; categoryComplement = 'componentes'; break; //16
         case '17': categoryAPI = 'basesBocina'; categoriaOpcional = 'Base para Bocinas Traseras'; break; //28
         case '6': categoryAPI = 'amplificadores'; categoriaOpcional = 'Amplificadores'; break;  //17 //Amplificador de Woofer
+        case '4': categoryAPI = 'amplificadores3en1'; categoriaOpcional = 'Amplificadores 3 en 1'; break; //38 
+        case '13': categoryAPI = 'cajones'; categoriaOpcional = 'Cajones'; break; //22 =>7
+        case '26': categoryAPI = 'woofers'; categoriaOpcional = 'Woofers'; break;  //21
+        case '21': categoryAPI = 'kitsCables'; categoriaOpcional = 'Kit de Cables'; break; //25
     }    
 
     const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };
@@ -213,7 +218,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     if(typeof caracteristicas !== "undefined"){
                         //console.log("Entra a filtrar delanteras");
                         if (caracteristicas){ 
-                            const diametroBocinaFrontal = parseFloat(caracteristicas.diametroBocinaFrontal); console.log(diametroBocinaFrontal);
+                            const diametroBocinaFrontal = parseFloat(caracteristicas.diametroBocinaFrontal); //console.log(diametroBocinaFrontal);
                             const diametroBocinaFrontalString = diametroBocinaFrontal.toString().replace('.', 'x'); //console.log(diametroBocinaFrontalString);
                             const profundidadBocinaFrontal = caracteristicas.profundidadBocinaFrontal; //console.log(profundidadBocinaFrontal);
                             let categoria = (caracteristicas.bocinaCompatibleFrontal).toLowerCase(); //console.log(categoria);
@@ -295,7 +300,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                         if (caracteristicas){ 
                             const calzaTraseraAI = caracteristicas?.calzaTraseraAI;
                             const calzaTraseraHF = caracteristicas?.calzaTraseraHF;
-                            console.log('Filtrara las bases traseras de acuerdo a '+calzaTraseraAI +' ' +calzaTraseraHF);
+                            //console.log('Filtrara las bases traseras de acuerdo a '+calzaTraseraAI +' ' +calzaTraseraHF);
                             //console.log(productos);
                             productosModeloAux = productos?.filter(function(product){ 
                                 return  (product.Modelo == calzaTraseraAI || product.Modelo == calzaTraseraHF);
@@ -308,7 +313,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     setProductosFinal(productosModeloAux);
                 break;
                 case '6': //Amplificador de Bajos/Woofer
-                    console.log("Filtra amplificadore de woofer")
+                    //console.log("Filtra amplificadore de woofer")
                     productosModeloAux = productos?.filter(function(product){ 
                         const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';
                         return (
@@ -318,6 +323,83 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     });               
                     setProductosFinal(productosModeloAux);
                 break;
+
+                case '13':  //Cajon Acustico
+                    const tamanioCajuela = caracteristicas?.modelo?.tamanioCajuela;
+                    //console.log(tamanioCajuela); 
+                    productosModeloAux = productos?.filter(function (product) {
+                        return (
+                        typeof tamanioCajuela === 'string'
+                            ? (product.subgrupo).toLowerCase() === tamanioCajuela
+                            : Array.isArray(tamanioCajuela) && tamanioCajuela.some(item => item.claveCajones === product.subgrupo));
+                    }); 
+                    setProductosFinal(productosModeloAux); 
+                    //setNumeroDeProductos(productosModeloAux.length);
+                break; 
+                case '21': //Kit de cables 
+                    //console.log("Entra a filtar kits de cables");
+                    const fetchCaracteristicasKitCables = async () => {
+                    try {    
+                    let modeloamplificador = "";
+                    if (typeof state.amplificadorC.modelo !== "undefined"){
+                        modeloamplificador = state.amplificadorC.modelo;
+                    }
+                    if(typeof state.amplificadorWooferC.modelo !== "undefined"){
+                        modeloamplificador = state.amplificadorWooferC.modelo;
+                    }
+                    const APIAmplificador = API + 'products/amplificadores/getmodel?model='+modeloamplificador;   
+                    const response = await fetch(APIAmplificador);
+                    const caracteristicasAmplificador = await response.json();
+                    let subgrupoAmplificadores = caracteristicasAmplificador?.subgrupo ?? '';
+                    productosModeloAux = productos?.filter(function(product) {
+                        const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';   
+                        if (typeof state.amplificador3en1C.modelo !== "undefined"){
+                            return ((product.tipoCategoria).toLowerCase() === tipoConfiguracion2);
+                        }       
+                        else{                            
+                            return ((product.tipoCategoria).toLowerCase() === tipoConfiguracion2 && (product.subgrupo).toLowerCase() == subgrupoAmplificadores.toLowerCase());
+                        }
+                        
+                    });      
+
+                    setProductosFinal(productosModeloAux);
+                    } catch (error) {
+                        console.error('Error fetching data Kit Cables:', error);
+                    }
+                    };
+                    fetchCaracteristicasKitCables();
+                break;
+                case '26':  //Woofers para los woofers consultamos de acuerdo a las caracteristicas del cajon que seleccionó
+                    //let modeloCajon = state.cajonAcusticoC.modelo;
+                    //const APICajones = API + 'products/cajones/getmodel?model='+state.cajonAcusticoC.modelo;
+                    //let caracteristicasCajones = useGet3(APICajones, [marca, modelo, anio, modeloCajon]);
+                    const fetchCaracteristicasCajones = async () => {
+                        try {
+                    const response = await fetch(APICajones);
+                    const caracteristicasCajones = await response.json();
+        
+                    editarCantidad = false;  // No permitimos editar la cantidad
+                    let cajonesPulgadas = caracteristicasCajones.pulgadas;
+                    let tipoWoofer = caracteristicasCajones.tipoWoofer;
+                    //let cantidadFija = caracteristicasCajones.cantidadWoofers;
+                    setCantidadFija(caracteristicasCajones.cantidadWoofers);
+                    productosModeloAux = productos?.filter(function(product) {
+                        const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';            
+                        return (
+                            (product.tipoCategoria).toLowerCase() === tipoConfiguracion2 && 
+                            product.pulgadas == cajonesPulgadas && // validar el tamaño de la pulgada woofers (AK) cajones (AL)
+                            product.tipo == tipoWoofer // woofers Tipo(AO) cajones (tipo woofer)
+                        );
+                    });        
+                        setProductosFinal(productosModeloAux);
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
+                    }
+                };
+
+                fetchCaracteristicasCajones();
+                break;
+
                 default:
                     productosModeloAux = productos;
                     setProductosFinal(productos);

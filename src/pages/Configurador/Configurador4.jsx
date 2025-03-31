@@ -69,7 +69,8 @@ const Configurador4 = () => {
     removeFromCartConf,
     setMejoraAudio,
     setTieneBocinaReemplazo,
-    setTerminaConfiguracion1
+    setTerminaConfiguracion1,
+    setTieneAmplificadorBajos
   } = useContext(AppContext);
   const API = process.env.REACT_APP_API_URL;
   const APIDelete = API+'orders/delete-item/';
@@ -177,6 +178,60 @@ const Configurador4 = () => {
     usePut(APIconfCaracteristicas,data); 
     setTieneAmplificadorBajos(item); 
   }
+
+  const handleRemoveNuevo  = async () => {
+    let APIDeleteAll2 = "";
+    APIDeleteAll2 = APIDeleteAll.concat("9");
+    let dataConfCaracteristicas = {
+      orderType: 'configurador',
+      status: 'activo',
+      marca: '',
+      modelo: '',
+      anio: '',
+      tiposConfiguracion: 'N/A',
+      dines: '0',
+      tieneBocinaReemplazo: '',
+      tieneBocinaOriginal: '',
+      terminaConfiguracion1: '',
+      mejorarAudio: '',
+      tieneEcualizador: '',
+      tieneAmplificadorBajos: '',
+      tieneEstereoOriginalC: '',
+      tieneEstereoTipoOriginalC: '',
+      bocinaReemplazoDelanteraC: '',
+      calzaBocinaReemplazoDelanteraC: '',
+      bocinaReemplazoTraseraC: '',
+      calzaBocinaReemplazoTraseraC: '',
+      bocinaPremiumDelanteraC: '',
+      calzaBocinaPremiumDelanteraC: '',
+      bocinaPremiumTraseraC: '',
+      calzaBocinaPremiumTraseraC: '',
+      ecualizadorC: '',
+      epicentroC: '',
+      procesadorC: '',
+      tweeterC: '',
+      accesorioC: '',
+      setMediosO: '',
+      medioRangoO: '',
+      amplificadorWooferC: '',
+      wooferC: '',
+      cajonAcusticoC: '',
+      kitCablesC: ''
+    };
+    if (confirm('Se borraran todos los productos y el modelo de tu auto')) { 
+      try {
+          await useDelete(APIDeleteAll2);
+          removeFromCartConf('nuevo');
+          await usePut(APIconfCaracteristicas, dataConfCaracteristicas);
+          //("se Borraran los Items");
+          navigate("/configurador1");
+      } catch (error) {
+          console.error("Error during deletion and update:", error);
+      }
+    }    
+  }
+
+  
   const expandEstereo =
     state.estereoC.length === 0 &&
     state.tieneEstereoOriginalC !== 'si' &&
@@ -186,7 +241,7 @@ const Configurador4 = () => {
     state.baseC.length === 0;
   const expandArneses = state.baseC.SKU != undefined && 
     state.arnesC.length === 0;
-  const expandAdaptadores = state.arnesC.SKU != undefined || state.arnesC === 'N/A'  && 
+  const expandAdaptadores = (state.arnesC.SKU != undefined || state.arnesC === 'N/A')  && 
     state.adaptadorC.length === 0;
   const expandAdaptadoresImpedancia = state.tieneEstereoOriginalC == 'si' && 
     state.adaptadorImpedanciaC.length === 0;
@@ -209,8 +264,18 @@ const Configurador4 = () => {
     (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no' && state.terminaConfiguracion1 === 'no') || 
     (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no'  && state.tieneBocinaOriginal === 'si' ) ||
     (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no'  && state.calzaBocinaPremiumTraseraC.length != 0 );   
-
-  
+  const expandAmplificador3en1 = (state.tieneAmplificadorBajos === 'no' && state.amplificador3en1C.length === 0);
+  const expandCajonAcustico = (state.amplificadorWooferC.SKU != undefined && state.cajonAcusticoC.length === 0) || 
+    (state.amplificadorWooferC === 'N/A' && state.cajonAcusticoC.length === 0);
+  const expandWoofer = (state.cajonAcusticoC.SKU != undefined && state.wooferC.length === 0) ||
+    (state.cajonAcusticoC === 'N/A' && state.wooferC.length === 0);
+  const expandKitCables = (state.wooferC.SKU != undefined && state.kitCablesC.length === 0) ||
+    (state.wooferC === 'N/A' && state.kitCablesC.length === 0) || 
+    (state.amplificador3en1C.SKU != undefined && state.kitCablesC.length === 0);
+  const expandAccesorios =   (state.tweeterC.SKU != undefined && state.accesorioC.length === 0) || 
+    (state.tweeterC === 'N/A' && state.accesorioC.length === 0) || 
+    (state.amplificador3en1C.SKU != undefined && state.kitCablesC.SKU != undefined && state.accesorioC.length === 0) || 
+    (state.amplificador3en1C.SKU != undefined && state.kitCablesC === 'N/A' && state.accesorioC.length === 0);
   const toggleAcordion = () => {
     setExpand((prev) => !prev);
   };
@@ -355,8 +420,8 @@ const Configurador4 = () => {
         useDeleteOrderItem(APIDelete,data);
       case "8": case "7": case "3": // Adaptadores de impedancia
         data = {orderId: state.confOrderId,categoryId: 27,categoryIdConfigurador: 3}; 
-        console.log(data);
-        console.log(APIDelete);
+        //console.log(data);
+        //console.log(APIDelete);
         useDeleteOrderItem(APIDelete,data);
       case "8": case "7": case "2": case "3": case "11": // Bocina RD Borro bocinas y componentes
         data = {orderId: state.confOrderId,categoryId: 16,categoryIdConfigurador: 11}; 
@@ -750,13 +815,7 @@ const Configurador4 = () => {
     break;
     }
   }
-
-
   console.log("===========");
-  console.log(state.mejorarAudio); //[]
-  console.log(state.tieneBocinaOriginal)  //[]
-  console.log(state.terminaConfiguracion1);  //No
-  console.log(state.calzaBocinaPremiumTraseraC);  //[]
 
   return (
     <React.Fragment>
@@ -1022,15 +1081,6 @@ const Configurador4 = () => {
 
 
 
-
-
-
-
-
-
-
-
-
           {/*------------------------------------------------------BOCINA PREMIUM TRASERA--------------------------------------------------------------*/}
         <Accordion expanded={(expandBocinaPT || expanded === 'panel13')} onChange={handleChange('panel13')} 
           disabled = {state.calzaBocinaPremiumDelanteraC.length === 0}>
@@ -1088,9 +1138,110 @@ const Configurador4 = () => {
           }
       </AccordionDetails>
     </Accordion>
+  {/*------------------------------------------------------AMPLIFICADOR 3 en 1 --------------------------------------------------------------*/}
+  <Accordion expanded={(expandAmplificador3en1 || expanded === 'panel24')} onChange={handleChange('panel24')} 
+    disabled = {state.tieneAmplificadorBajos != 'no'}>
+      <Box className="configurador-accordionSummary">
+        <AccordionSummary className="configurador-accordion-header" aria-controls="panel16d-content" id="panel16d-header">
+          <Typography>Amplificador 3 en 1</Typography>
+          <Typography className="configurador-item-selected"> - {state.amplificador3en1C.modelo}</Typography>
+        </AccordionSummary>
+        <Box className="configurador-button-borrar">
+          {(state.amplificador3en1C.length != 0) ?
+            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('4','38')}  />:  ''
+          }
+        </Box>
+      </Box>
+      <AccordionDetails>
+      {(expandAmplificador3en1 || expanded === 'panel24') && (
+          <ConfiguradorCategoria category="4" value={unDinHF} optional="false" carFeatures={caracteristicas}/>
+      )}
+      </AccordionDetails>
+    </Accordion>
+    {/*------------------------------------------------------CAJON ACUSTICO--------------------------------------------------------------*/}
+    <Accordion expanded={(expandCajonAcustico || expanded === 'panel16')} 
+    onChange={handleChange('panel16')} 
+    disabled = {state.amplificadorWooferC.length === 0}>
+      <Box className="configurador-accordionSummary">
+        <AccordionSummary className="configurador-accordion-header" aria-controls="panel16d-content" id="panel16d-header">
+          <Typography>Cajon Acustico</Typography>
+          <Typography className="configurador-item-selected"> - {(state.cajonAcusticoC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.cajonAcusticoC.modelo}</Typography>
+        </AccordionSummary>
+        <Box className="configurador-button-borrar">
+          {(state.cajonAcusticoC.length != 0) ?
+            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('13','7')}  />:  ''
+          }
+        </Box>
+      </Box>
+      <AccordionDetails>
+      {(expandCajonAcustico || expanded === 'panel16') && (
+        <ConfiguradorCategoria category="13" value={unDinHF} optional="true" carFeatures={caracteristicas}/>
+      )}
+      </AccordionDetails>
+    </Accordion>
+  {/*------------------------------------------------------WOOFER--------------------------------------------------------------*/}
+  <Accordion expanded={(expandWoofer || expanded === 'panel17')} onChange={handleChange('panel17')} 
+    disabled = {state.cajonAcusticoC.length === 0}>
+      <Box className="configurador-accordionSummary">
+        <AccordionSummary className="configurador-accordion-header" aria-controls="panel17d-content" id="panel17d-header">
+          <Typography>Woofer</Typography>
+          <Typography className="configurador-item-selected"> - {(state.wooferC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.wooferC.modelo}</Typography>
+        </AccordionSummary>
+        <Box className="configurador-button-borrar">
+          {(state.wooferC.length != 0) ?
+             <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('13','21')}  />:  ''
+          }
+        </Box>
+      </Box>
+      <AccordionDetails>
+      {(expandWoofer || expanded === 'panel17') && (
+          <ConfiguradorCategoria category="26" value={unDinHF} optional="true" carFeatures={caracteristicas}/>
+      )}
+      </AccordionDetails>
+    </Accordion>
 
 
-
+    {/*------------------------------------------------------KIT DE CABLES --------------------------------------------------------------*/}
+    <Accordion expanded={(expandKitCables || expanded === 'panel18')} onChange={handleChange('panel18')} 
+    disabled = {state.wooferC.length === 0 && state.amplificador3en1C.length === 0 }>
+      <Box className="configurador-accordionSummary">
+        <AccordionSummary className="configurador-accordion-header" aria-controls="panel18d-content" id="panel18d-header">
+          <Typography>Kit de Cables</Typography>
+          <Typography className="configurador-item-selected"> - {(state.kitCablesC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.kitCablesC.modelo}</Typography>
+        </AccordionSummary>
+        <Box className="configurador-button-borrar">
+          {(state.kitCablesC.length != 0) ?
+             <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('21','25')}  />:  ''
+          }
+        </Box>
+      </Box>
+      <AccordionDetails>
+      {(expandKitCables || expanded === 'panel18') && (
+        <ConfiguradorCategoria category="21" value={unDinHF} optional="true" carFeatures={caracteristicas}/>
+      )}
+      </AccordionDetails>
+    </Accordion>
+    {/*------------------------------------------------------ACCESORIOS --------------------------------------------------------------*/}
+    <Accordion expanded={(expandAccesorios || expanded === 'panel22')} onChange={handleChange('panel22')} 
+      disabled = {
+        !((state.tweeterC.SKU != undefined || state.tweeterC === 'N/A') || ((state.kitCablesC.SKU != undefined || state.kitCablesC === 'N/A') && state.amplificador3en1C.SKU != undefined))}>
+        <Box className="configurador-accordionSummary">
+          <AccordionSummary className="configurador-accordion-header" aria-controls="panel21d-content" id="panel21d-header">
+            <Typography>Accesorios</Typography>
+            <Typography className="configurador-item-selected"> - {(state.accesorioC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.accesorioC.modelo}</Typography>
+          </AccordionSummary>
+          <Box className="configurador-button-borrar">
+            {(state.accesorioC.length != 0) ?
+              <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('1','26')}  />:  ''
+            }
+          </Box>
+        </Box>
+        <AccordionDetails>
+        {(expandAccesorios || expanded === 'panel22') && (
+          <ConfiguradorCategoria category="1"  value={unDinHF} optional="true" carFeatures={caracteristicas}/>
+        )}
+        </AccordionDetails>
+    </Accordion>
 
 
         </Stack>

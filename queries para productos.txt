@@ -3,6 +3,11 @@ Tareas Para Luis:
 1. Aceptar el tipo de orden configurador
 2. Verificar que tieneBocinaReemplazo lo acepte
 
+
+tareas Misael:
+
+1. Cuando no hay componentes se queda cargando
+
 Comandos python
 python -m venv env
 .\env\Scripts\activate
