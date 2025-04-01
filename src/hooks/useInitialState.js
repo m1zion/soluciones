@@ -613,8 +613,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             const montoTotal = finalTotalCart + finalTotalConf;
 
             
-            console.log("dataConf");
-            console.log(dataConf);
+            //console.log("dataConf");
+            //console.log(dataConf);
             handlematchOrdersTodas(dataConf, dataCart, montoTotal,cartOrderId,confOrderId,payloadLogin);
         } catch (error) {
             console.error('Error fetching order data:', error);
@@ -666,6 +666,15 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     
     const setTieneBocinaReemplazo = (payload) =>{
         setState({...state, tieneBocinaReemplazo:payload});
+    };
+    const setAmplificador = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state,
+            amplificadorC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
     };
     const setBocinaReemplazoDelantera = (payload,payload2,amountProducts) =>{
         setState({
@@ -755,6 +764,9 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             totalCompra:state.totalCompra+amountProducts,
             //totalCompra: newTotal,
         });
+    };
+    const setTieneBocinaOriginal = (payload) =>{
+        setState({...state, tieneBocinaOriginal:payload});
     };
     //PRODUCTOS OPCIONALES
     const setProductoOpcional = (category) =>{
@@ -1816,6 +1828,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setCajonAcustico,
         setKitCables,
         setAccesorio,
+        setAmplificador,
+        setTieneBocinaOriginal,
         state,
     }
 }

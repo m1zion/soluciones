@@ -70,7 +70,8 @@ const Configurador4 = () => {
     setMejoraAudio,
     setTieneBocinaReemplazo,
     setTerminaConfiguracion1,
-    setTieneAmplificadorBajos
+    setTieneAmplificadorBajos,
+    setTieneBocinaOriginal
   } = useContext(AppContext);
   const API = process.env.REACT_APP_API_URL;
   const APIDelete = API+'orders/delete-item/';
@@ -150,6 +151,15 @@ const Configurador4 = () => {
     }
     usePut(APIconfCaracteristicas,data);  //Aqui se enviara al backend
     setMejoraAudio(item); //Aqui se enviara al estado 
+  }
+  const handleTieneBocinaOriginal = item =>{ 
+    const data = {
+      orderType: 'configurador',
+      status: 'activo',
+      tieneBocinaOriginal: item
+    }
+    usePut(APIconfCaracteristicas,data); 
+    setTieneBocinaOriginal(item); 
   }
   const handleTieneBocina = item =>{ 
     const data = {
@@ -260,6 +270,7 @@ const Configurador4 = () => {
     (state.bocinaReemplazoTraseraC === 'N/A' && state.calzaBocinaReemplazoTraseraC.length === 0); 
   const expandBocinaPT = (state.calzaBocinaPremiumDelanteraC.SKU != undefined && state.bocinaPremiumTraseraC.length === 0) || 
     (state.calzaBocinaPremiumDelanteraC === 'N/A' && state.bocinaPremiumTraseraC.length === 0);  
+  const expandAmplificadorVoz =  state.amplificadorC.length === 0 && state.tieneBocinaReemplazo === 'no';//Cuando No quiere bocinas de reemplazo N0 = AMPLIFICARLA
   const expandedAmplificadorWoofer =  (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no' && state.mejorarAudio === 'no') || 
     (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no' && state.terminaConfiguracion1 === 'no') || 
     (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no'  && state.tieneBocinaOriginal === 'si' ) ||
@@ -275,7 +286,9 @@ const Configurador4 = () => {
   const expandAccesorios =   (state.tweeterC.SKU != undefined && state.accesorioC.length === 0) || 
     (state.tweeterC === 'N/A' && state.accesorioC.length === 0) || 
     (state.amplificador3en1C.SKU != undefined && state.kitCablesC.SKU != undefined && state.accesorioC.length === 0) || 
-    (state.amplificador3en1C.SKU != undefined && state.kitCablesC === 'N/A' && state.accesorioC.length === 0);
+    (state.amplificador3en1C.SKU != undefined && state.kitCablesC === 'N/A' && state.accesorioC.length === 0);    
+  const expandBocinasOriginalesPremium = (state.tieneBocinaOriginal != 'si') && ((state.amplificadorC.SKU != undefined && state.bocinaPremiumDelanteraC.length === 0));
+
   const toggleAcordion = () => {
     setExpand((prev) => !prev);
   };
@@ -1074,9 +1087,56 @@ const Configurador4 = () => {
                   </AccordionDetails>
               }          
         </Accordion>
-
-
-
+        {/*------------------------------------------------------AMPLIFICADOR DE VOZ (Previo adaptador)--------------------------------------------------------------*/}
+        <Accordion expanded={(expandAmplificadorVoz || expanded === 'panel10')} onChange={handleChange('panel10')} 
+        disabled = {(state.adaptadorC.length === 0) || 
+        (state.tieneBocinaReemplazo.length === 0) || 
+        (state.tieneBocinaReemplazo === 'si') }>
+          <Box className="configurador-accordionSummary">
+            <AccordionSummary className="configurador-accordion-header" aria-controls="panel10d-content" id="panel10d-header">
+              <Typography>Amplificador de Voz</Typography><Typography className="configurador-item-selected"> - {state.amplificadorC.modelo}</Typography>
+            </AccordionSummary>
+            <Box className="configurador-button-borrar">
+              {(state.amplificadorC.length != 0) ?
+                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('5')}  />:  ''
+              }
+            </Box>
+          </Box>
+          <AccordionDetails>
+          {(expandAmplificadorVoz || expanded === 'panel10') && (
+            <ConfiguradorCategoria category="5" config="Modelo" value={unDinHF} optional="false"/>
+          )}
+          </AccordionDetails>
+        </Accordion>   
+        {/*------------------------------------------------- BOCINAS ORIGINALES O PREMIUM --------------------------------------------------------*/}
+        <Accordion expanded={(expandBocinasOriginalesPremium || expanded === 'panel11')} onChange={handleChange('panel11')} 
+        disabled = {state.amplificadorC.length === 0 || state.tieneBocinaOriginal === 'si'}>
+           <Box className="configurador-accordionSummary">
+          <AccordionSummary className="configurador-accordion-header" aria-controls="panel11d-content" id="panel11d-header">
+            <Typography>Bocina Premium Delatera</Typography><Typography className="configurador-item-selected"> - {(state.bocinaPremiumDelanteraC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.bocinaPremiumDelanteraC.modelo}</Typography>
+          </AccordionSummary>
+          <Box className="configurador-button-borrar">
+              {(state.bocinaPremiumDelanteraC.length != 0) ?
+                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('9','16')}  />:  ''
+              }
+              </Box>
+            </Box>
+          <AccordionDetails>
+            {
+                (state.tieneBocinaOriginal.length === 0) 
+                ? 
+                  <Stack alignItems="center" direction="column" sx={{marginTop:"10px"}}>
+                    <Typography>¿Que tipo de Bocinas deseas incluir?</Typography>
+                    <Button variant="contained"  onClick={() => handleTieneBocinaOriginal('si')} className="configurador_sino_button" >Bocinas Originales</Button>
+                    <Button variant="contained" onClick={() => handleTieneBocinaOriginal('no')} className="configurador_sino_button" >Bocinas Premium</Button>
+                  </Stack>
+                :
+                  ((state.tieneBocinaOriginal === 'no') && (expandBocinasOriginalesPremium || expanded === 'panel11'))
+                  &&
+                  <ConfiguradorCategoria category="9" config="Modelo" value={unDinHF} optional="true" carFeatures={caracteristicas}/>
+              }
+            </AccordionDetails>
+          </Accordion>
 
 
 

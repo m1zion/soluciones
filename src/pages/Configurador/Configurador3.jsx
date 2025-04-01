@@ -170,7 +170,7 @@ const Configurador3 = () => {
         try {
             usePut2V(APIconfCaracteristicas,data, state.token); //Actualiza los items API
             //setConfigurador(dataPost);  //Actualiza los elementos en el state
-            //navigate("/configurador4");    
+            navigate("/configurador4");    
         } catch (error) {
             console.error("Error al generar la orden. code:002");
             console.error(error);

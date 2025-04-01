@@ -41,6 +41,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         case '1': categoryAPI = 'accesorios'; categoriaOpcional = 'Accesorios'; break;  //26
         case '7': categoryAPI = 'arneses'; categoriaOpcional = 'Arnenses'; break; //14
         case '8': categoryAPI = 'bases'; categoriaOpcional = 'Bases'; break; //13
+        case '9': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas Premium Delanteras'; categoryComplement = 'componentes'; break; //16
         case '20': categoryAPI = 'estereos';  categoriaOpcional = 'Estereo'; break; //1
         case '2': categoryAPI = 'adaptadoresAntena'; categoriaOpcional = 'Adaptadores de Antena'; break;  //15
         case '11': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas de Reemplazo Delanteras'; categoryComplement = 'componentes'; break; //16  
@@ -48,17 +49,19 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         case '10': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas Premium Traseras'; categoryComplement = 'componentes'; break; //16
         case '12': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas de Reemplazo Traseras'; categoryComplement = 'componentes'; break; //16
         case '17': categoryAPI = 'basesBocina'; categoriaOpcional = 'Base para Bocinas Traseras'; break; //28
-        case '6': categoryAPI = 'amplificadores'; categoriaOpcional = 'Amplificadores'; break;  //17 //Amplificador de Woofer
         case '4': categoryAPI = 'amplificadores3en1'; categoriaOpcional = 'Amplificadores 3 en 1'; break; //38 
         case '13': categoryAPI = 'cajones'; categoriaOpcional = 'Cajones'; break; //22 =>7
         case '26': categoryAPI = 'woofers'; categoriaOpcional = 'Woofers'; break;  //21
         case '21': categoryAPI = 'kitsCables'; categoriaOpcional = 'Kit de Cables'; break; //25
+        case '5': // Amplificador de Voz  4 canales, clase D = bajo/Woofer A/B = voz
+        case '6': categoryAPI = 'amplificadores'; categoriaOpcional = 'Amplificadores'; break;  //17 //Amplificador de Woofer
     }    
 
     const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };
 
 
     let API2 = APIProducts.concat(categoryAPI,"/?administrador=false&offset=0&limit=700"); 
+    console.log(API2);
     //==============================CONSULTAMOS LOS PRODUCTOS==========================================
     const { data: productFetchData, loading, error:errorE } = useGet7(API2);
     useEffect(() => {
@@ -108,7 +111,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     }, [productFetchData,errorE,categoryComplement]);
     //=======================================================================================================
     const filterAndSetProductosFinal = (productos) => {
-        //console.log("filterAndSetProductosFinal");
+        console.log("filterAndSetProductosFinal");
         if (value !== 'N/A') {  // Esta es la categoria
             let productosModeloAux = [];
             switch (category) {               
@@ -118,6 +121,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                             const arnesAI = caracteristicas?.arnesAI;
                             const arnesHF = caracteristicas?.arnesHF; 
                             //console.log('Filtrara los arneses de acuerdo a los siguientes modelos '+arnesAI+' '+arnesHF);
+                            //console.log(productos);
                             productosModeloAux = productos?.filter(function(product){ 
                                 return  product.Modelo== arnesAI || product.Modelo == arnesHF;
                             });                       
@@ -211,9 +215,10 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     setProductosFinal(productosModeloAux);
                     //setNumeroDeProductos(productosModeloAux.length);
                 break;
+                case '9': //BOCINA PREMIUM DELANTERA
                 case '11': //BOCINAS REEMPLAZO DELANTERAS FILTROS:  
                     //Las bocinas van combinadas con los componentes, cuando es componente quito el filtro de categoria
-                    //console.log("Entra a bocinas delanteras");
+                    console.log("Entra a bocinas delanteras");
                     //console.log(caracteristicas);
                     if(typeof caracteristicas !== "undefined"){
                         //console.log("Entra a filtrar delanteras");
@@ -222,7 +227,15 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                             const diametroBocinaFrontalString = diametroBocinaFrontal.toString().replace('.', 'x'); //console.log(diametroBocinaFrontalString);
                             const profundidadBocinaFrontal = caracteristicas.profundidadBocinaFrontal; //console.log(profundidadBocinaFrontal);
                             let categoria = (caracteristicas.bocinaCompatibleFrontal).toLowerCase(); //console.log(categoria);
-                            const tipoBocinaFrontal = (caracteristicas.tipoBocinaFrontal).toLowerCase(); //console.log(tipoBocinaFrontal);                          
+                            const tipoBocinaFrontal = (caracteristicas.tipoBocinaFrontal).toLowerCase(); //console.log(tipoBocinaFrontal);     
+                            
+                            console.log(diametroBocinaFrontal);
+                            console.log(profundidadBocinaFrontal);
+                            console.log(categoria); //pb (carro)
+                            console.log(tipoBocinaFrontal); //Componente (carro)
+                            console.log(productos);
+
+
                             productosModeloAux = productos?.filter(function(product){ 
                                 const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';                                    
                                 //console.log(tipoConfiguracion2); //básico
@@ -232,6 +245,8 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                                      //Cuando es componente (bocinaCompatibleFrontal) quito el filtro (categoria) y hago la union con los componentes
                                     //(product.Categoria ?? '').toLowerCase() == categoria.toLowerCase() &&
                                     (categoria.toLowerCase() === 'componente' || (product.Categoria ?? '').toLowerCase() == categoria.toLowerCase()) &&
+                                    
+                                    //((Carro)pb === 'componente' || (producto)'Bocinas' == (carro)'pb' )
                                     (product.tipoBocinas ?? '').toLowerCase() == tipoBocinaFrontal.toLowerCase() &&
                                     (product.tipoCategoria ?? '').toLowerCase() == tipoConfiguracion2.toLowerCase()
                                 );
@@ -312,6 +327,18 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     }
                     setProductosFinal(productosModeloAux);
                 break;
+                case '5': // Amplificador de Voz
+                //console.log("Entra a Amplificadores");
+                productosModeloAux = productos?.filter(function (product) {
+                    const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';
+                    return (
+                        product.clase === 'A/B' &&
+                        product.tipoCategoria.toLowerCase() === tipoConfiguracion2
+                    );
+                });
+                setProductosFinal(productosModeloAux);
+                break;
+
                 case '6': //Amplificador de Bajos/Woofer
                     //console.log("Filtra amplificadore de woofer")
                     productosModeloAux = productos?.filter(function(product){ 
