@@ -39,22 +39,23 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     */
     switch (category){
         case '1': categoryAPI = 'accesorios'; categoriaOpcional = 'Accesorios'; break;  //26
+        case '2': categoryAPI = 'adaptadoresAntena'; categoriaOpcional = 'Adaptadores de Antena'; break;  //15
+        case '4': categoryAPI = 'amplificadores3en1'; categoriaOpcional = 'Amplificadores 3 en 1'; break; //38 
+        case '5': // Amplificador de Voz  4 canales, clase D = bajo/Woofer A/B = voz
+        case '6': categoryAPI = 'amplificadores'; categoriaOpcional = 'Amplificadores'; break;  //17 //Amplificador de Woofer 
         case '7': categoryAPI = 'arneses'; categoriaOpcional = 'Arnenses'; break; //14
         case '8': categoryAPI = 'bases'; categoriaOpcional = 'Bases'; break; //13
         case '9': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas Premium Delanteras'; categoryComplement = 'componentes'; break; //16
-        case '20': categoryAPI = 'estereos';  categoriaOpcional = 'Estereo'; break; //1
-        case '2': categoryAPI = 'adaptadoresAntena'; categoriaOpcional = 'Adaptadores de Antena'; break;  //15
-        case '11': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas de Reemplazo Delanteras'; categoryComplement = 'componentes'; break; //16  
-        case '16': categoryAPI = 'basesBocina'; categoriaOpcional = 'Base para Bocinas Delanteras'; break; //28
         case '10': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas Premium Traseras'; categoryComplement = 'componentes'; break; //16
+        case '11': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas de Reemplazo Delanteras'; categoryComplement = 'componentes'; break; //16  
         case '12': categoryAPI = 'bocinas'; categoriaOpcional = 'Bocinas de Reemplazo Traseras'; categoryComplement = 'componentes'; break; //16
+        case '13': categoryAPI = 'cajones'; categoriaOpcional = 'Cajones'; break; //22 =>71
+        case '14': categoryAPI = 'basesBocina'; categoriaOpcional = 'Base para Bocinas Premium Delanteras'; break; //28
+        case '16': categoryAPI = 'basesBocina'; categoriaOpcional = 'Base para Bocinas Delanteras'; break; //28
         case '17': categoryAPI = 'basesBocina'; categoriaOpcional = 'Base para Bocinas Traseras'; break; //28
-        case '4': categoryAPI = 'amplificadores3en1'; categoriaOpcional = 'Amplificadores 3 en 1'; break; //38 
-        case '13': categoryAPI = 'cajones'; categoriaOpcional = 'Cajones'; break; //22 =>7
-        case '26': categoryAPI = 'woofers'; categoriaOpcional = 'Woofers'; break;  //21
-        case '21': categoryAPI = 'kitsCables'; categoriaOpcional = 'Kit de Cables'; break; //25
-        case '5': // Amplificador de Voz  4 canales, clase D = bajo/Woofer A/B = voz
-        case '6': categoryAPI = 'amplificadores'; categoriaOpcional = 'Amplificadores'; break;  //17 //Amplificador de Woofer
+        case '20': categoryAPI = 'estereos';  categoriaOpcional = 'Estereo'; break; //1
+        case '21': categoryAPI = 'kitsCables'; categoriaOpcional = 'Kit de Cables'; break; //25       
+        case '26': categoryAPI = 'woofers'; categoriaOpcional = 'Woofers'; break;  //2
     }    
 
     const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };
@@ -260,7 +261,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     }  
                     setProductosFinal(productosModeloAux);
                 break;
-
+                case '14':
                 case '16': //Bases para bocina delantera
                     //console.log("filtra Bases para bocina delantera");
                     if(typeof caracteristicas !== "undefined"){

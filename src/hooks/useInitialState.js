@@ -768,6 +768,15 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     const setTieneBocinaOriginal = (payload) =>{
         setState({...state, tieneBocinaOriginal:payload});
     };
+    const setCalzaBocinaPremiumTrasera = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            calzaBocinaPremiumTraseraC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
     //PRODUCTOS OPCIONALES
     const setProductoOpcional = (category) =>{
         console.log("Set Producto Opcional: ");
@@ -1830,6 +1839,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setAccesorio,
         setAmplificador,
         setTieneBocinaOriginal,
+        setCalzaBocinaPremiumTrasera,
         state,
     }
 }
