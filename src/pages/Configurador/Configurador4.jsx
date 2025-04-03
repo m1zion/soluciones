@@ -270,6 +270,8 @@ const Configurador4 = () => {
     (state.bocinaReemplazoTraseraC === 'N/A' && state.calzaBocinaReemplazoTraseraC.length === 0); 
   const expandBocinaPT = (state.calzaBocinaPremiumDelanteraC.SKU != undefined && state.bocinaPremiumTraseraC.length === 0) || 
     (state.calzaBocinaPremiumDelanteraC === 'N/A' && state.bocinaPremiumTraseraC.length === 0);  
+  const expandCalzaBocinaPT = (state.bocinaPremiumTraseraC.SKU != undefined && state.calzaBocinaPremiumTraseraC.length === 0) ||
+    (state.bocinaPremiumTraseraC === 'N/A' && state.calzaBocinaPremiumTraseraC.length === 0);
   const expandAmplificadorVoz =  state.amplificadorC.length === 0 && state.tieneBocinaReemplazo === 'no';//Cuando No quiere bocinas de reemplazo N0 = AMPLIFICARLA
   const expandedAmplificadorWoofer =  (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no' && state.mejorarAudio === 'no') || 
     (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no' && state.terminaConfiguracion1 === 'no') || 
@@ -1180,7 +1182,25 @@ const Configurador4 = () => {
           )}
           </AccordionDetails>
         </Accordion>
-
+      {/*------------------------------------------------------CALZAS BOCINA PREMIUM TRASERA--------------------------------------------------------------*/}
+      <Accordion expanded={(expandCalzaBocinaPT || expanded === 'panel14')} onChange={handleChange('panel14')} 
+      disabled = {state.bocinaPremiumTraseraC.length === 0}>
+      <Box className="configurador-accordionSummary">
+        <AccordionSummary className="configurador-accordion-header" aria-controls="panel14d-content" id="panel14d-header">
+          <Typography>Base para Bocina Premium Trasera</Typography><Typography className="configurador-item-selected"> - {(state.calzaBocinaPremiumTraseraC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.calzaBocinaPremiumTraseraC.modelo}</Typography>
+        </AccordionSummary>
+        <Box className="configurador-button-borrar">
+          {(state.calzaBocinaPremiumTraseraC.length != 0) ?
+            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('15','28')}  />:  ''
+          }
+        </Box>
+      </Box>
+      <AccordionDetails>
+      {(expandCalzaBocinaPT || expanded === 'panel14') && (
+        <ConfiguradorCategoria category="15" value={unDinHF} optional="true" carFeatures={caracteristicas}/>
+      )}
+      </AccordionDetails>
+    </Accordion>
     {/*------------------------------------------------------AMPLIFICADOR DE WOOFER--------------------------------------------------------------*/}
       {/*ACTIVAR disabled={!activarBotonWoofer} para desactivar el boton*/}
     <Accordion expanded={(expandedAmplificadorWoofer || expanded === 'panel15')} onChange={handleChange('panel15')} 
@@ -1268,7 +1288,7 @@ const Configurador4 = () => {
         </AccordionSummary>
         <Box className="configurador-button-borrar">
           {(state.wooferC.length != 0) ?
-             <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('13','21')}  />:  ''
+             <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('26','21')}  />:  ''
           }
         </Box>
       </Box>

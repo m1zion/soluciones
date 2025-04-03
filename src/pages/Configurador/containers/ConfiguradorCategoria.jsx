@@ -37,6 +37,8 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     let caracteristicas = carFeatures;
     /*const APICajones = `${API}products/cajones/getmodel?model=${state.cajonAcusticoC.modelo}`;  
     */
+    //console.log("switch category");
+    //console.log(category);
     switch (category){
         case '1': categoryAPI = 'accesorios'; categoriaOpcional = 'Accesorios'; break;  //26
         case '2': categoryAPI = 'adaptadoresAntena'; categoriaOpcional = 'Adaptadores de Antena'; break;  //15
@@ -57,17 +59,15 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         case '21': categoryAPI = 'kitsCables'; categoriaOpcional = 'Kit de Cables'; break; //25       
         case '26': categoryAPI = 'woofers'; categoriaOpcional = 'Woofers'; break;  //2
     }    
-
+    //console.log(categoryAPI);
     const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };
-
-
     let API2 = APIProducts.concat(categoryAPI,"/?administrador=false&offset=0&limit=700"); 
     console.log(API2);
     //==============================CONSULTAMOS LOS PRODUCTOS==========================================
     const { data: productFetchData, loading, error:errorE } = useGet7(API2);
     useEffect(() => {
         if (!productFetchData) return; 
-        //console.log("Consulta productos");
+        console.log("Consulta productos");
         setLoadingP(true);
         if(errorE){
             setSuccess(false);
@@ -81,12 +81,12 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
             //setLoadingP(false);
         }
         else{
-            //console.log(productFetchData);
+            console.log(productFetchData);
             if(productFetchData.products){
                 const productos = productFetchData.products;
                 if (categoryComplement !== "") {
                     let APIComplement = APIProducts.concat(categoryComplement,"/?administrador=true&offset=0&limit=50"); 
-                    //console.log(APIComplement);
+                    console.log(APIComplement);
                     fetch(APIComplement)
                     .then(response => response.json())
                     .then(dataComplement => {
@@ -339,7 +339,6 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                 });
                 setProductosFinal(productosModeloAux);
                 break;
-
                 case '6': //Amplificador de Bajos/Woofer
                     //console.log("Filtra amplificadore de woofer")
                     productosModeloAux = productos?.filter(function(product){ 
@@ -351,10 +350,10 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     });               
                     setProductosFinal(productosModeloAux);
                 break;
-
                 case '13':  //Cajon Acustico
+                    console.log("Cajon Acustico");
+                    console.log(tamanioCajuela); 
                     const tamanioCajuela = caracteristicas?.modelo?.tamanioCajuela;
-                    //console.log(tamanioCajuela); 
                     productosModeloAux = productos?.filter(function (product) {
                         return (
                         typeof tamanioCajuela === 'string'

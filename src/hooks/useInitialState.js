@@ -718,6 +718,15 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     const setTieneAmplificadorBajos = (payload) =>{
         setState({...state, tieneAmplificadorBajos:payload});
     };
+    const setAmplificadorWoofer = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state,
+            amplificadorWooferC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
     const setAmplificador3en1 = (payload,payload2,amountProducts) =>{
         setState({
             ...state,
@@ -1833,6 +1842,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setTerminaConfiguracion1,
         setTieneAmplificadorBajos,
         setAmplificador3en1,
+        setAmplificadorWoofer,
         setWoofer,
         setCajonAcustico,
         setKitCables,
