@@ -35,8 +35,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     let editarCantidad = true;
     //let cantidadFija = 1;
     let caracteristicas = carFeatures;
-    /*const APICajones = `${API}products/cajones/getmodel?model=${state.cajonAcusticoC.modelo}`;  
-    */
+    const APICajones = `${API}products/cajones/getmodel?model=${state.cajonAcusticoC.modelo}`;  
     //console.log("switch category");
     //console.log(category);
     switch (category){
@@ -397,6 +396,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     fetchCaracteristicasKitCables();
                 break;
                 case '26':  //Woofers para los woofers consultamos de acuerdo a las caracteristicas del cajon que seleccionó
+                    console.log("Woofers");
                     //let modeloCajon = state.cajonAcusticoC.modelo;
                     //const APICajones = API + 'products/cajones/getmodel?model='+state.cajonAcusticoC.modelo;
                     //let caracteristicasCajones = useGet3(APICajones, [marca, modelo, anio, modeloCajon]);

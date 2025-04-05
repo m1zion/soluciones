@@ -50,7 +50,11 @@ En InitialState
     };
 
 
-  
+  INSERT INTO public."cajonesCajuela"(id, clave, "combinacionesClaveCajones", "claveCajones") VALUES (1,'AB','A=C6    B=C6','C6');
+INSERT INTO public."cajonesCajuela"(id, clave, "combinacionesClaveCajones", "claveCajones") VALUES (2,'AC','A=C7  C=C7','C7');
+INSERT INTO public."cajonesCajuela"(id, clave, "combinacionesClaveCajones", "claveCajones") VALUES (3,'ACD','A=C8  C=C8  D=C8','C8');
+INSERT INTO public."cajonesCajuela"(id, clave, "combinacionesClaveCajones", "claveCajones") VALUES (4,'AE','A=C9  E=9','C9');
+INSERT INTO public."cajonesCajuela"(id, clave, "combinacionesClaveCajones", "claveCajones") VALUES (5,'CD','C=C10  D=C10','C10');
 
 
   INSERT INTO public."Arneses"(
