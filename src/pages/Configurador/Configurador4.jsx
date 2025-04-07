@@ -71,7 +71,8 @@ const Configurador4 = () => {
     setTieneBocinaReemplazo,
     setTerminaConfiguracion1,
     setTieneAmplificadorBajos,
-    setTieneBocinaOriginal
+    setTieneBocinaOriginal,
+    setTieneEcualizador
   } = useContext(AppContext);
   const API = process.env.REACT_APP_API_URL;
   const APIDelete = API+'orders/delete-item/';
@@ -188,6 +189,15 @@ const Configurador4 = () => {
     usePut(APIconfCaracteristicas,data); 
     setTieneAmplificadorBajos(item); 
   }
+  const handleTieneEcualizador = item =>{ 
+    const data = {
+      orderType: 'configurador',
+      status: 'activo',
+      tieneEcualizador: item
+    }
+    usePut(APIconfCaracteristicas,data); 
+    setTieneEcualizador(item); 
+  }
 
   const handleRemoveNuevo  = async () => {
     let APIDeleteAll2 = "";
@@ -285,6 +295,8 @@ const Configurador4 = () => {
   const expandKitCables = (state.wooferC.SKU != undefined && state.kitCablesC.length === 0) ||
     (state.wooferC === 'N/A' && state.kitCablesC.length === 0) || 
     (state.amplificador3en1C.SKU != undefined && state.kitCablesC.length === 0);
+  const expandEcualizador = (state.ecualizadorC.length === 0 && state.tieneEcualizador === 'si' && state.amplificador3en1C.length === 0) || 
+    (state.ecualizadorC.length === 0 && state.kitCablesC.length != 0 && state.amplificador3en1C.length === 0 );
   const expandAccesorios =   (state.tweeterC.SKU != undefined && state.accesorioC.length === 0) || 
     (state.tweeterC === 'N/A' && state.accesorioC.length === 0) || 
     (state.amplificador3en1C.SKU != undefined && state.kitCablesC.SKU != undefined && state.accesorioC.length === 0) || 
@@ -1320,6 +1332,39 @@ const Configurador4 = () => {
       )}
       </AccordionDetails>
     </Accordion>
+
+    {/*---------------------------------------------TERMINAR CONFIGURACION 2 / ECUALIZADOR--------------------------------------------------------*/}
+    <Accordion expanded={(expandEcualizador || expanded === 'panel18a')} onChange={handleChange('panel18a')} 
+      disabled = {
+        (state.tieneEcualizador != 'si' &&
+        state.kitCablesC.length === 0) || state.tieneAmplificadorBajos === 'no'}>
+        <Box className="configurador-accordionSummary">
+      <AccordionSummary className="configurador-accordion-header" aria-controls="panel18d-content" id="panel18d-header">
+        <Typography>Ecualizador</Typography><Typography className="configurador-item-selected"> - {(state.ecualizadorC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.ecualizadorC.modelo}</Typography>
+      </AccordionSummary>
+      <Box className="configurador-button-borrar">
+          {(state.ecualizadorC.length != 0) ?
+            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('18','20')}  />:  ''
+          }
+          </Box>
+        </Box>
+      <AccordionDetails>
+        {
+            (state.tieneEcualizador.length === 0) 
+            ? 
+              <Stack alignItems="center" direction="column" sx={{marginTop:"10px"}}>
+                <Typography>¿Que deseas hacer?</Typography>
+                <Button variant="contained" onClick={() => handleTieneEcualizador('no')} className="configurador_sino_button">Terminar configuración</Button>
+                <Button variant="contained" onClick={() => handleTieneEcualizador('si')} className="configurador_sino_button">Seleccionar Ecualizador</Button>
+              </Stack>
+            :
+              ((state.tieneEcualizador === 'si') && (expandEcualizador || expanded === 'panel18a'))
+              &&
+              <ConfiguradorCategoria category="18" value={unDinHF} optional="true" carFeatures={caracteristicas}/>
+          }
+      </AccordionDetails>
+    </Accordion>
+
     {/*------------------------------------------------------ACCESORIOS --------------------------------------------------------------*/}
     <Accordion expanded={(expandAccesorios || expanded === 'panel22')} onChange={handleChange('panel22')} 
       disabled = {

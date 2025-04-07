@@ -762,6 +762,9 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             totalCompra:state.totalCompra+amountProducts,
         });
     };
+    const setTieneEcualizador = (payload) =>{
+        setState({...state, tieneEcualizador:payload});
+    };
     const setAccesorio = (payload,payload2,amountProducts) =>{
         console.log("Set accesorios nuevo total");
         //console.log(amountProducts);
@@ -1850,6 +1853,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setAmplificador,
         setTieneBocinaOriginal,
         setCalzaBocinaPremiumTrasera,
+        setTieneEcualizador,
         state,
     }
 }

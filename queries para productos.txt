@@ -12,6 +12,7 @@ tareas Misael:
 (categoria.toLowerCase() === 'componente' || (product.Categoria ?? '').toLowerCase() == categoria.toLowerCase()) &&
 Aqui se mezclan Bocinas y componentes
 Pero los componentes no tienen Diametro ni Profundidad, revisar bien las condiciones para filtrar componentes
+3. Que pasa cuando no selecciona ningun cajon? El woofer depende del tamaño y las pulgadas del cajon, mostramos todos los woofers?
                                     
 Comandos python
 python -m venv env

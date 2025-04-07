@@ -350,9 +350,10 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     setProductosFinal(productosModeloAux);
                 break;
                 case '13':  //Cajon Acustico
-                    console.log("Cajon Acustico");
-                    console.log(tamanioCajuela); 
-                    const tamanioCajuela = caracteristicas?.modelo?.tamanioCajuela;
+                    //console.log("Cajon Acustico");
+                    //console.log("Filta los cajones que tengan el subgrupo del modelo");
+                    const tamanioCajuela = caracteristicas?.tamanioCajuela;
+                    //console.log(tamanioCajuela);
                     productosModeloAux = productos?.filter(function (product) {
                         return (
                         typeof tamanioCajuela === 'string'
@@ -363,7 +364,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     //setNumeroDeProductos(productosModeloAux.length);
                 break; 
                 case '21': //Kit de cables 
-                    //console.log("Entra a filtar kits de cables");
+                    console.log("Entra a filtar kits de cables");
                     const fetchCaracteristicasKitCables = async () => {
                     try {    
                     let modeloamplificador = "";
@@ -376,9 +377,10 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     const APIAmplificador = API + 'products/amplificadores/getmodel?model='+modeloamplificador;   
                     const response = await fetch(APIAmplificador);
                     const caracteristicasAmplificador = await response.json();
-                    let subgrupoAmplificadores = caracteristicasAmplificador?.subgrupo ?? '';
+                    let subgrupoAmplificadores = caracteristicasAmplificador?.subgrupo ?? ''; 
+                    const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';                      
+                    console.log("Filta los Woofers de al tipo de categoria ("+tipoConfiguracion2+")");
                     productosModeloAux = productos?.filter(function(product) {
-                        const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';   
                         if (typeof state.amplificador3en1C.modelo !== "undefined"){
                             return ((product.tipoCategoria).toLowerCase() === tipoConfiguracion2);
                         }       
@@ -396,22 +398,22 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     fetchCaracteristicasKitCables();
                 break;
                 case '26':  //Woofers para los woofers consultamos de acuerdo a las caracteristicas del cajon que seleccionó
-                    console.log("Woofers");
-                    //let modeloCajon = state.cajonAcusticoC.modelo;
-                    //const APICajones = API + 'products/cajones/getmodel?model='+state.cajonAcusticoC.modelo;
-                    //let caracteristicasCajones = useGet3(APICajones, [marca, modelo, anio, modeloCajon]);
+                    //console.log("Woofers");
                     const fetchCaracteristicasCajones = async () => {
                         try {
                     const response = await fetch(APICajones);
                     const caracteristicasCajones = await response.json();
-        
                     editarCantidad = false;  // No permitimos editar la cantidad
                     let cajonesPulgadas = caracteristicasCajones.pulgadas;
                     let tipoWoofer = caracteristicasCajones.tipoWoofer;
                     //let cantidadFija = caracteristicasCajones.cantidadWoofers;
                     setCantidadFija(caracteristicasCajones.cantidadWoofers);
-                    productosModeloAux = productos?.filter(function(product) {
-                        const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';            
+                    const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';  
+                    /*console.log("Filta los Woofers de acuerdo al numero de cantidadWoofers que tenga el cajon");
+                    console.log("Filta los Woofers de al tipo de categoria ("+tipoConfiguracion2+")");
+                    console.log("Pulgadas: "+cajonesPulgadas);
+                    console.log("Tipo: "+tipoWoofer);*/
+                    productosModeloAux = productos?.filter(function(product) {                                 
                         return (
                             (product.tipoCategoria).toLowerCase() === tipoConfiguracion2 && 
                             product.pulgadas == cajonesPulgadas && // validar el tamaño de la pulgada woofers (AK) cajones (AL)
