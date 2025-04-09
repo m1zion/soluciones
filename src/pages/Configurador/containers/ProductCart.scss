@@ -1,0 +1,70 @@
+@import '../../../styles/_vars.css';
+.resumenCompra{
+    padding-top: 30px;
+    width: 50%;
+}
+
+.ProductCartContainer{
+    border: 1px solid var(--border-green);
+    padding: 8px;
+    background-color: white;
+}
+.ProductCartConfContainer{
+    border: 1px solid var(--border-green);
+    //padding: 8px;
+    background-color: white;
+    margin: 6px 20px!important;
+}
+.ProductCartTitleContainer{
+   //background-color:lavender;
+   display: flex;
+   padding: 15px !important;
+   justify-content: space-between;
+}
+.ProductCartTitle{
+    color: var(--gray900);
+    //border-bottom: 1px solid var(--border-green);
+}
+
+.ProductCartDescription {
+    display: flex;
+}
+.ProductCardGrid{
+    border-bottom: 1px solid var(--border-green);
+    margin-left: 0 !important;
+    //@at-root: 0;
+    //margin-top: 5px;
+    font-size: 15px;
+    width: 100% !important;
+}
+.ProductCardGridElement{
+    padding-top:25px !important;
+}
+.ProductCartTotales{
+    font-size: 15px;
+    background-color: var(--background-item);
+}
+.total_config{
+    color: var(--price);
+}
+
+.nextButton_container{
+    background-color: var(--background-formx);
+    border: 1px solid var(--border-green);
+    display: flex;
+    justify-content: end;
+    padding: 10px 10px 10px;
+    margin: auto 20px !important;
+}
+
+
+@media (min-width: 1200px) {
+    .ProductCartConfContainer{
+        margin: 0 20px!important;
+    }
+    .nextButton_container{
+        margin: -0 20px !important;
+    }
+
+  }
+  

@@ -54,8 +54,12 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         case '14': categoryAPI = 'basesBocina'; categoriaOpcional = 'Base para Bocinas Premium Delanteras'; break; //28
         case '16': categoryAPI = 'basesBocina'; categoriaOpcional = 'Base para Bocinas Delanteras'; break; //28
         case '17': categoryAPI = 'basesBocina'; categoriaOpcional = 'Base para Bocinas Traseras'; break; //28
+        case '18': categoryAPI = 'ecualizadores'; categoriaOpcional = 'Ecualizadores'; break;  //20*
+        case '19': categoryAPI = 'epicentros'; categoriaOpcional = 'Epicentros'; break; //23
         case '20': categoryAPI = 'estereos';  categoriaOpcional = 'Estereo'; break; //1
-        case '21': categoryAPI = 'kitsCables'; categoriaOpcional = 'Kit de Cables'; break; //25       
+        case '21': categoryAPI = 'kitsCables'; categoriaOpcional = 'Kit de Cables'; break; //25    
+        case '23': categoryAPI = 'procesadores'; categoriaOpcional = 'Procesadores'; break;  //No hay ninguno   
+        case '25': categoryAPI = 'tweeters'; categoriaOpcional = 'Tweeters'; break;  //19
         case '26': categoryAPI = 'woofers'; categoriaOpcional = 'Woofers'; break;  //2
     }    
     //console.log(categoryAPI);
@@ -363,6 +367,17 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     setProductosFinal(productosModeloAux); 
                     //setNumeroDeProductos(productosModeloAux.length);
                 break; 
+                case '19': //Epicentro
+                case '23': //Procesador 
+                case '25': //Tweeters
+                case '18': //Ecualizador
+                //console.log(productos);
+                    productosModeloAux = productos?.filter(function(product) {                        
+                        const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase().trim() : '';            
+                        return (product.tipoCategoria).toLowerCase().trim() === tipoConfiguracion2;
+                    });
+                    setProductosFinal(productosModeloAux);
+                break;
                 case '21': //Kit de cables 
                     console.log("Entra a filtar kits de cables");
                     const fetchCaracteristicasKitCables = async () => {

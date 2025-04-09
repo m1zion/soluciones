@@ -1,0 +1,139 @@
+.payment_container{
+    //border: 1px solid gold;
+    padding: 4px;
+    display: grid;
+    /*grid-template-columns: 30px 200px 60px;*/
+    grid-template-columns: minmax(30px, 500px);
+    //grid-template-rows: repeat(3, auto); /*3 veces auto ajustable*/  
+    place-content: center;
+    margin-bottom: 25px;
+
+}
+.StripeElement{
+    padding: .75rem;
+    background-color: white;
+    border-radius: 5px;
+    transition: background 0.15s ease, border 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+    border: 1px solid #e6e6e6;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
+    font-size: 16px !important;
+}
+//https://stackoverflow.com/questions/46039315/how-can-i-style-a-stripe-elements-input-with-bootstrap
+//https://github.com/stripe-archive/react-stripe-elements/issues/436
+//https://stripe.dev/elements-examples/
+.StripeElement--focus {
+  border-color: #80BDFF;
+  outline:0;
+  box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.payment_elements input {
+  width: 100%;
+  padding: 11px 15px 11px 0;
+  color: purple;
+  background-color: orange !important;
+  -webkit-animation: 1ms void-animation-out;
+}
+
+
+
+.cardElement_input{
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+  padding: .75rem;
+  transition: background 0.15s ease, border 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
+}
+.cardElement_input:focus{
+  background-color: red !important;
+    //border: 1px solid hsla(210, 96%, 45%, 50%) !important;
+    //outline: 0;
+    //border-color: hsla(210, 96%, 45%, 50%);
+    //box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02),0 0 0 3px hsla(210, 96%, 45%, 0) 1px 1px 0 rgba(0, 0, 0, 0.08);
+}
+
+
+
+.example2 input {
+  width: 100%;
+  padding: 11px 15px 11px 0;
+  color: #fff;
+  background-color: transparent;
+  -webkit-animation: 1ms void-animation-out;
+}
+
+.example2 input::-webkit-input-placeholder {
+  color: #87bbfd;
+}
+
+.example2 input::-moz-placeholder {
+  color: #87bbfd;
+}
+
+.example2 input:-ms-input-placeholder {
+  color: #87bbfd;
+}
+
+.checkOut_installments_container{
+  margin-top: 8px;
+  margin-bottom: 30px;
+  padding: 0 0 0 12px;
+  border: 1px solid var(--border-green);
+  border-radius: 5px;
+  font-weight: 900 !important;
+}
+.checkOut_radio{
+  border-bottom: 1px solid var(--border-green);
+}
+.checkOut_divider{
+    border-bottom: 1px solid var(--border-green) !important;
+    margin-right: 0px !important;
+    padding: 5px 0 ;
+    & svg {
+      width: 0.8em;
+      height: 0.8em;
+    }
+}
+.checkOut_divider2{
+  padding: 5px 0 ;
+  & svg {
+    width: 0.8em;
+    height: 0.8em;
+  }
+}
+.checkOut_installments_radio{
+  color :var(--gray900)  !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+.checkOut_total {
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  color :var(--gray600);
+}
+
+.errorMessage{
+  margin: 20px 0px !important;
+}
+.total_compra{
+  margin: 0 20px !important;
+  text-align: end;
+  background-color: white;
+  border: 1px solid lightgray;
+  padding: 5px;
+  font-weight: 400 !important;
+}
+
+@media (max-width: 900px) {
+
+}
+
+
+.product {
+  align-items: center;
+  }
+  
+  .item {
+    border: 5px solid red;
+    font-size: 4rem;
+  }

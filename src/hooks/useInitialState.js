@@ -789,6 +789,41 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             totalCompra:state.totalCompra+amountProducts,
         });
     };
+    const setEcualizador = (payload,payload2,amountProducts) =>{
+        setState({...state, 
+            ecualizadorC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+    const setEpicentro = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            epicentroC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+    const setProcesador = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            procesadorC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+    const setTweeter = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            tweeterC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
     //PRODUCTOS OPCIONALES
     const setProductoOpcional = (category) =>{
         console.log("Set Producto Opcional: ");
@@ -1854,6 +1889,10 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setTieneBocinaOriginal,
         setCalzaBocinaPremiumTrasera,
         setTieneEcualizador,
+        setEcualizador,
+        setEpicentro,
+        setProcesador,
+        setTweeter,
         state,
     }
 }

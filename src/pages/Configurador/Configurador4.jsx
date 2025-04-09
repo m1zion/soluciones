@@ -13,7 +13,7 @@ import '@styles/Configurador1.scss';
 import '@styles/ProductList.scss';
 import usePut from '@hooks/usePut';
 import AppContext from '@context/AppContext';
-//import ProductCartConf from "@containers/ProductCartConf";
+import ProductCartConf from "./containers/ProductCartConf";
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from "@mui/material/CircularProgress";
 import GradientCircularProgress from "./GradientCircularProgress";
@@ -297,6 +297,12 @@ const Configurador4 = () => {
     (state.amplificador3en1C.SKU != undefined && state.kitCablesC.length === 0);
   const expandEcualizador = (state.ecualizadorC.length === 0 && state.tieneEcualizador === 'si' && state.amplificador3en1C.length === 0) || 
     (state.ecualizadorC.length === 0 && state.kitCablesC.length != 0 && state.amplificador3en1C.length === 0 );
+  const expandEpicentro = (state.ecualizadorC.SKU != undefined && state.epicentroC.length === 0) || 
+    (state.ecualizadorC === 'N/A' && state.epicentroC.length === 0);
+  const expandProcesador =  (state.epicentroC.SKU != undefined && state.procesadorC.length === 0) || 
+    (state.epicentroC === 'N/A' && state.procesadorC.length === 0);
+  const expandTweeters = (state.procesadorC.SKU != undefined && state.tweeterC.length === 0) || 
+    (state.procesadorC === 'N/A' && state.tweeterC.length === 0);
   const expandAccesorios =   (state.tweeterC.SKU != undefined && state.accesorioC.length === 0) || 
     (state.tweeterC === 'N/A' && state.accesorioC.length === 0) || 
     (state.amplificador3en1C.SKU != undefined && state.kitCablesC.SKU != undefined && state.accesorioC.length === 0) || 
@@ -1364,7 +1370,67 @@ const Configurador4 = () => {
           }
       </AccordionDetails>
     </Accordion>
-
+  {/*------------------------------------------------------EPICENTRO --------------------------------------------------------------*/}
+  <Accordion expanded={(expandEpicentro || expanded === 'panel19')} 
+    onChange={handleChange('panel19')} 
+    disabled = {state.ecualizadorC.length === 0}>
+      <Box className="configurador-accordionSummary">
+        <AccordionSummary className="configurador-accordion-header" aria-controls="panel19d-content" id="panel19d-header">
+          <Typography>Epicentro</Typography>
+          <Typography className="configurador-item-selected"> - {(state.epicentroC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.epicentroC.modelo}</Typography>
+        </AccordionSummary>
+        <Box className="configurador-button-borrar">
+          {(state.epicentroC.length != 0) ?
+              <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('19','23')}  />:  ''
+          }
+        </Box>
+      </Box>
+      <AccordionDetails>
+      {(expandEpicentro || expanded === 'panel19') && (
+        <ConfiguradorCategoria category="19" value={unDinHF} optional="true" carFeatures={caracteristicas}/>
+      )}
+      </AccordionDetails>
+    </Accordion>
+    {/*------------------------------------------------------PROCESADOR --------------------------------------------------------------*/}
+    <Accordion expanded={(expandProcesador || expanded === 'panel20')} onChange={handleChange('panel20')} 
+    disabled = {state.epicentroC.length === 0}>
+      <Box className="configurador-accordionSummary">
+        <AccordionSummary className="configurador-accordion-header" aria-controls="panel20d-content" id="panel20d-header">
+          <Typography>Procesador</Typography>
+          <Typography className="configurador-item-selected"> - {(state.procesadorC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.procesadorC.modelo}</Typography>
+        </AccordionSummary>
+        <Box className="configurador-button-borrar">
+          {(state.procesadorC.length != 0) ?
+              <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('23','24')}  />:  ''
+          }
+        </Box>
+      </Box>
+      <AccordionDetails>
+      {(expandProcesador || expanded === 'panel20') && (
+          <ConfiguradorCategoria category="23" value={unDinHF} optional="true" carFeatures={caracteristicas}/>
+      )}
+      </AccordionDetails>
+    </Accordion>
+    {/*------------------------------------------------------TWEETERS --------------------------------------------------------------*/}
+    <Accordion expanded={(expandTweeters || expanded === 'panel21')} onChange={handleChange('panel21')} 
+    disabled = {state.procesadorC.length === 0}>
+      <Box className="configurador-accordionSummary">
+        <AccordionSummary className="configurador-accordion-header" aria-controls="panel21d-content" id="panel21d-header">
+          <Typography>Tweeter</Typography>
+          <Typography className="configurador-item-selected"> - {(state.tweeterC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.tweeterC.modelo}</Typography>
+        </AccordionSummary>
+        <Box className="configurador-button-borrar">
+          {(state.tweeterC.length != 0) ?
+            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('25','19')}  />:  ''
+          }
+        </Box>
+      </Box>
+      <AccordionDetails>
+      {(expandTweeters || expanded === 'panel21') && (
+        <ConfiguradorCategoria category="25" config="Modelo" value={unDinHF} optional="true" carFeatures={caracteristicas}/>
+      )}
+      </AccordionDetails>
+    </Accordion>
     {/*------------------------------------------------------ACCESORIOS --------------------------------------------------------------*/}
     <Accordion expanded={(expandAccesorios || expanded === 'panel22')} onChange={handleChange('panel22')} 
       disabled = {
@@ -1390,7 +1456,7 @@ const Configurador4 = () => {
 
         </Stack>
         <Box>
-          {/*<ProductCartConf/>*/}
+          <ProductCartConf/>
           <Box className='nextButton_container'>
             <Button  onClick={handleSubmit}  
               disabled = {
