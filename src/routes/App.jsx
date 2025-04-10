@@ -5,6 +5,7 @@ import Configurador2 from '@pages/Configurador/Configurador2';
 import Configurador3 from '@pages/Configurador/Configurador3';
 import Configurador4 from '@pages/Configurador/Configurador4';
 import CheckOutCart3_1 from '@pages/Configurador/CheckOutCart3_1';
+import CheckOutCart from '@pages/Configurador/CheckOutCart';
 import Login from "../pages/Login";
 import useInitialState from '@hooks/useInitialState';
 import AppContext from '@context/AppContext';
@@ -26,6 +27,7 @@ const App = () => {
                         <Route exact path="/configurador3" element={<Layout><Configurador3/></Layout>} />  
                         <Route exact path="/configurador4" element={<Layout><Configurador4/></Layout>} /> 
                         <Route exact path="/CheckOutCart3_1" element={<Layout><CheckOutCart3_1/></Layout>} /> 
+                        <Route exact path="/CheckOutCart" element={<Layout><CheckOutCart/></Layout>} /> 
                         <Route exact path="/login" element={<Layout><Login/></Layout>} />      
                         <Route exact path="/newAccount" element={<Layout><NewAccount/></Layout>} />                            
                     </Routes>

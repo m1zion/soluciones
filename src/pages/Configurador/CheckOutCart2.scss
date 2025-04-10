@@ -1,0 +1,55 @@
+@import '../../styles/_vars.css';
+.CheckOutCart2Form{
+    background-color: var(--white);
+    //width: 450px;
+    border: 1px solid var(--border-green);
+    //padding: 8px;
+    background-color: white;
+    padding: 6px 20px!important;
+    margin: 0 20px 6px 20px !important;
+}
+.CheckOutCart2Container{
+    padding-top: 16px;
+    margin: 8rem auto;
+    border-radius: 8px;
+    width: 95%;
+    padding-bottom: 20px;
+    //background-color: var(--background-form);
+    display: block;
+    height: fit-content;
+   
+}
+
+.CheckOutCart2FormCont{
+    display: flex;
+    justify-content: center;
+}
+.CheckOutCart2ProductCard{
+    width: 45%;
+}
+
+
+@media (min-width: 600px) {
+    .CheckOutCart2Container {
+        width: 100%;
+        margin-top: 175px;
+    }
+    .CheckOutCart2Form{
+        width: 450px;
+    }
+}
+
+@media (max-width: 900px) {
+    .CheckOutCart2ProductCard{
+        display:none;
+    }
+}
+
+@media (min-width: 1200px) {
+    .CheckOutCart2Container {
+      width: 100%;    
+      display: grid;
+      grid-template-columns: 50% 50%;
+    }
+    
+  }

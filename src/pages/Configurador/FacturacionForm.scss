@@ -1,0 +1,24 @@
+@import '../../styles/_vars.css';
+.facturacion_Form {
+    border: 1px solid var(--border-green);
+    //border-radius: 8px;
+    width: 100%;
+    margin:0 auto;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+.facturacion_Container{
+    //width: 95%;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+.delivery-line {
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .facturacion_Form {
+        width: 95%;
+        margin: 0 auto;
+    }
+}

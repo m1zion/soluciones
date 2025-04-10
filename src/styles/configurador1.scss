@@ -25,6 +25,15 @@
     background-color: white;
     border-radius: 10px;
 }
+.configurador_formControl2{
+    width: 95%;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid var(--border-green);
+    margin:0 auto;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
 .configurador1_titulo{
     font-weight: 600 !important;
     margin: 5px 15px !important;
@@ -182,6 +191,9 @@ margin-left: auto !important;
         display: block;
     }
     .configurador_formControl{
+        width: 50%;
+    }
+    .configurador_formControl2{
         width: 50%;
     }
     .Configurador_Form2 {

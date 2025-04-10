@@ -90,7 +90,7 @@ const Configurador4 = () => {
   }
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate("/CheckOutCart3_1");
+    navigate("/CheckOutCart");
   }
   useEffect(() => {
     const fetchData = async () => {
