@@ -1,10 +1,11 @@
 import React, {useRef, useContext, useState, useEffect} from "react";
-import { Box, Typography, Stack, Button } from "@mui/material";
+import { Box, Typography, Stack, Button, Step, StepLabel, Stepper } from "@mui/material";
 import '@styles/Configurador1.scss';
 import AppContext from '@context/AppContext';
 import usePut2V from '@hooks/usePut2V';
 import { useNavigate } from 'react-router-dom';
 import GradientCircularProgress from "./GradientCircularProgress";
+const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
 const Configurador2 = () => {
     const API = process.env.REACT_APP_API_URL; 
     const {state,loading,error,refreshState} = useContext(AppContext);
@@ -57,8 +58,9 @@ const Configurador2 = () => {
         <React.Fragment>
         {(loading || loadingLocal) && <Box className="Loading_Container"> <GradientCircularProgress /></Box>}
         {(!loading && !error) &&
-            <Box className="Configurador_Container">
+            <Box className="Configurador_Container">                
                 <Box className="hero-image"></Box>
+             
                 <form action="/" className="Configurador_Form2">
                     <Stack alignItems="center" spacing={2} direction="column" className="configurador1_stack"> 
                         <Box className="configurador_tuAuto">
@@ -70,6 +72,23 @@ const Configurador2 = () => {
                                 <Typography sx={{paddingLeft:"6px"}}>No. Orden: {state.confOrderId}</Typography> 
                             </Box>       
                         </Box>
+                        <Stepper activeStep={1} alternativeLabel 
+                        sx={{
+                            mt: "7rem",
+                            width: "-webkit-fill-available",
+                            "& .MuiStepIcon-root.Mui-active": {
+                            color: "#B1B803", // Color of the active step icon
+                            },
+                            "& .MuiStepIcon-root.Mui-completed": {
+                            color: "#B1B803", // Color of completed step icons
+                            },
+                        }}>
+                            {steps.map((label) => (
+                            <Step key={label} >
+                                <StepLabel>{label}</StepLabel>
+                            </Step>
+                            ))}
+                        </Stepper>
                         <Typography sx={{fontWeight: 600}} variant="h6">Selecciona tu <Typography variant="h7" sx={{fontWeight: 600, color: "var(--blueConfigurador3)"}}>Configuración</Typography></Typography>                    
                         <Button onClick={() => handleSubmit('Básico')} className="tipoConfiguracion_Button">Configuración Basica</Button>
                         <Button onClick={() => handleSubmit('Intermedio')} className="tipoConfiguracion_Button" >Configuración Media</Button>

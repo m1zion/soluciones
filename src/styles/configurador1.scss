@@ -40,7 +40,6 @@
 }
 .Configurador_Form2 {
     margin: 0rem 0 0 0;
-    background-color: var(--white247);
 }
 .configurador1_stack{
     padding-bottom: 6em;
@@ -61,9 +60,9 @@
     align-self: center;
     margin-top: 35px !important;
     text-transform: none !important;
-    border-radius: 11px !important;
+    border-radius: 4px !important;
     height: 45px;
-    width: 200px !important;
+    width: 300px !important;
 }
 .NextStepButton2:hover{
     background-color: var(--blueConfiguradorHover) !important;
@@ -169,10 +168,10 @@ margin-left: auto !important;
     align-self: center;
     margin-top: 35px !important;
     text-transform: none !important;
-    border-radius: 11px !important;
+    border-radius: 4px !important;
     box-shadow: none  !important;
     height: 45px;
-    width: 200px !important;
+    width: 300px !important;
     color: var(--blueConfiguradorHover) !important;
     border: 1px solid var(--blueConfiguradorHover) !important;
   }
@@ -181,9 +180,6 @@ margin-left: auto !important;
   }
   
 @media (min-width: 600px) {
-    .Configurador_Container{
-      //padding-top: 145px; 
-    }  
     .Configurador_Form {
         width: 100%;
     }
@@ -198,7 +194,6 @@ margin-left: auto !important;
     }
     .Configurador_Form2 {
         margin: 0rem 0 0 0;
-        background-color: var(--white247);
     }
     .configurador1_stack{
         padding-bottom: 2em;

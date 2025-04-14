@@ -1,4 +1,4 @@
-import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
+import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import '@styles/Configurador1.scss';
 import React, { useState, useEffect, useRef, useContext } from "react";
 import useGet7 from '@hooks/useGet7';
@@ -7,6 +7,7 @@ import usePost2V from '@hooks/usePost2V';
 import useDelete2V from '@hooks/useDelete2V';
 import usePut2V from '@hooks/usePut2V'; 
 import { useNavigate } from "react-router-dom";
+const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
 const Configurador1 = () => {
   const { state,fetchOrderData,setConfigInicial} = useContext(AppContext);
   const setConfigurador = item =>{setConfigInicial(item);};
@@ -102,17 +103,13 @@ const handleSubmit = async (event) => {
       const dataConfCaracteristicas = createConfiguradorData();
       const updatedConfiguradorResponse = await updateConfigurador(dataConfCaracteristicas,activeOrderId);
       if(updatedConfiguradorResponse){
-        alert("Configuracion actualizada con exito");      
-        
-
-
+        alert("Configuracion actualizada con exito");  
         const dataPost = {
           marca: marca,       // configurador1
           modelo: modelo,     // configurador1
           anio: age3,         // configurador1
           tipoConfiguracionC: "" // configurador1
-        };
-        
+        };        
         //setConfigurador(dataPost);  //Hay que mandarlo al estado y al localStorage?
         navigate("/configurador2");
       }       
@@ -136,8 +133,8 @@ const handleSubmit = async (event) => {
 //VERIFICA SI HAY UNA ORDEN ACTIVA
 const verifyActiveCart = async () =>{
   const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador`; 
-  console.log(APICart);
-  console.log(state.token);
+  //console.log(APICart);
+  //console.log(state.token);
   const response = await fetch(APICart, {
     headers: {
       'Authorization': `Bearer ${state.token}`,  
@@ -148,7 +145,6 @@ const verifyActiveCart = async () =>{
     return null;
   }
   if (!response.ok) throw new Error("Error fetching detalle venta");
-
   const orden = await response.json();
   if (orden && orden.orders && orden.orders.length > 0 && orden.orders[0].id) {
     return orden.orders[0].id;
@@ -231,11 +227,26 @@ const handleSubmitModificar = (event) => {
   event.preventDefault();
   navigate("/Configurador4");
 }
-
   return (
     <Box className="Configurador_Container">
-      <Box className="hero-image">
-      </Box>      
+      <Box className="hero-image"></Box>  
+      <Stepper activeStep={0} alternativeLabel 
+      sx={{
+        mt: { xs: "6rem", sm: "3rem" }, 
+        mb: "1rem",
+        "& .MuiStepIcon-root.Mui-active": {
+          color: "#B1B803", // Color of the active step icon
+        },
+        "& .MuiStepIcon-root.Mui-completed": {
+          color: "#B1B803", // Color of completed step icons
+        },
+      }}>
+        {steps.map((label) => (
+          <Step key={label} >
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>    
       <form action="/" className="Configurador_Form2">
         <Stack alignItems="center" spacing={2} direction="column" className="configurador1_stack"  > 
           <Typography className = "configurador1_titulo"  variant="h6">Configura el mejor equipo de audio para tu <Typography sx={{fontWeight: 600, color: "var(--blueConfigurador3)"}} variant="h7">Vehiculo</Typography></Typography> 
@@ -247,7 +258,7 @@ const handleSubmitModificar = (event) => {
               )
                 
             }
-                <FormControl  error={errorMarca} className="configurador_formControl"  size="small" variant="standard">
+                <FormControl  error={errorMarca} className="configurador_formControl"  size="small" >
                     <InputLabel  id="ddl-marca-label"  sx={{paddingLeft:"10px"}}>Marca</InputLabel>
                     <Select
                     sx={{paddingLeft:"10px"}}
@@ -268,7 +279,7 @@ const handleSubmitModificar = (event) => {
                     }                
                 </Select>
                 </FormControl>
-                <FormControl error={errorModelo} className="configurador_formControl" size="small" variant="standard">
+                <FormControl error={errorModelo} className="configurador_formControl" size="small">
                     <InputLabel id="ddl-modelo-label" sx={{paddingLeft:"10px"}}>Modelo</InputLabel>
                     <Select
                     sx={{paddingLeft:"10px"}}
@@ -289,7 +300,7 @@ const handleSubmitModificar = (event) => {
                 }
                 </Select>
                 </FormControl>
-                <FormControl error={errorAnio} className="configurador_formControl" size="small" variant="standard">
+                <FormControl error={errorAnio} className="configurador_formControl" size="small">
                     <InputLabel id="ddl-anio-label" sx={{paddingLeft:"10px"}}>Año</InputLabel>
                     <Select
                     sx={{paddingLeft:"10px"}}
@@ -312,8 +323,6 @@ const handleSubmitModificar = (event) => {
                 }
                 </Select>
                 </FormControl>
-
-
                 <Box className="BotonesContainer">
                 {
                   //Si tiene almenos un estereo puede editar la configuracion
@@ -332,8 +341,6 @@ const handleSubmitModificar = (event) => {
                   )
                 }
                 </Box>
-
-
              </Stack>
       </form>
     </Box>
