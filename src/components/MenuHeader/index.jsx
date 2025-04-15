@@ -18,11 +18,8 @@ var formatter = new Intl.NumberFormat('en-US', {
   currency: 'MXN',
 });
 
-const data = [
-    { icon: <People />, label: 'Mi perfil' },
-    { icon: <Dns />, label: 'Mis direcciones' },
-    { icon: <PermMedia />, label: 'Iniciar/Cerrar sesión' },
-];
+
+
 
 const FireNav = styled(List)({
     right:1,
@@ -43,12 +40,36 @@ const MenuHeader = () => {
     const { state, logout } = useContext(AppContext);
     const isAuthenticated = state.token ? true : false;
     const navigate = useNavigate();
+    const handleLogout = () => {
+        console.log("loging out");
+        logout();
+        // Redireccionar a la página de login después de cerrar sesión
+        window.location.href = '/';
+    };
+    const data = [
+        { icon: <People />, label: 'Mi perfil' },
+        { icon: <Dns />, label: 'Mis direcciones' },    
+        {
+            icon: <PermMedia />,
+            label: isAuthenticated
+                ? 'Cerrar sesión'
+                : 'Iniciar sesión',
+            onClick: isAuthenticated
+                ? () => handleLogout()
+                : () => navigate('/Login/'),
+        },
+    ];
+
     /*--MENU*/
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
+    const handleClose = () => {
+        setAnchorEl(null);
+      };
+   
     /*--MENU ORDERS*/
     const [anchorOrder, setAnchorOrder] = React.useState(null);
     const openOrder = Boolean(anchorOrder);
@@ -57,9 +78,6 @@ const MenuHeader = () => {
     }; 
     const handleCloseOrder = () => {
         setAnchorOrder(null);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
     };
     const handleDirecciones = () => {
     navigate("/addresses");
@@ -236,6 +254,12 @@ const MenuHeader = () => {
                     {
                         data.map((item) => (
                         <ListItemButton
+
+
+
+                            onClick={item.onClick}
+
+
                             key={item.label}
                             sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}
                         >

@@ -1855,11 +1855,34 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         }
     }
 
+    const logout = () => {
+        // Clear state by resetting user-related fields
+        console.log("Haciendo LogOut");
+        setState({
+            ...state,
+            user: null,
+            token: null,
+            role: null,
+            proveedorId: null,
+            cart: [],  // Optionally clear the cart if needed
+            totalCompra: 0,  // Optionally reset total purchase amount
+        });
+        // Remove the related items from localStorage
+        localStorage.removeItem('authUser');
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('roleL');
+        localStorage.removeItem('cart');  // Clear the cart if necessary
+        localStorage.removeItem('totalCompraL');  // Clear the total purchase if necessary
+        localStorage.removeItem('confOrderIdL');  // Clear the cart if necessary
+        localStorage.removeItem('cartOrderIdL');  // Clear the total purchase if necessary
+        localStorage.removeItem('userIdL');  // Clear the total purchase if necessary
+    };
+
     return {
         setLogin,
         loading,
         error,
-        //logout,
+        logout,
         //addToCart,
         //removeFromCart,
         refreshState,

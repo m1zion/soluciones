@@ -1,0 +1,679 @@
+.admin-newButton{
+    border-radius: 8px !important;
+    text-transform: unset !important;
+    background-color: var(--admin5) !important;
+    min-width: 150px !important;
+    font-weight: 400 !important;
+    width: 150px !important; 
+}
+.admin-newButton:hover{
+    background-color: var(--admin5Hover) !important;
+}
+
+
+.admin-backButton{
+    border-radius: 8px !important;
+    text-transform: unset !important;
+    background-color: white !important;
+    min-width: 150px !important;
+    font-weight: 400 !important;
+    width: 150px !important; 
+    border: 1px solid var(--admin5) !important;
+    color: var(--admin5) !important;
+}
+
+
+.admin-newButton-disabled{
+    border-radius: 8px !important;
+    text-transform: unset !important;
+    background-color: var(--admin2) !important;
+    color:white !important;
+    min-width: 150px !important;
+    width: 150px !important; 
+    font-weight: 400 !important;
+}
+.admin-warning{
+    padding:0px 16px !important;
+}
+.admin-buttonContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: end;  
+    gap: .6rem;
+}
+.admin-title{
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-weight: 400 !important;
+    color: #1a237e;
+    font-size: 1.5rem !important;
+    line-height: 1.334 !important;
+    letter-spacing: 0em !important;
+    margin-bottom: 0.35em !important;
+}
+
+.admin-paper-sections{
+    padding: 2;
+    display: flex;
+    flex-direction: column;
+    height: 240px;
+    position: relative;
+}
+.admin-paper-sections-disabled{
+    background-color: gainsboro !important;
+    padding: 2;
+    display: flex;
+    flex-direction: column;
+    height: 240px;
+    position: relative;
+}
+.admin-paper-sections:hover{
+    transform: scale(1.03);
+    transition: transform 0.3s ease-in-out; 
+    cursor: pointer;
+}
+
+.admin-paper-sections-disabled:hover{
+    cursor: not-allowed;
+}
+  
+.admin-tableHeader{
+    display:flex;
+    flex-wrap: wrap;
+    justify-Content:space-between;
+    margin-bottom: 1rem;
+    border: 1px solid lightgray;
+    padding: 5px;
+    border-radius: 5px;
+    //background-color: lime;
+    width: 100%;
+    gap: 10px;
+}
+.admin-tableHeaderPopup{
+    display:flex;
+    flex-wrap: wrap;
+    justify-Content:space-between;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    //border: 1px solid lightgray;
+    color: var(--gray900);
+    padding: 5px;
+    border-radius: 5px;
+    //background-color: lime;
+    width: 100%;
+    gap: 10px;
+}
+.admin-tableUpperHeader{
+    display:flex;
+    flex-wrap: wrap;
+    justify-Content:space-between;
+    margin-bottom: 1rem;
+    //border: 1px solid lightgray;
+    padding: 5px;
+    border-radius: 5px;
+    //background-color: lime;
+    width: 100%;
+    gap: 10px;
+}
+.admin-tableHeader2{
+    display:flex;
+    flex-wrap: wrap;
+    justify-Content:flex-start;
+    margin-bottom: 1rem;
+    border: 1px solid lightgray;
+    padding: 5px;
+    border-radius: 5px;
+    //background-color: lime;
+    width: 100%;
+    gap: 10px;
+}
+.admin-crudTable{
+    margin-bottom: 1rem;
+    border: 1px solid lightgray;
+}
+.admin-tableHead{
+    background-color: var(--admin00);   
+    color: var(--gray-letter) !important;   
+}
+
+.admin-deleteButton{
+    border-radius: 25px !important;
+    width: 37px !important;
+    height: 37px !important;
+    min-width: 37px !important;
+}
+.admin-actionButtons{
+    display: flex;
+    justify-content: end;
+}
+
+.admin-mainLayoutContainer{
+    display: flex;
+    margin-top:21px;
+    z-index: 0;
+    //position:relative;
+}
+.admin-mainContainer{
+    flex-grow: 1 !important;
+    /*height: 100vh !important;*/  //Estro hace que sea del alto de la pantalla
+    min-height: 100vh;
+    /*Ver la manera de hacer el scroll siempre visible*/
+    //overflow-y: scroll !important;
+    overflow: auto !important; //Crea la barra de navegacio vertical
+}
+.admin-gridContainer{
+    //overflow-y:auto;
+    //min-Width:fit-content;
+}
+.admin-drawer{
+   //background-color: aqua !important;
+}
+.estadisticas-item :hover{
+    background-color:var(--adminHover) !important;
+}
+.adminNavigation{
+    font-size: .9rem;
+    cursor: pointer;
+    text-decoration: none !important;
+    //color: var(--black247-light) !important;
+    //color: blue($color: #000000);
+    color: blue;
+    padding-bottom: 5px;
+    //background-color:white !important;
+}
+.adminNavigation:hover{
+    color: var(--admin3) !important;
+}
+.admin-dashboardIcon{
+   color:aliceblue;
+}
+.admin-dashboardIcon-title{
+    z-index: 1;
+    text-align: center;
+    height:20%;
+    margin:0 5px !important;
+    padding-top:5px;
+    color:var(--admin4);
+}
+
+.admin-dashboardIcon-lg{
+    height: 80% !important;
+    width: 100% !important;
+    color: var(--admin0);
+    //background-color: antiquewhite;
+ }
+.admin-menuItems{
+    color:white !important;
+}
+.admin-menuItems-disabled{
+    color:gray !important;
+}
+.admin-menuItems:hover{
+    background-color: var(--admin5Hover) !important;
+}
+.admin-gridLabel{
+    background-color: var(--admin00);
+    //min-width: 120px;
+    padding: 5px 4px;
+}
+.admin-gridLabel p {
+    overflow: visible;
+    font-weight: 500;
+    font-size: .9rem !important;
+}
+.admin-gridData p{
+    padding: 5px 4px;
+}
+
+.admin-gridData p{
+    //background-color: lightgreen;
+    font-size: .9rem !important;
+}
+.costoPromedio-text{
+    color: #1a237e;
+}
+
+.primary-button-admin,
+.primary-button-admin-blue,
+.primary-button-admin-green,
+.primary-button-admin-disabled,
+.primary-button-admin-disabled-blue,
+.primary-button-admin-disabled-green {
+    border-radius: 6px;
+    border: none;
+    color: var(--white) !important;
+    width: 100%;
+    max-width:450px;
+    font-size:var(--md);
+    height:50px;
+    box-shadow:0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.primary-button-admin {
+    background-color: var(--admin5) !important;
+    cursor:pointer;
+}
+.primary-button-admin-blue {
+    background-color: #2AA9E0 !important; 
+    cursor:pointer;
+}
+.primary-button-admin-green {
+    background-color: #0C9809 !important; 
+    cursor:pointer;
+}
+.primary-button-admin-disabled{
+    background-color: var(--admin2) !important;
+}
+.primary-button-admin-disabled-blue{
+    background-color: var(--admin2) !important;
+}
+.primary-button-admin-disabled-green{
+    background-color: var(--admin2) !important;
+}
+.primary-button-admin:hover {
+    background-color: var(--admin5Hover) !important;
+}
+.primary-button-admin-blue:hover {
+    background-color: #53BCEA !important;
+}
+.primary-button-admin-green:hover {
+    background-color: #2EAD2B !important;
+}
+
+
+
+
+
+
+.income-button-admin {
+    background-color: #0C9809 !important;
+    border-radius: 6px;
+    border: none;
+    color: var(--white) !important;
+    width: 40%; 
+    max-width: 150px;
+    cursor: pointer;
+    font-size: var(--md);
+    height: 40px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.outcome-button-admin {
+    background-color: #D30D0D !important;
+    border-radius: 6px;
+    border: none;
+    color: var(--white) !important;
+    width: 40%; 
+    max-width: 150px;
+    cursor: pointer;
+    font-size: var(--md);
+    height: 40px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.proveedor_actions_container{
+    //background-color: khaki;
+    display: flex;
+    width: 50%;
+    padding: 10px;
+    gap:15px;
+    margin-top: 20px;
+}
+.proveedor_actions_main_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+
+.primary-button-admin-outlined {
+    background-color: white !important;
+    border-radius: 6px;
+    border: 1px solid var(--admin5) !important;
+    color: var(--admin5) !important;
+    width: 100%; 
+    max-width: 450px;
+    cursor: pointer;
+    font-size: var(--md);
+    height: 50px;
+}
+.primary-button-admin-outlined-small {
+    background-color: white !important;
+    border-radius: 6px;
+    border: 1px solid var(--admin5) !important;
+    color: var(--admin5) !important;
+    width: 100%; 
+    max-width: 250px;
+    cursor: pointer;
+    font-size: var(--md);
+    height: 50px;
+}
+.primary-button-admin-outlined-tiny {
+    background-color: white !important;
+    border-radius: 6px;
+    border: 1px solid var(--admin5) !important;
+    color: var(--admin5) !important;
+    width: 100%; 
+    max-width: 200px;
+    cursor: pointer;
+    font-size: var(--md);
+}
+.primary-button-admin-outlined-small:hover, 
+.primary-button-admin-outlined-tiny:hover{
+    background-color: var(--adminHover) !important;
+}
+.find-properties-box{
+    display: flex;
+    gap:5px;
+    flex-wrap: wrap;
+}
+.LoginFormContainer_admin{
+    /*width: 45%;
+    max-width: 460px;*/
+    width: 100%;
+    border: 1px solid lightgray;
+    margin-bottom: 2rem;
+    padding-top: 16px;
+    border-radius: 8px;
+    padding-bottom: 20px;
+    background-color: var(--white);
+    display: flex;;
+    justify-content:space-between;
+    align-items: start;
+}
+.LoginFormContainer_admin{
+    /*width: 45%;
+    max-width: 460px;*/
+    width: 100%;
+    border: 1px solid lightgray;
+    margin-bottom: 2rem;
+    padding-top: 16px;
+    border-radius: 8px;
+    padding-bottom: 20px;
+    background-color: var(--white);
+    display: flex;;
+    justify-content:space-between;
+    align-items: start;
+}
+.VentasDatosClienteContainer{
+    /*width: 45%;
+    max-width: 460px;*/
+    width: 100%;
+    border: 1px solid lightgray;
+    margin-bottom: 1rem;
+    padding-top: 0;
+    border-radius: 8px;
+    padding-bottom: 2px;
+    background-color: var(--white);
+    display: flex;;
+    justify-content:space-between;
+    align-items: start;
+}
+.datosClienteTitle{
+    width: 100%;
+    background-color: var(--admin5);
+    color: white;
+    padding-left: 3px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.admin_gridContainer{
+    width: 100%;
+    border: 1px solid lightgray;
+    margin-bottom: 2rem;
+    padding-top: 16px;
+    border-radius: 8px;
+    padding-bottom: 20px;
+    background-color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.Form_Container_admin {
+    //min-width: 360px;
+    width: 100%;
+    max-width: 460px;
+    //border: 1px solid gainsboro;
+}
+
+.Button_Container_admin{
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: space-between;
+    margin-top:30px !important;
+    gap: 10px;
+    margin-bottom: 1rem;
+    //background-color: gainsboro;
+}
+.Ventas_Button_Container{
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: space-between;
+    margin-top:30px !important;
+    gap: 10px;
+}
+.formDivider {
+    width:100%;
+    display:flex;
+    align-items:center;
+}
+.formDivider-text {
+    white-space:nowrap; 
+    margin-left:3px !important; 
+    margin-right:5px !important; 
+    color:gray;
+}
+.formDivider-line {
+    width:100%;
+    height: 2px; 
+    background-color:lightgrey;
+}
+.uploadButton_container_admin{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+}
+.uploadButton_container_admin_url{
+    color: gray;
+    padding: 3px 10px !important;
+    border-radius: 5px;
+    text-Decoration: none;
+}
+.uploadButton_container_admin_url:hover{
+    background-color: rgb(247, 247, 247); 
+    color: rgb(70, 70, 70);
+}
+.uploadButton_admin {
+    background-color:var(--admin5) !important; 
+    min-width:190px;
+    width:190px;
+}
+.uploadButton_admin:hover {
+    background-color: var(--admin5Hover) !important;
+}
+
+.InputSearch {
+    width : 250px;
+    background: white;
+  }
+
+.adminContainer{
+    width: 85vw;
+    display:flex;
+    flex-direction:column;
+    //background-color: lightgoldenrodyellow;
+}
+.noAuthorizedContainer{
+    display: flex;
+    background-color: rgb(243, 243, 243);
+    //flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4rem;
+    padding-bottom: 5rem;
+}
+.noAuthorizedContainer401{
+    font-size: 6rem !important;
+    color: darkgrey;
+    font-family:Georgia, 'Times New Roman', Times, serif !important;
+}
+.noAuthorizedContainertext{
+    font-size: 1.2rem !important;
+    color: rgb(92, 92, 92);
+    font-family:Arial, Helvetica, sans-serif;
+}
+.inside_table_container{
+    //position: relative;
+    width: 85vw;
+    //height: 300px;
+    display:flex;
+    flex-direction:column;
+    margin-top: 20px;
+    //background-color: wheat;
+}
+.saldoProveedor{
+    height: 50px;
+    align-items: end;
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+}
+.montoSaldoProveedor{
+    color: #1a237e;
+    font-weight: 400;
+    font-size: 1.25rem !important;
+    line-height: 1.6;
+    padding-left: .5rem;
+}
+.ordenCompra-footer{
+    display: flex;
+    flex-direction: row;
+}
+.sistemaPagosCompras{
+    margin: 1rem;
+    width:50%;
+    margin-top: 15px;
+    font-size:.85rem;
+}
+.sistemaPagosNuevo{
+    display: flex;
+    margin-bottom: 1.2rem;
+    justify-content: flex-end;
+}
+.ordenCompra-paper{
+    width:50%;
+    margin-top: 15px;
+    font-size:.85rem;
+    margin-left:auto;
+}
+.ordenCompra-paper-bold{
+    font-weight: 500 !important;
+    font-size:.85rem !important;
+}
+.costoPromedio-container{
+    width: 90%;
+    display: flex;
+    gap:5px;
+}
+
+.indicadorEmail{
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 4px 6px;
+    font-size: 11px;
+    line-height: 1;
+    min-width: 14px;
+    text-align: center;
+}
+@media (max-width: 600px) {
+    .primary-button-admin .primary-button-admin-outlined {
+        max-width: 100%;
+      }
+
+      .admin-buttonContainer{
+        width: 100%;
+    }
+
+    .admin-actionsCell{
+        display:none !important;
+    }
+    .admin-drawer{
+        display:none !important;
+    }
+    .admin-appBar{
+        width: 100% !important;
+    }
+    .admin-mainLayoutContainer{
+        margin-top:13px;
+        z-index: 0;
+    }
+
+    .admin-mainContainer{
+        height: fit-content !important;
+    }
+
+    .proveedor_actions_container{
+        //background-color: magenta;
+        width: 100%;
+        flex-direction: column;
+    }
+
+    
+
+.income-button-admin {
+    width: 100%; 
+    max-width: unset;
+}
+.outcome-button-admin {
+    width: 100%; 
+    max-width: unset;
+}
+
+    .admin-mainLayoutContainer{
+        margin-top:13px;
+        z-index: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    .ordenCompra-paper{
+        width:100%;
+        margin-top: 25px;
+    }
+    .ordenCompra-footer{
+        flex-direction: column-reverse;
+    }
+    .sistemaPagosCompras{
+        margin: 0;
+        width:100%;
+        margin-top: 10px;
+        font-size:.85rem;
+    }
+}
+
+@media (min-width: 600px) {
+
+    .adminContainer{
+       width: auto;
+    }
+    .inside_table_container{
+        width: auto;
+    }
+}
+
+@media (min-width: 1200px) {
+    .Button_Container_admin {
+        flex-direction:row;
+    }
+    .saldoProveedor{
+        width: 50%;
+        justify-content: flex-end;
+    }
+}

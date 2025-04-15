@@ -262,7 +262,6 @@ const handleSubmitModificar = (event) => {
                     <InputLabel  id="ddl-marca-label"  sx={{paddingLeft:"10px"}}>Marca</InputLabel>
                     <Select
                     sx={{paddingLeft:"10px"}}
-                    disableUnderline
                     labelId="ddl-marca-label"
                     id="ddl-marca-select"
                     name="ddl-marca-select"
@@ -283,7 +282,6 @@ const handleSubmitModificar = (event) => {
                     <InputLabel id="ddl-modelo-label" sx={{paddingLeft:"10px"}}>Modelo</InputLabel>
                     <Select
                     sx={{paddingLeft:"10px"}}
-                    disableUnderline
                     labelId="ddl-modelo-label"
                     id="ddl-modelo-select"
                     name="ddl-modelo-select"
@@ -304,7 +302,6 @@ const handleSubmitModificar = (event) => {
                     <InputLabel id="ddl-anio-label" sx={{paddingLeft:"10px"}}>Año</InputLabel>
                     <Select
                     sx={{paddingLeft:"10px"}}
-                    disableUnderline
                     labelId="ddl-anio-label"
                     id="ddl-anio-select"
                     name="ddl-anio-select"

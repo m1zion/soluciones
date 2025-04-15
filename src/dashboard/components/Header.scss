@@ -1,0 +1,222 @@
+@import '../../styles/_vars.css';
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*padding: 0 24px;*/
+    /*border-bottom: 1px solid var(--very-light-pink);*/
+  }
+
+
+
+  .custom-textfield .MuiOutlinedInput-root:focus,
+  .custom-textfield .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: none !important;
+    border-width: 0 !important;
+    /* Add any other desired styling for the focus state */
+  }
+
+  .custom-textfield{
+    border: none !important;
+  }
+  .custom-textfield .MuiOutlinedInput-root {
+    border: none !important;
+  }
+  
+  .custom-textfield .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border: none !important;
+  }
+
+  .sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+  }
+  .menu {
+    display: none;
+  }
+  .nav-logo {
+    width: 130px;
+    object-fit:contain;
+  }
+  .input-search{
+    background-color: var(--text-input-field);
+    border: none;
+    border-radius: 8px;
+    height: 25px;
+    font-size: var(--sm);
+    padding: 6px;
+    width: 300px;
+  }
+  .navbar{
+    background-color: var(--black247);
+    display: flex;
+    flex-direction: column;
+  }
+  .navbar-left ul,
+  .navbar-right ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    height: 60px;
+  }
+  .navbar-right ul li {
+    padding: 5px;
+  }
+  .navbar-left {
+    display: flex;
+  }
+  .navbar-left ul {
+    margin-left: 12px;
+  }
+  .navbar-left ul li a,
+  .navbar-right ul li a {
+    text-decoration: none;
+    color: var(--very-light-pink);
+    /*border: 1px solid var(--white);*/
+    padding: 8px;
+    border-radius: 8px;
+  }
+  .navbar-left ul li a:hover,
+  .navbar-right ul li a:hover {
+    /*border: 1px solid var(--hospital-green);*/
+    color: var(--logo-green);
+  }
+  .navbar-email {
+    color: var(--very-light-pink);
+    font-size: var(--sm);
+    margin-right: 8px !important;
+    cursor: pointer;
+  }
+  .navbar-shopping-cart {
+    position: relative;
+  }
+  .navbar-shopping-cart1 {
+  }
+  .navbar-shopping-cart div {
+    width: 16px;
+    height: 16px;
+    background-color: var(--logo-green);
+    border-radius: 50%;
+    font-size: var(--sm);
+    font-weight: bold;
+    position: absolute;
+    top: -6px;
+    right: -3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .itemNumber {
+    width: 16px;
+    height: 16px;
+    background-color: var(--logo-green);
+    border-radius: 50%;
+    font-size: var(--sm) !important;
+    font-weight: bold !important;
+    position: absolute;
+    top: -6px;
+    right: -3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  .shopping_cart_icon{
+    color: var(--white);
+  }
+
+  .logout_icon, .account_icon {
+    width: 25px;
+    height: 25px;
+  }
+  .navbar-top{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .push{
+    margin-left: auto;
+    margin-right: 20px;
+  }
+
+
+
+.fg--search {
+  /*background: green;*/
+  position: relative;
+  width: 300px;
+}
+
+/*
+.fg--search input {
+  width: 100%;
+  padding: 20px 60px 20px 20px;
+  display: block;
+}
+*/
+.fg--search button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 20px;
+  position: absolute;
+  top: 7px;
+  right: 0;
+  /*padding: 18px 20px;*/
+  z-index: 2;
+  color: var(--gray-letter);
+}
+.button-menu{
+  display: flex;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.totalCompra{
+  color:var(--logo-green);
+  font-size: 14px !important;
+}
+/*
+.fg--search input:focus + button .fa-search {
+  color: red;
+}*/
+
+@media (max-width: 899px) {
+  .button-menu-secondary{
+    display: flex;
+    font-size: 14px;
+    font-family: inherit;
+    background-color: var(--black247-light) !important;
+  }
+}
+@media (max-width: 600px) {
+  .menu {
+    display: block;
+  }
+  .navbar-left ul {
+    display: none;
+  }
+  .navbar-email {
+    display: none;
+  }
+  .navbar-top input{
+  
+    display: none;
+  }
+  .fg--search {
+    display: none;
+  }
+  .fg--search button {
+    display: none;
+  }
+
+}
