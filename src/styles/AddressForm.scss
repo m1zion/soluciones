@@ -1,0 +1,35 @@
+@import './_vars.css';
+.input_select{
+    width: 90%;
+    background-color: white;
+    border-radius: 10px;
+    //border: 1px solid black;
+  }
+.address_Form {
+    padding-top: 16px;
+    margin: 10px auto;
+    border: 1px solid var(--border-green);
+    border-radius: 8px;
+    width: 50%;
+    padding-bottom: 20px;
+}
+.SubmitAddress{
+    background-color: var(--logo-green) !important;
+    color: var(--white);
+    font-weight: bold !important;
+}
+.AddressFormDefault{
+    width: 90%;
+
+}
+@media (max-width: 900px) {
+    .address_Form {
+        width: 95%;
+        margin: 10px 5px 0 5px;
+    }
+}
+@media (max-width: 600px) {
+    .SubmitAddress{
+        width: 90%;
+    }
+}

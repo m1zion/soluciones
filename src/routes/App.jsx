@@ -11,7 +11,23 @@ import Login from "../pages/Login";
 
 
 import Dashboard from '@dashboard/Dashboard.js';
+import ProductosAdm from '@dashboard/productos/ProductosAdm';
+import ProductosAdmFiltros from '@dashboard/productos/ProductosAdmFiltros';
+import ProductCreate from '@dashboard/productos/ProductCreate';
 
+import ProveedoresAdm from '@dashboard/proveedores/ProveedoresAdm';
+import ProveedorCreate from '@dashboard/proveedores/ProveedorCreate';
+import ProveedorDetail from '@dashboard/proveedores/ProveedorDetail';
+import ProveedorEdit from '@dashboard/proveedores/ProveedorEdit';
+//import ProveedorMovimientoEdit from '@dashboard/proveedores/ProveedorMovimientoEdit';
+//import ProveedorMovimientoCreate from '@dashboard/proveedores/ProveedorMovimientoCreate';
+
+import ConfiguradorAdm from '@dashboard/configurador/ConfiguradorAdm';
+import ConfiguradorCreate from '@dashboard/configurador/ConfiguradorCreate';
+import ConfiguradorEdit from '@dashboard/configurador/ConfiguradorEdit';
+import ConfiguradorDetail from '@dashboard/configurador/ConfiguradorDetail';
+import ConfiguradorMarcasAdm from '@dashboard/configurador/ConfiguradorMarcasAdm';
+import ConfiguradorModelosAdm from '@dashboard/configurador/ConfiguradorModelosAdm';
 
 import useInitialState from '@hooks/useInitialState';
 import AppContext from '@context/AppContext';
@@ -40,6 +56,23 @@ const App = () => {
                         <Route exact path="/newAccount" element={<Layout><NewAccount/></Layout>} />   
 
                         <Route exact path="/Dashboard" element={<LayoutAdmin><Dashboard/></LayoutAdmin>}/>
+                        <Route exact path="/Dashboard/Productos" element={<LayoutAdmin><ProductosAdm/></LayoutAdmin>} />
+                        <Route exact path="/Dashboard/ProductosF" element={<LayoutAdmin><ProductosAdmFiltros/></LayoutAdmin>} />
+                        <Route exact path="/Dashboard/Productos/create" element={<LayoutAdmin><ProductCreate/></LayoutAdmin>} />
+                        
+                        <Route exact path="/Dashboard/Proveedores" element={<LayoutAdmin><ProveedoresAdm/></LayoutAdmin>} />
+                        <Route exact path="/Dashboard/Proveedores/create" element={<LayoutAdmin><ProveedorCreate/></LayoutAdmin>} />
+                        <Route exact path="/Dashboard/Proveedores/detail/:proveedor_id" element={<LayoutAdmin><ProveedorDetail/></LayoutAdmin>} />
+                        <Route exact path="/Dashboard/Proveedores/edit/:proveedor_id" element={<LayoutAdmin><ProveedorEdit/></LayoutAdmin>} />
+                        {/*<Route exact path="/Dashboard/Proveedores/movimientoedit/:proveedorId/:proveedorMovimiento_id" element={<LayoutAdmin><ProveedorMovimientoEdit/></LayoutAdmin>} />
+                        <Route exact path="/Dashboard/Proveedores/movimientocreate/:proveedorId/:tipo" element={<LayoutAdmin><ProveedorMovimientoCreate/></LayoutAdmin>} />*/}
+
+                        <Route exact path="/Dashboard/Configurador" element={<LayoutAdmin><ConfiguradorAdm/></LayoutAdmin>} />
+                        <Route exact path="/Dashboard/Configurador/create" element={<LayoutAdmin><ConfiguradorCreate/></LayoutAdmin>} />
+                        <Route exact path="/Dashboard/Configurador/edit/:configurador_id" element={<LayoutAdmin><ConfiguradorEdit/></LayoutAdmin>} />
+                        <Route exact path="/Dashboard/Configurador/detail/:configurador_id" element={<LayoutAdmin><ConfiguradorDetail/></LayoutAdmin>} />
+                        <Route exact path="/Dashboard/ConfiguradorMarcas" element={<LayoutAdmin><ConfiguradorMarcasAdm/></LayoutAdmin>} />
+                        <Route exact path="/Dashboard/ConfiguradorModelos" element={<LayoutAdmin><ConfiguradorModelosAdm/></LayoutAdmin>} />
 
                     </Routes>
                 </BrowserRouter>

@@ -25,21 +25,6 @@ import AppContext from '@context/AppContext';
 export default function Dashboard() {
   const { state } = useContext(AppContext);
   const sections = {
-    menusyBanners:{
-      link: "../Dashboard/Menu",
-      title: "Menus y Banners",
-      icon: <ListIcon className='admin-dashboardIcon-lg'/>
-    },
-    productosDestacados:{
-      link: "../Dashboard/Destacados",
-      title: "Productos Destacados",
-      icon: <FavoriteBorderIcon className='admin-dashboardIcon-lg'/>
-    },
-    novedades:{
-      link: "../Dashboard/Novedades",
-      title: "Novedades",
-      icon: <FiberNewIcon className='admin-dashboardIcon-lg'/>
-    },
     ofertas:{
       link: "../Dashboard/Ofertas",
       title: "Ofertas",
@@ -80,11 +65,6 @@ export default function Dashboard() {
       title: "Devoluciones de venta",
       icon: <AssignmentReturnIcon className='admin-dashboardIcon-lg'/>
     },
-    abandonados: {
-      link: "../Dashboard/Abandonados",
-      title: "Carritos abandonados",
-      icon: <HourglassBottomIcon className='admin-dashboardIcon-lg'/>
-    },
     proveedores: {
       link: "../Dashboard/Proveedores",
       title: "Proveedores",
@@ -109,7 +89,7 @@ export default function Dashboard() {
   
   // Role-based permissions
   const rolePermissions = {
-    diseño: [sections.menusyBanners,sections.productosDestacados,sections.novedades,sections.ofertas],
+    diseño: [sections.ofertas],
     almacen: [sections.productos],
     compras: [sections.compras, sections.devolucionesCompra, sections.consignaciones],
     ventas: [sections.ventas, sections.devolucionesVenta, sections.abandonados],
@@ -121,8 +101,8 @@ export default function Dashboard() {
       sections.proveedores, sections.clientes
     ],
     admin: [
-      sections.menusyBanners,sections.productos, sections.compras, sections.devolucionesCompra, sections.consignaciones,
-      sections.ventas, sections.devolucionesVenta, sections.abandonados,
+      sections.productos, sections.compras, sections.devolucionesCompra, sections.consignaciones,
+      sections.ventas, sections.devolucionesVenta, 
       sections.proveedores, sections.clientes, sections.usuarios, sections.configurador
     ],
     proveedor: [
@@ -130,7 +110,6 @@ export default function Dashboard() {
     ],
   };
   
-
 
   return (
     <Box className="adminContainer" sx={{ backgroundColor: '#f5f5f5' }}>

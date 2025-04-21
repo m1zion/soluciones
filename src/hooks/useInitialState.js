@@ -1875,7 +1875,9 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         localStorage.removeItem('totalCompraL');  // Clear the total purchase if necessary
         localStorage.removeItem('confOrderIdL');  // Clear the cart if necessary
         localStorage.removeItem('cartOrderIdL');  // Clear the total purchase if necessary
+        localStorage.removeItem('proveedorIdL');  // Clear the total purchase if necessary
         localStorage.removeItem('userIdL');  // Clear the total purchase if necessary
+        localStorage.removeItem('userName');  // Clear the total purchase if necessary
     };
 
     return {
