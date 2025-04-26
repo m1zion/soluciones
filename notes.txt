@@ -119,3 +119,54 @@ Estado Inicial cuando Inicia Sesion desde 0
     "medioRangoO": [],
     "setComponentesO": []
 }
+
+
+
+
+
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (1, false, 'Mirrorlink', 'Mirror Link', 'Mirrorlink', false, '', 'Boolean', 'Boolean', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (1, false, 'bluetooth', 'Bluetooth', 'bluetooth', false, '', 'Boolean', 'Boolean', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (1, false, 'usb', 'USB', 'usb', false, '', 'Boolean', 'Boolean', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (1, false, 'mecanismo', 'Mecanismo', 'mecanismo', false, '', 'Boolean', 'Boolean', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (1, false, 'tipoCategoria', 'Tipo Categoria', 'tipoCategoria', false, '', 'TextField', 'TextField', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (1, false, 'subGrupo', 'Subgrupo', 'subgrupo', false, '', 'TextField', 'TextField', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (1, false, 'pantalla', 'Pantalla', 'pantalla', false, '', 'Boolean', 'Boolean', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (1, false, 'motorizado', 'Motorizado', 'motorizado', false, '', 'Boolean', 'Boolean', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (1, false, 'Dines', 'Dines', 'Dines', false, '', 'TextField', 'TextField', '', '');
+
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (23, false, 'numeroPerillas', 'Numero Perillas', 'numeroPerillas', false, '', 'TextField', 'TextField', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (23, false, 'tipoCategoria', 'Tipo Categoria', 'tipoCategoria', false, '', 'TextField', 'TextField', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (23, false, 'subgrupo', 'Subgrupo', 'subgrupo', false, '', 'TextField', 'TextField', '', '');
+
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (20, false, 'masterPack', 'MasterPack', 'masterPack', false, '', 'TextField', 'TextField', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (20, false, 'codigoBarrasMasterPack', 'Codigo Barras MasterPack', 'codigoBarrasMasterPack', false, '', 'TextField', 'TextField', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (20, false, 'bandas', 'Bandas', 'bandas', false, '', 'TextField', 'TextField', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (20, false, 'tipoCategoria', 'Tipo Categoria', 'tipoCategoria', false, '', 'TextField', 'TextField', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (20, false, 'subgrupo', 'Subgrupo', 'subgrupo', false, '', 'TextField', 'TextField', '', '');
+
+
+select * from "Accesorios"
+	--select * from categories
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (26, false, 'tipoCategoria', 'Tipo Categoria', 'tipoCategoria', false, '', 'TextField', 'TextField', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (26, false, 'Familia', 'Familia', 'Familia', false, '', 'TextField', 'TextField', '', '');
+INSERT INTO public."CamposProductos"("categoryId", required, "campoId", label, name, "autoComplete", "onChange", type, type2, error, value)
+	VALUES (26, false, 'openShow', 'OpenShow', 'openShow', false, '', 'Boolean', 'Boolean', '', '');

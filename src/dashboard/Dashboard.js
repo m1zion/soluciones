@@ -40,35 +40,10 @@ export default function Dashboard() {
       title: "Productos",
       icon: <SpeakerIcon className='admin-dashboardIcon-lg'/>
     },
-    compras: {
-      link: "../Dashboard/Compras",
-      title: "Ordenes de compra",
-      icon: <AddShoppingCart className='admin-dashboardIcon-lg'/>
-    },
-    devolucionesCompra: {
-      link: "../Dashboard/Devoluciones",
-      title: "Devoluciones de compra",
-      icon: <AssignmentReturnIcon className='admin-dashboardIcon-lg'/>
-    },
-    consignaciones: {
-      link: "../Dashboard/Consignaciones",
-      title: "Ordenes de consignación",
-      icon: <ProductionQuantityLimitsIcon className='admin-dashboardIcon-lg'/>
-    },
     ventas: {
       link: "../Dashboard/Ventas",
       title: "Ordenes de venta",
       icon: <ShoppingCartIcon className='admin-dashboardIcon-lg'/>
-    },
-    devolucionesVenta: {
-      link: "../Dashboard/DevolucionesVentas",
-      title: "Devoluciones de venta",
-      icon: <AssignmentReturnIcon className='admin-dashboardIcon-lg'/>
-    },
-    proveedores: {
-      link: "../Dashboard/Proveedores",
-      title: "Proveedores",
-      icon: <EngineeringIcon className='admin-dashboardIcon-lg'/>
     },
     clientes: {
       link: "../Dashboard/Clientes",
@@ -91,22 +66,14 @@ export default function Dashboard() {
   const rolePermissions = {
     diseño: [sections.ofertas],
     almacen: [sections.productos],
-    compras: [sections.compras, sections.devolucionesCompra, sections.consignaciones],
-    ventas: [sections.ventas, sections.devolucionesVenta, sections.abandonados],
-    devoluciones: [sections.devolucionesVenta],
-    recuperacion: [sections.abandonados],
+    ventas: [sections.ventas],
     contabilidad: [
-      sections.ventas, sections.devolucionesVenta, sections.abandonados,
-      sections.compras, sections.devolucionesCompra, sections.consignaciones, 
-      sections.proveedores, sections.clientes
+      sections.ventas, sections.clientes
     ],
     admin: [
-      sections.productos, sections.compras, sections.devolucionesCompra, sections.consignaciones,
-      sections.ventas, sections.devolucionesVenta, 
-      sections.proveedores, sections.clientes, sections.usuarios, sections.configurador
-    ],
-    proveedor: [
-      sections.proveedores
+      sections.productos,
+      sections.ventas, 
+      sections.clientes, sections.usuarios, sections.configurador
     ],
   };
   

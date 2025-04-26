@@ -20,25 +20,47 @@ const PopupMarcasCreate = (props) => {
     }   
     const handleSubmit = async(event) => {
         event.preventDefault();
-        if (!marca) { setErrorMarca(true); } else { setErrorMarca(false); }
-        if (!marca) {
-            return;
+         if (!marca) { 
+            setErrorMarca(true); 
+            return; 
+        } else { 
+            setErrorMarca(false); 
         }
-        var marcaData={marca: marca.toUpperCase().trim()};
-        const APIPost = API+"configurador/catalogoMarcas/";
-        const { success, data, error } = await usePost2(APIPost, marcaData);
-        if (success){
-            setSuccess(true);
-            //setErrMsg("Registro Guardado");
-            setMarca('');
-            props.setTrigger(false);
-            alert('Registro Guardado.')
-        } else {
-            setSuccess(false);
-            setErrMsg(error || "Error occurred during the request");
-        }
+
+        const marcaUpper = marca.toUpperCase().trim();
+        const checkAPI = `${API}configurador/catalogoMarcas/?marca=${marcaUpper}`;
+
+        try {
+            const response = await fetch(checkAPI);
+            if (response.ok) {
+                const data = await response.json();
+                const alreadyExists = data.marcas?.some(m => m.marca.toUpperCase() === marcaUpper);
+                if (alreadyExists) {
+                    alert("La marca ya existe.");
+                    return;
+                }
+            }
+            if (response.status !== 404 && !response.ok) {
+                throw new Error("Error al verificar la marca.");
+            }
+            const marcaData = { marca: marcaUpper };
+            const APIPost = API + "configurador/catalogoMarcas/";
+            const { success, data, error } = await usePost2(APIPost, marcaData);
+            if (success){
+                setSuccess(true);
+                setMarca('');
+                props.setTrigger(false);
+                alert('Registro Guardado.')
+            } else {
+                setSuccess(false);
+                setErrMsg(error || "Error occurred during the request");
+            }
+        } catch (err) {
+            console.error(err);
+            setErrMsg("Ocurrió un error al validar la marca.");
+        }       
     }
-     return (
+    return (
         (props.trigger) ? (
          <Box className="popup">
             <Box className='popup-inner'>

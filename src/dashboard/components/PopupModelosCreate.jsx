@@ -10,7 +10,6 @@ const APIMARCAS = API+'configurador/catalogoMarcas/?offset=0&limit=50';
 const PopupModelosCreate = (props) => {
     const form = useRef(null);
     //ITEMS VARIABLES
-    const [id, setId] = useState('');
     const [marca, setMarca] = useState('');
     const [modelo, setModelo] = useState('');    
     const [success, setSuccess] = useState(false);
@@ -29,7 +28,6 @@ const PopupModelosCreate = (props) => {
             setMarcas(marcasFetchData.marcas)
         }
     }, [marcasFetchData,errorMa]);
-
     const handleSubmitReturn = (event) => {
         event.preventDefault();
         setMarca('');
@@ -41,44 +39,58 @@ const PopupModelosCreate = (props) => {
     const handleMarca = (event) => {
         setMarca(event.target.value);
     };
-  
-
     const handleSubmit = async(event) => {
         event.preventDefault();
         if (!marca) { setErrorMarca(true); } else { setErrorMarca(false); }
         if (!modelo) { setErrorModelo(true); } else { setErrorModelo(false); }
-        if (!marca || !modelo) {
-            return;
-        }
-        var modeloData={marca,modelo:modelo.toUpperCase().trim()};
-        const APIPost = API+"configurador/catalogoModelos/";
-        const { success, data, error } = await usePost2(APIPost, modeloData);
-        if (success){
-            setSuccess(true);
-            setMarca(''); 
-            setModelo('');
-            setErrorModelo(false);
-            setErrorMarca(false);
-            props.setTrigger(false);
-            alert('Registro Guardado.')
-        } else {
-            setSuccess(false);
-            setErrMsg(error || "Error occurred during the request");
-        }
+        if (!marca || !modelo) { return;  }
+        const modeloUpper = modelo.toUpperCase().trim();
+        const checkAPI = `${API}configurador/catalogoModelos/?modelo=${modeloUpper}`;
+        try{
+            const response = await fetch(checkAPI);
+            if (response.ok) {
+                const data = await response.json();
+                // Filter by marca as well if needed
+                const alreadyExists = data.modelos.some(m => m.marca.toUpperCase() === marca.toUpperCase());
+                if (alreadyExists) {
+                    alert("El modelo ya existe.");
+                    return;
+                }
+            }
+            if (response.status !== 404 && !response.ok) {
+                throw new Error("Error al verificar el modelo.");
+            }
+            const modeloData = { marca, modelo: modeloUpper };
+            const APIPost = API+"configurador/catalogoModelos/";
+            const { success, data, error } = await usePost2(APIPost, modeloData);
+            if (success){
+                setSuccess(true);
+                setMarca(''); 
+                setModelo('');
+                setErrorModelo(false);
+                setErrorMarca(false);
+                props.setTrigger(false);
+                alert('Registro Guardado.')
+            } else {
+                setSuccess(false);
+                setErrMsg(error || "Error occurred during the request");
+            }
+        } 
+        catch (err) {
+            console.error(err);
+            setErrMsg("Ocurrió un error al validar el modelo.");
+        }        
     }
-
-
-      if (!success && (errorMa)) {
-        return  (props.trigger) ? (
-            <Box className="popup">
-            <Box className='popup-inner'>
-                <IconButton onClick={handleSubmitReturn} className='close-btn'><CloseIcon/></IconButton>
-                <Alert sx={{marginTop:'30px'}} severity={(errMsg && !success) ? "error" : "info"}  className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive" >{errMsg}</Alert>
-               </Box>
-               </Box> 
-            ) : ""
-      }
-
+    if (!success && (errorMa)) {
+    return  (props.trigger) ? (
+        <Box className="popup">
+        <Box className='popup-inner'>
+            <IconButton onClick={handleSubmitReturn} className='close-btn'><CloseIcon/></IconButton>
+            <Alert sx={{marginTop:'30px'}} severity={(errMsg && !success) ? "error" : "info"}  className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive" >{errMsg}</Alert>
+            </Box>
+            </Box> 
+        ) : ""
+    }
     return (
         (props.trigger) ? (
          <Box className="popup">
@@ -145,4 +157,4 @@ const PopupModelosCreate = (props) => {
         ) : ""
      );     
  }
- export default PopupModelosCreate;
+export default PopupModelosCreate;

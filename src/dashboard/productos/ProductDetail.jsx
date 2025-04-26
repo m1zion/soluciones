@@ -27,8 +27,10 @@ const ProductDetail = () => {
             if(categoriasFetchData.products){
                 //setSuccess(true);
                 //setErrMsg("");
+                console.log("ENtra a fetch");
                 const arrayCategorias = categoriasFetchData.products;
                 const urlAPI = arrayCategorias.find(item => item.id === parseInt(idCategory));
+                console.log(urlAPI);
                 if(urlAPI && urlAPI.url){
                     const urlLiga = API+urlAPI.url+'getmodel?administrador=true&model='+modelo;    
                         console.log(urlLiga);               
