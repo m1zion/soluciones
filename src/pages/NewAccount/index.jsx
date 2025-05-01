@@ -43,6 +43,22 @@ const NewAccount = () => {
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState('');
+
+
+
+   const [ready, setReady] = useState(false);
+    const form = useRef(null);
+
+    useEffect(() => {
+      const img = new Image();
+      img.src = require('../../assets/images/loginbg.jpg'); // adjust path if needed
+      img.onload = () => {
+        setTimeout(() => {
+          setReady(true);
+        }, 500); // small delay after image load (optional)
+      };
+    }, []);
+
   useEffect(() => {
     setValidName(USER_REGEX.test(nombre));
   }, [nombre])
@@ -122,7 +138,6 @@ const NewAccount = () => {
       console.error('Error en el registro:', error);
     }
   }
-  const form = useRef(null);
   const [values, setValues] = React.useState({
     password: '',
     showPassword: false,
@@ -147,18 +162,23 @@ const NewAccount = () => {
   const handleMouseDownPassword_confirm = (event) => {
     event.preventDefault();
   };
+
+  if (!ready) {
+    return <div style={{ color: "white", textAlign: "center", marginTop: "20%" }}>Loading...</div>;
+  }
+
   return (
     <Box className="LoginBoxContainer">
       <Stack className="LoginFormContainer" spacing={2} direction = {{xs:"column", md:"column"}} >
         <Box
-          className="Form_Container"
+          className="Form_Container_transparent"
           component="form"
           autoComplete="off"
           ref={form}
           noValidate
         > 
           <Stack alignItems="center" spacing={2}>
-            <Typography className="NewAccountTitle" variant="h6">Crear nueva cuenta</Typography>
+            <Typography className="NewAccountTitle" sx={{color:"white"}} variant="h6">Crear nueva cuenta</Typography>
             <Alert sx={{width:'90%'}} severity={(errMsg) ? "error" : "info"}  className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive" >{errMsg}</Alert>  
             <TextField className="InputBasic"
               error={errorCorreo}
@@ -168,9 +188,12 @@ const NewAccount = () => {
               size="small"
               name="correo"
               autoComplete='off'
-              onChange={e=>setCorreo(e.target.value)}>
+              onChange={e=>setCorreo(e.target.value)}
+              variant="filled"
+            >
             </TextField>   
             <TextField 
+              variant="filled"
               error={errorPwd}
               className="InputBasic"
               required
@@ -214,6 +237,7 @@ const NewAccount = () => {
             </Alert>      )}
 
             <TextField className="InputBasic"
+                variant="filled"
                 required
                 error={errorPwd}
                 id="confirm_pwd" 
@@ -251,7 +275,8 @@ const NewAccount = () => {
             </Alert>
             )}
             <TextField className="InputBasic"
-              required
+                required
+                variant="filled"
                 error={errorTelefono}                             
                 id="telefono" 
                 label={msgTelefono}
@@ -264,6 +289,7 @@ const NewAccount = () => {
             ></TextField> 
             <TextField className="InputBasic"
                 required
+                variant="filled"
                 id="nombre_usuario" 
                 label="Nombre" 
                 size="small"
@@ -276,6 +302,7 @@ const NewAccount = () => {
             <TextField className="InputBasic"
               error={errorApellidoPaterno}
               required
+              variant="filled"
               id="apellidoPaterno" 
               label={msgApellidoPaterno} 
               size="small"
@@ -287,6 +314,7 @@ const NewAccount = () => {
             ></TextField> 
             <TextField className="InputBasic"
               required
+              variant="filled"
               error={errorApellidoMaterno}
               id="apellidoMaterno" 
               label={msgApellidoMaterno} 
@@ -296,9 +324,14 @@ const NewAccount = () => {
               value={apellidoMaterno}
               onChange={e=>setApellidoMaterno(e.target.value)}
               inputProps={{maxLength:100 }}
-            ></TextField>  
+            ></TextField> 
             <FormGroup className="NewAccountLabel">
-                <FormControlLabel control={<Checkbox color="secondary" />} label="He leido y acepto la politica de privacidad" />
+                <FormControlLabel control={<Checkbox sx={{
+                  color: "white",
+                  '&.Mui-checked': {
+                    color: "white",
+                  },
+                }} />} label="He leido y acepto la politica de privacidad" />
             </FormGroup>
             <Box sx={{width:'100%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop:"3rem !important"}}>
               <Button variant="contained"  sx={{textTransform: 'none'}} onClick={handleSubmit} className="primary-button-login" >Registrarse</Button>

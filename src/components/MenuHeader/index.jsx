@@ -90,7 +90,7 @@ const MenuHeader = () => {
     }}>
         <Box>  
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                <Typography className='totalCompra'>{formatter.format(15)}</Typography>{/*state.totalCompra*/}
+                <Typography className='totalCompra'>{state.totalCompra}</Typography>{/*state.totalCompra*/}
                 <Tooltip title="Account settings">
                     <IconButton
                         onClick={handleClick}
@@ -254,12 +254,7 @@ const MenuHeader = () => {
                     {
                         data.map((item) => (
                         <ListItemButton
-
-
-
                             onClick={item.onClick}
-
-
                             key={item.label}
                             sx={{ py: 0, minHeight: 32, color: 'rgba(255,255,255,.8)' }}
                         >

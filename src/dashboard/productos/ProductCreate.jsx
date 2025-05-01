@@ -31,7 +31,6 @@
  import AppContext from '@context/AppContext';
  const API = process.env.REACT_APP_API_URL;
  const APICATEGORIAS = API+'categories/?offset=0&limit=100';
- const APIPROVEEDORES = API+'proveedores/?offset=0&limit=10';
  const VisuallyHiddenInput = styled('input')({
      clip: 'rect(0 0 0 0)',
      clipPath: 'inset(50%)',
@@ -61,11 +60,10 @@
     const [Modelo, setModelo] = useState('');
     const [precioPromoTotal, setPrecioPromoTotal] = useState('');
     const [precio, setPrecio] = useState('');
-    const [fechaPromocion, setFechaPromocion] = useState('');
     const [costoInstalador, setCostoInstalador] = useState('');
     const [tipoMoneda, setTipoMoneda] = useState('');
     const [claveSat, setClaveSat] = useState('');
-    const [proveedorId, setProveedorId] = useState('');
+    const [proveedorId, setProveedorId] = useState('1'); //Ponemos por default el provceedor ID 1
     const [peso, setPeso] = useState('');
     const [alto, setAlto] = useState('');
     const [largo, setLargo] = useState('');
@@ -98,7 +96,6 @@
     const [errorModelo, setErrorModelo] = useState(false);
     const [errorPrecioPromoTotal, setErrorPrecioPromoTotal] = useState(false);
     const [errorPrecio, setErrorPrecio] = useState(false);
-    const [errorFechaPromocion, setErrorFechaPromocion] = useState(false);
     const [errorCostoInstalador, setErrorCostoInstalador] = useState(false);
     const [errorTipoMoneda, setErrorTipoMoneda] = useState(false);
     const [errorClaveSat, setErrorClaveSat] = useState(false);
@@ -131,24 +128,7 @@
          }
      }, [categoriasFetchData,errorC]);
      const categorias = categoriasFetchData.products;
-    //========================CONSULTAMOS LOS PROVEEDORES==========================================
-    const { data: proveedoresFetchData, loading: loadingP, error:errorP } = useGet7V(APIPROVEEDORES,state.token);
-    useEffect(() => {
-        if(errorP){
-            setSuccess(false);
-            setErrMsg("Error al consultar Proveedores");
-        }
-    }, [proveedoresFetchData,errorP]);
-    const proveedores = proveedoresFetchData.proveedores;
-    if (Array.isArray(proveedores)) {
-        proveedores.sort((a, b) => {
-            const nameA = a.nombre.toUpperCase(); 
-            const nameB = b.nombre.toUpperCase();
-            if (nameA < nameB) { return -1; }
-            if (nameA > nameB) { return 1; }
-            return 0;
-        });
-    }
+
    //=============================================================================================
      const [success, setSuccess] = useState(true);
      if (Array.isArray(categorias)) {
@@ -362,7 +342,6 @@
          /*if (!Modelo) { setErrorModelo(true); } else { setErrorModelo(false); }*/
          if (!precioPromoTotal) { setErrorPrecioPromoTotal(true); } else { setErrorPrecioPromoTotal(false); }
          if (!precio) { setErrorPrecio(true); } else { setErrorPrecio(false); }
-         if (!fechaPromocion) { setErrorFechaPromocion(true); } else { setErrorFechaPromocion(false); }
          if (!tipoMoneda) { setErrorTipoMoneda(true); } else { setErrorTipoMoneda(false); }
          if (!claveSat) { setErrorClaveSat(true); } else { setErrorClaveSat(false); }
          if (!proveedorId) { setErrorProveedorId(true); } else { setErrorProveedorId(false); }
@@ -419,7 +398,6 @@
         };        
         if (precioPromoTotal !== "") { productData.precioPromoTotal = precioPromoTotal; }
         if (costoInstalador !== "") { productData.costoInstalador = costoInstalador; }
-        //if (fechaPromocion !== "") { productData.fechaPromocion = fechaPromocion; }
         if (tipoMoneda !== "") { productData.tipoMoneda = tipoMoneda; }
         if (peso !== "") { productData.peso = peso; }
         if (alto !== "") { productData.alto = alto; }
@@ -597,18 +575,6 @@
                              onChange={e=>setMarca(e.target.value)}
                              inputProps={{maxLength:50 }}
                          ></TextField>
-                         {/*<TextField className="InputBasic"
-                             error={errorModelo}
-                             required
-                             id="Modelo" 
-                             label="Modelo" 
-                             size="small"
-                             name="Modelo"
-                             autoComplete='on'
-                             value={Modelo}
-                             onChange={e=>setModelo(e.target.value)}
-                             inputProps={{maxLength:50 }}
-                            ></TextField>*/}
                          <TextField className="InputBasic"
                              /*error={errorPrecioPromoTotal}*/
                              id="precioPromoTotal" 
@@ -635,24 +601,6 @@
                              inputProps={{maxLength:50 }}
                          ></TextField>
                          <TextField className="InputBasic"
-                             /*error={errorFechaPromocion}*/
-                             id="fechaPromocion" 
-                             label="Fecha promoción" 
-                             size="small"
-                             name="fechaPromocion"
-                             autoComplete='off'
-                             value={fechaPromocion}
-                             type="date"
-                             onChange={e=>setFechaPromocion(e.target.value)}
-                             InputLabelProps={{
-                                 shrink: true,
-                             }}
-                             InputProps={{
-                                 placeholder: '',
-                                 maxLength: 50,
-                             }}
-                         ></TextField>
-                         <TextField className="InputBasic"
                              /*error={errorCostoInstalador}*/
                              id="costoInstalador" 
                              label="Costo Instalación" 
@@ -663,8 +611,7 @@
                              type="number"
                              onChange={e=>setCostoInstalador(e.target.value)}
                              inputProps={{maxLength:50 }}
-                         ></TextField>
- 
+                         ></TextField> 
  
                          <FormControl error={errorTipoMoneda} className="InputBasic"  size="small" variant="outlined">
                              <InputLabel  id="ddl-tipoMoneda-label">Moneda *</InputLabel>
@@ -692,39 +639,6 @@
                              onChange={e=>setClaveSat(e.target.value)}
                              inputProps={{maxLength:50 }}
                          ></TextField>
-                        <FormControl   error={errorProveedorId} className="InputBasic"  size="small" variant="outlined">
-                            <InputLabel  id="ddl-marca-label">Proveedor *</InputLabel>
-                            <Select 
-                                id="proveedorId"
-                                name="proveedorId"
-                                value={proveedorId}
-                                label="ProveedorId"
-                                onChange={e=>setProveedorId(e.target.value)}
-                                MenuProps={{style: {zIndex: 2001}}}
-                            >
-                                {
-                                    proveedores && proveedores !== undefined ?
-                                    proveedores.map((proveedor,index) =>{
-                                        return (
-                                            <MenuItem key={index} value={proveedor.id}>{proveedor.nombre}</MenuItem>
-                                        )
-                                    })
-                                    : "No hay proveedores"
-                                }
-                            </Select>
-                        </FormControl> 
-                        {/*<TextField className="InputBasic"
-                             error={errorProveedorId}
-                             required
-                             id="proveedorId" 
-                             label="Proveedor" 
-                             size="small"
-                             name="proveedorId"
-                             autoComplete='on'
-                             value={proveedorId}
-                             onChange={e=>setProveedorId(e.target.value)}
-                             inputProps={{maxLength:50 }}
-                         ></TextField>*/}
                          <Box className="formDivider">
                              <Typography className="formDivider-text">Empaque principal</Typography>
                              <Box className="formDivider-line"></Box>

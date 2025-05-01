@@ -37,17 +37,25 @@
 .NewAccountLabel{
     width: 80%;
     margin-top: 32px !important;
+    color: white;
 }
 
 .NewAccountSignIn{
     margin-top: 32px !important;
-    color: var(--gray-letter);
+    color: var(--white);
 }
 .NewAccountSignIn a {
     color: var(--logo-green-darker2);
     text-decoration: none;
 }
-
+.NewAccountSignInW{
+    margin-top: 32px !important;
+    color: var(--white);
+}
+.NewAccountSignInW a {
+    color: var(--white);
+    text-decoration: none;
+}
 .instructions {
     border-radius: 0.5rem;
     color: black !important;

@@ -155,7 +155,6 @@ const Login = () => {
   const handleRegister = categoria =>{
     navigate('/newAccount');
   }
-  console.log(user);
   return (
     <Box className="LoginBoxContainer" >
       <Stack className="LoginFormContainer" spacing={2} direction = {{xs:"column", md:"column"}} >
@@ -163,14 +162,14 @@ const Login = () => {
         {loading && <Box className="Form_ContainerLoading"> <CircularProgress /></Box>}
         {(!loading && !error && (user == '' || !user)) &&
         <Box
-          className="Form_Container"
+          className="Form_Container_transparent"
           component="form"
           autoComplete="off"
           ref={form}
           noValidate
         >
-          <Stack alignItems="center" spacing={2} >             
-            <Typography className="NewAccountTitle" sx={{fontWeight: 600}} variant="h6">Iniciar Sesión</Typography>
+            <Stack alignItems="center" spacing={2} >             
+            <Typography className="NewAccountTitle" sx={{color:"white"}} variant="h6">Iniciar Sesión</Typography>
             <TextField className="InputBasic"
                 required
                 id="email" 
@@ -181,10 +180,12 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} 
                 autoComplete='on'
+                variant="filled"
                 >
             </TextField>
             <TextField
                 className="InputBasic"
+                variant="filled"
                 required
                 size='small'
                 name="password"   
@@ -215,7 +216,7 @@ const Login = () => {
             <Box sx={{width:'100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
               <Button variant="contained" sx={{textTransform: 'none'}}  onClick={handleRegister} className="NextStepButtonSecondaryFull" >Registrarse</Button>
             </Box>
-            <Typography variant="body2" className="NewAccountSignIn"><a href="/ForgotPassword">¿Olvidaste tu contraseña? </a></Typography>
+            <Typography variant="body2" className="NewAccountSignInW"><a href="/ForgotPassword">¿Olvidaste tu contraseña? </a></Typography>
           </Stack>
         </Box>
       } 

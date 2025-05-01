@@ -22,43 +22,18 @@ import PersonIcon from '@mui/icons-material/Person';
 import './Administrador.scss';
 import { Link } from 'react-router-dom';
 const sections = {
-  menusyBanners: { text: "Menus y Banners", icon: <ListIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Menu" },
-  productosDestacados: { text: "Productos destacados", icon: <FavoriteBorderIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Destacados" },
-  novedades: { text: "Novedades", icon: <FiberNewIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Novedades" },
-  ofertas: { text: "Ofertas", icon: <DiscountIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Ofertas" },
   categorias: {text:"Categorias", icon: <CategoryIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Categorias" },
   productos: { text: "Productos", icon: <SpeakerIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Productos" },
-  compras: { text: "Ordenes de compra", icon: <AddShoppingCartIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Compras" },
-  devolucionesCompra: { text: "Devoluciones de compra", icon: <AssignmentReturnIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Devoluciones" },
-  consignaciones: { text: "Ordenes de consignación", icon: <ProductionQuantityLimitsIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Consignaciones" },
   ventas: { text: "Ordenes de venta", icon: <ShoppingCartIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Ventas" },
-  devolucionesVenta: { text: "Devoluciones de venta", icon: <RemoveShoppingCartIcon className='admin-dashboardIcon'/>, path: "../Dashboard/DevolucionesVentas" },
-  abandonados: { text: "Carritos abandonados", icon: <HourglassBottomIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Abandonados" },
-  proveedores: { text: "Proveedores", icon: <EngineeringIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Proveedores" },
   clientes: { text: "Clientes", icon: <PeopleIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Clientes" },
   usuarios: { text: "Usuarios", icon: <PersonIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Usuarios" },
-  estadisticas: { text: "Estadisticas", icon: <BarChartIcon  className='admin-dashboardIcon'/>, path: "../Dashboard/Estadisticas" },
   configurador: { text: "Configurador", icon: <LayersIcon className='admin-dashboardIcon'/>, path: "../Dashboard/Configurador" }
 };
 // Your rolePermissions object from before
 const rolePermissions = {
-  diseño: [sections.menusyBanners, sections.productosDestacados, sections.novedades, sections.ofertas],
-  almacen: [sections.productos],
-  compras: [sections.compras, sections.devolucionesCompra, sections.consignaciones],
-  ventas: [sections.ventas, sections.devolucionesVenta, sections.abandonados],
-  devoluciones: [sections.devolucionesVenta],
-  recuperacion: [sections.abandonados],
-  contabilidad: [
-    sections.ventas, sections.devolucionesVenta, sections.abandonados,
-    sections.compras, sections.devolucionesCompra, sections.consignaciones, 
-    sections.proveedores, sections.clientes
-  ],
   admin: [
-    sections.menusyBanners,sections.productos, sections.compras, sections.devolucionesCompra, sections.consignaciones,
-    sections.ventas, sections.devolucionesVenta, sections.abandonados,
-    sections.proveedores, sections.clientes, sections.usuarios, sections.configurador
-  ],
-  proveedor: [sections.proveedores]
+    sections.productos, sections.ventas, sections.clientes, sections.usuarios, sections.configurador
+  ]
 };
 
 

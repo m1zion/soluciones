@@ -7,6 +7,7 @@ import usePost2V from '@hooks/usePost2V';
 import useDelete2V from '@hooks/useDelete2V';
 import usePut2V from '@hooks/usePut2V'; 
 import { useNavigate } from "react-router-dom";
+import GradientCircularProgress from "./GradientCircularProgress";
 const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
 const Configurador1 = () => {
   const { state,fetchOrderData,setConfigInicial} = useContext(AppContext);
@@ -228,7 +229,16 @@ const handleSubmitModificar = (event) => {
   navigate("/Configurador4");
 }
   return (
-    <Box className="Configurador_Container">
+
+     <React.Fragment>
+            { (state.userName == 'Invitado') ? 
+              <Box className="verify_Container"> 
+                <Typography variant="h6" >Favor de Iniciar Sesión</Typography>
+                <Typography variant="body1" className="NewAccountSignIn"><a href="/Login">Iniciar Sesión / Registrarse</a></Typography>
+              </Box> :
+            
+            
+             <Box className="Configurador_Container">
       <Box className="hero-image"></Box>  
       <Stepper activeStep={0} alternativeLabel 
       sx={{
@@ -341,6 +351,11 @@ const handleSubmitModificar = (event) => {
              </Stack>
       </form>
     </Box>
+    
+    }
+            
+      </React.Fragment>
+   
   )
 }
 export default Configurador1;

@@ -1,14 +1,22 @@
 @import '../../styles/_vars.css';
 .LoginBoxContainer{
   display: flex;
-  margin-top: 8rem;
+  margin-top: 5rem;
   justify-content: space-around;
-  //margin-right: 2px;
+    
+  //min-height: 0;
+  flex: 1 1 auto;
+  background-image: url("../../assets/images/loginbg.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .LoginFormContainer{
   width: 45%;
   max-width: 460px;
-  margin-bottom: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  justify-content: center;
 }
 .LoginFB{
   width: 45%;
