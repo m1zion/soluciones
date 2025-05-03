@@ -90,7 +90,7 @@ const MenuHeader = () => {
     }}>
         <Box>  
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                <Typography className='totalCompra'>{state.totalCompra}</Typography>{/*state.totalCompra*/}
+                <Typography className='totalCompra'>{formatter.format(state.totalCompra)}</Typography>
                 <Tooltip title="Account settings">
                     <IconButton
                         onClick={handleClick}

@@ -574,6 +574,10 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             ]);    
             const cartData = await cartResponse.json();
             const confData = await confResponse.json();
+            
+            console.log(APICart);
+            console.log(APIConf);
+            console.log(payloadLogin.token);
             const cartOrderId = cartData.orders?.[0]?.id;
             const confOrderId = confData.orders?.[0]?.id;
             //console.log("Vemos si me trajo algun dato");
