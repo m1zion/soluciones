@@ -1,5 +1,5 @@
 import React, {useRef, useContext,useState, useEffect} from "react";
-import { Box, Typography, Stack, Button } from "@mui/material";
+import { Box, Typography, Stack, Button, Stepper, Step, StepLabel } from "@mui/material";
 import '@styles/Configurador1.scss';
 import AppContext from '@context/AppContext';
 import Alert from '@mui/material/Alert';
@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from "@mui/material";*/
 const Configurador3 = () => {
     
+    const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
     const {state,loading,error,refreshState} = useContext(AppContext);
     const [hideBotenes,setHideBotones] = useState(true); //Solo buscamos estereos tipo Original
     const [activeOrderId, setActiveOrderId] = useState(null);
@@ -201,6 +202,23 @@ const Configurador3 = () => {
                             <Typography sx={{paddingLeft:"6px"}}>Tipo de Configuración: {state.tipoConfiguracionC}</Typography> 
                         </Box>  
                     </Box>
+                    <Stepper activeStep={2} alternativeLabel 
+                        sx={{
+                            mt: "7rem",
+                            width: "-webkit-fill-available",
+                            "& .MuiStepIcon-root.Mui-active": {
+                            color: "#B1B803", // Color of the active step icon
+                            },
+                            "& .MuiStepIcon-root.Mui-completed": {
+                            color: "#B1B803", // Color of completed step icons
+                            },
+                        }}>
+                        {steps.map((label) => (
+                        <Step key={label} >
+                            <StepLabel>{label}</StepLabel>
+                        </Step>
+                        ))}
+                    </Stepper>
                     <Typography sx={{fontWeight: 600, pb:3}} variant="h6">Selecciona tu <Typography variant="h7" sx={{fontWeight: 600}}>Configuración</Typography></Typography>
                     {hideBotenes && (
                     <Alert severity="warning" sx={{width:"90%", mb:"20px !important", textAlign:"center"}}>

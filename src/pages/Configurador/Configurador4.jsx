@@ -1,6 +1,6 @@
 //m2134256161 
 import React, {useRef, useState, useEffect, useContext} from "react";
-import { Typography, Stack, Button } from "@mui/material";
+import { Typography, Stack, Button, Stepper, Step, StepLabel } from "@mui/material";
 import { Box } from "@mui/system";
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 //import useDelete from '@hooks/useDelete';
@@ -58,8 +58,8 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 
 const Configurador4 = () => {
-  const APIConf = API+'orders/9';
-  const APICart = API+'orders/3';
+  
+  const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
   const { 
     state,
     loading,
@@ -253,7 +253,7 @@ const Configurador4 = () => {
 
   
   const expandEstereo =
-    state.estereoC.length === 0 &&
+    state.estereoC.SKU == undefined && //state.estereoC.length === 0 
     state.tieneEstereoOriginalC !== 'si' &&
     state.tieneEstereoTipoOriginalC != true;
   const expandBases = 
@@ -850,11 +850,29 @@ const Configurador4 = () => {
     }
   }
   console.log("===========");
-
+  console.log(state.mejorarAudio);
   return (
     <React.Fragment>
       {(loading || loadingLocal) && <Box className="Loading_Container"> <GradientCircularProgress /></Box>}
       {(!loading && !error && !loadingLocal) &&
+      <Box>        
+      <Stepper activeStep={3} alternativeLabel 
+        sx={{
+            mt: "7rem",
+            width: "-webkit-fill-available",
+            "& .MuiStepIcon-root.Mui-active": {
+            color: "#B1B803", // Color of the active step icon
+            },
+            "& .MuiStepIcon-root.Mui-completed": {
+            color: "#B1B803", // Color of completed step icons
+            },
+        }}>
+        {steps.map((label) => (
+        <Step key={label} >
+            <StepLabel>{label}</StepLabel>
+        </Step>
+        ))}
+      </Stepper>
       <Box className="Configurador_Form">
         <Stack alignItems="center" direction="column"> 
           <Box className="configurador_header">
@@ -891,7 +909,7 @@ const Configurador4 = () => {
                     <Typography>Estereos</Typography><Typography className="configurador-item-selected"> - {state.estereoC.modelo} </Typography>  
                   </AccordionSummary>
                 <Box className="configurador-button-borrar">
-                {(state.estereoC.length != 0) ?
+                {(state.estereoC?.SKU && state.estereoC.SKU !== "") ?
                  <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('20','1')}  />:  ''
                 
                 }             
@@ -905,13 +923,13 @@ const Configurador4 = () => {
           </Accordion>  
           {/*------------------------------------------------------BASES--------------------------------------------------------------*/}
           <Accordion expanded={expandBases || expanded === 'panel2'}  onChange={handleChange('panel2')} 
-          disabled = {state.estereoC.length === 0} id="accordion_base"
+          disabled = {(!state.estereoC?.SKU || state.estereoC.SKU === "")} id="accordion_base"
           >{/* disabled={enabledBase}*/}
            <Box className="configurador-accordionSummary">
             <AccordionSummary className="configurador-accordion-header" aria-controls="panel2d-content" id="panel2d-header">
               <Typography>Bases</Typography><Typography className="configurador-item-selected"> - {state.baseC.modelo} </Typography>
             </AccordionSummary>
-            <Box className="configurador-button-borrar">
+              <Box className="configurador-button-borrar">
               {(state.baseC.length != 0) ?
                 <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('8','13')}  />:  ''
               }
@@ -1476,7 +1494,11 @@ const Configurador4 = () => {
           </Box>
         </Box>
       </Box>
+      
+    </Box>
     }
+    
+        
     </React.Fragment>
   );
 }

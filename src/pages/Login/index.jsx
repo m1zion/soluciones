@@ -32,6 +32,19 @@ const Login = () => {
   const [loading,setLoading] = useState(true);
   const [error,setError] = useState(false); 
   //Persistencia de datos
+
+
+  const [ready, setReady] = useState(false);
+  
+  useEffect(() => {
+    const img = new Image();
+    img.src = require('../../assets/images/loginbg.jpg'); // adjust path if needed
+    img.onload = () => {
+      setTimeout(() => {
+        setReady(true);
+      }, 500); // small delay after image load (optional)
+    };
+  }, []);
   //Verificamos si tiene una sesion activa en el local storage -------------------------
   useEffect(() =>
     {
@@ -78,7 +91,7 @@ const Login = () => {
           console.error("No se pudo encontrar la sesion");
           console.log(error);
         }
-      },1000) 
+      },0) 
     },[]
   );
   //------------------------------------------------------------------------
@@ -155,6 +168,13 @@ const Login = () => {
   const handleRegister = categoria =>{
     navigate('/newAccount');
   }
+
+  if (!ready) {
+    return <div style={{ color: "white", textAlign: "center", marginTop: "20%" }}>Loading...</div>;
+  }
+
+
+  
   return (
     <Box className="LoginBoxContainer" >
       <Stack className="LoginFormContainer" spacing={2} direction = {{xs:"column", md:"column"}} >
