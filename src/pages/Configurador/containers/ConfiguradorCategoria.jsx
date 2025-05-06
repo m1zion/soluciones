@@ -118,14 +118,52 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
         console.log("filterAndSetProductosFinal");
         if (value !== 'N/A') {  // Esta es la categoria
             let productosModeloAux = [];
-            switch (category) {               
+            switch (category) { 
+                case '2': //Adaptadores
+                    //console.log("Entra a adaptadores");
+                    if(typeof caracteristicas !== "undefined"){
+                        if (caracteristicas){ 
+                            const adaptadorAntenaAI = caracteristicas?.adaptadorAntenaAI;
+                            const adaptadorAntenaHF = caracteristicas?.adaptadorAntenaHF; 
+                            //console.log("filtrata los adaptadores de acuerdo a estos modelos "+adaptadorAntenaAI+" "+adaptadorAntenaHF);
+                            productosModeloAux = productos?.filter(function(product){ 
+                                return  product.Modelo== adaptadorAntenaAI || product.Modelo == adaptadorAntenaHF || product.Modelo == 'AU';
+                            });
+                        }
+                    }
+                    else{
+                        productosModeloAux = productos?.filter(function(product){ return (product.Modelo==product.Modelo)});
+                    }
+                    setProductosFinal(productosModeloAux);
+                    //setNumeroDeProductos(productosModeloAux.length);
+                break; 
+                case '5': // Amplificador de Voz
+                    productosModeloAux = productos?.filter(function (product) {
+                        const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';
+                        return (
+                            product.clase === 'A/B' &&
+                            product.tipoCategoria.toLowerCase() === tipoConfiguracion2
+                        );
+                    });
+                    setProductosFinal(productosModeloAux);
+                break;
+                case '6': //Amplificador de Bajos/Woofer
+                    //console.log("Filtra amplificadore de woofer")
+                    productosModeloAux = productos?.filter(function(product){ 
+                        const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';
+                        return (
+                            product.clase=='D' &&
+                            (product.tipoCategoria).toLowerCase() == tipoConfiguracion2
+                        )
+                    });               
+                    setProductosFinal(productosModeloAux);
+                break;
                 case '7': //Arneses
                     if(typeof caracteristicas !== "undefined"){
                         if (caracteristicas){ 
                             const arnesAI = caracteristicas?.arnesAI;
                             const arnesHF = caracteristicas?.arnesHF; 
-                            //console.log('Filtrara los arneses de acuerdo a los siguientes modelos '+arnesAI+' '+arnesHF);
-                            //console.log(productos);
+                            console.log('Filtrara los arneses de acuerdo a los siguientes modelos '+arnesAI+' '+arnesHF);
                             productosModeloAux = productos?.filter(function(product){ 
                                 return  product.Modelo== arnesAI || product.Modelo == arnesHF;
                             });                       
@@ -133,13 +171,11 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     }
                     else{
                         productosModeloAux = productos?.filter(function(product){ return (product.Modelo==product.Modelo)});
-                    }              
-                    //console.log(productosModeloAux) ;    
+                    }                
                     setProductosFinal(productosModeloAux);
                 break;
                 case '8': //Bases
-                    /*console.log("entrada a filtar bases");
-                    console.log(caracteristicas);*/
+                    //console.log("entrada a filtar bases");
                     //El Modelo de la base tiene que ser el del modelo de la configuracion
                     if(typeof caracteristicas !== "undefined"){
                         if (caracteristicas){ 
@@ -189,40 +225,11 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                         productosModeloAux = productosModelo?.filter(function(product){ return (product.Modelo==product.Modelo)});
                     }
                     setProductosFinal(productosModeloAux);
-                break;               
-                case '20': //Estereos                   
-                    productosModeloAux = productos?.filter(function(product){ 
-                        const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';
-                        //return (product.Dines==dines && (product.tipoCategoria).toLowerCase() == tipoConfiguracion2)
-                        //En este ejemplo si tipoConfiguracion2 === '' entonces solo evaluamos la primera condicional
-                        return (product.Dines==dines) && (tipoConfiguracion2 === '' || (product.tipoCategoria).toLowerCase() == tipoConfiguracion2);
-                        }
-                    );
-                    productosModeloAux = productos;
-                    setProductosFinal(productosModeloAux);
-                break;  
-                case '2': //Adaptadores
-                    //console.log("Entra a adaptadores");
-                    if(typeof caracteristicas !== "undefined"){
-                        if (caracteristicas){ 
-                            const adaptadorAntenaAI = caracteristicas?.adaptadorAntenaAI;
-                            const adaptadorAntenaHF = caracteristicas?.adaptadorAntenaHF; 
-                            //console.log("filtrata los adaptadores de acuerdo a estos modelos "+adaptadorAntenaAI+" "+adaptadorAntenaHF);
-                            productosModeloAux = productos?.filter(function(product){ 
-                                return  product.Modelo== adaptadorAntenaAI || product.Modelo == adaptadorAntenaHF || product.Modelo == 'AU';
-                            });
-                        }
-                    }
-                    else{
-                        productosModeloAux = productos?.filter(function(product){ return (product.Modelo==product.Modelo)});
-                    }
-                    setProductosFinal(productosModeloAux);
-                    //setNumeroDeProductos(productosModeloAux.length);
-                break;
+                break;                  
                 case '9': //BOCINA PREMIUM DELANTERA
                 case '11': //BOCINAS REEMPLAZO DELANTERAS FILTROS:  
                     //Las bocinas van combinadas con los componentes, cuando es componente quito el filtro de categoria
-                    console.log("Entra a bocinas delanteras");
+                    //console.log("Entra a bocinas delanteras");
                     //console.log(caracteristicas);
                     if(typeof caracteristicas !== "undefined"){
                         //console.log("Entra a filtrar delanteras");
@@ -233,13 +240,6 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                             let categoria = (caracteristicas.bocinaCompatibleFrontal).toLowerCase(); //console.log(categoria);
                             const tipoBocinaFrontal = (caracteristicas.tipoBocinaFrontal).toLowerCase(); //console.log(tipoBocinaFrontal);     
                             
-                            console.log(diametroBocinaFrontal);
-                            console.log(profundidadBocinaFrontal);
-                            console.log(categoria); //pb (carro)
-                            console.log(tipoBocinaFrontal); //Componente (carro)
-                            console.log(productos);
-
-
                             productosModeloAux = productos?.filter(function(product){ 
                                 const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';                                    
                                 //console.log(tipoConfiguracion2); //básico
@@ -262,24 +262,6 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                             return product.Modelo==product.Modelo;
                         });
                     }  
-                    setProductosFinal(productosModeloAux);
-                break;
-                case '14':
-                case '16': //Bases para bocina delantera
-                    //console.log("filtra Bases para bocina delantera");
-                    if(typeof caracteristicas !== "undefined"){
-                        if (caracteristicas){ 
-                            const calzaFrontalAI = caracteristicas?.calzaFrontalAI;
-                            const calzaFrontalHF = caracteristicas?.calzaFrontalHF;
-                            //console.log('Filtrara las bases frontales de acuerdo a '+calzaFrontalAI+' '+calzaFrontalHF);
-                            productosModeloAux = productos?.filter(function(product){ 
-                                return  product.Modelo== calzaFrontalAI || product.Modelo == calzaFrontalHF;
-                            });
-                        }
-                    }
-                    else{
-                        productosModeloAux = productos?.filter(function(product){ return (product.Modelo==product.Modelo)});
-                    }
                     setProductosFinal(productosModeloAux);
                 break;
                 case '10': //BOCINAS PREMIUM TRASERAS                
@@ -314,6 +296,39 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     }
                     setProductosFinal(productosModeloAux);
                 break;
+                case '13':  //Cajon Acustico
+                    //console.log("Cajon Acustico");
+                    //console.log("Filtra los cajones que tengan el subgrupo del modelo");
+                    const tamanioCajuela = caracteristicas?.tamanioCajuela;
+                    //console.log(tamanioCajuela);
+                    productosModeloAux = productos?.filter(function (product) {
+                        return (
+                        typeof tamanioCajuela === 'string'
+                            ? (product.subgrupo).toLowerCase() === tamanioCajuela
+                            : Array.isArray(tamanioCajuela) && tamanioCajuela.some(item => item.claveCajones === product.subgrupo));
+                    }); 
+                    setProductosFinal(productosModeloAux); 
+                    //setNumeroDeProductos(productosModeloAux.length);
+                break; 
+                case '14':
+                case '16': //Bases para bocina delantera
+                    //console.log("filtra Bases para bocina delantera");
+                    if(typeof caracteristicas !== "undefined"){
+                        if (caracteristicas){ 
+                            const calzaFrontalAI = caracteristicas?.calzaFrontalAI;
+                            const calzaFrontalHF = caracteristicas?.calzaFrontalHF;
+                            //console.log('Filtrara las bases frontales de acuerdo a '+calzaFrontalAI+' '+calzaFrontalHF);
+                            productosModeloAux = productos?.filter(function(product){ 
+                                return  product.Modelo== calzaFrontalAI || product.Modelo == calzaFrontalHF;
+                            });
+                        }
+                    }
+                    else{
+                        productosModeloAux = productos?.filter(function(product){ return (product.Modelo==product.Modelo)});
+                    }
+                    setProductosFinal(productosModeloAux);
+                break;
+                case '15':
                 case '17': //Bases para bocina trasera
                     if(typeof caracteristicas !== "undefined"){
                         if (caracteristicas){ 
@@ -330,56 +345,20 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                         productosModeloAux = productos?.filter(function(product){ return (product.Modelo==product.Modelo)});
                     }
                     setProductosFinal(productosModeloAux);
-                break;
-                case '5': // Amplificador de Voz
-                //console.log("Entra a Amplificadores");
-                productosModeloAux = productos?.filter(function (product) {
-                    const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';
-                    return (
-                        product.clase === 'A/B' &&
-                        product.tipoCategoria.toLowerCase() === tipoConfiguracion2
-                    );
-                });
-                setProductosFinal(productosModeloAux);
-                break;
-                case '6': //Amplificador de Bajos/Woofer
-                    //console.log("Filtra amplificadore de woofer")
+                break                        
+                case '20': //Estereos                   
                     productosModeloAux = productos?.filter(function(product){ 
                         const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';
-                        return (
-                            product.clase=='D' &&
-                            (product.tipoCategoria).toLowerCase() == tipoConfiguracion2
-                        )
-                    });               
+                        //return (product.Dines==dines && (product.tipoCategoria).toLowerCase() == tipoConfiguracion2)
+                        //En este ejemplo si tipoConfiguracion2 === '' entonces solo evaluamos la primera condicional
+                        return (product.Dines==dines) && (tipoConfiguracion2 === '' || (product.tipoCategoria).toLowerCase() == tipoConfiguracion2);
+                        }
+                    );
+                    productosModeloAux = productos;  //CAMBIAR MISAEL
                     setProductosFinal(productosModeloAux);
-                break;
-                case '13':  //Cajon Acustico
-                    //console.log("Cajon Acustico");
-                    //console.log("Filta los cajones que tengan el subgrupo del modelo");
-                    const tamanioCajuela = caracteristicas?.tamanioCajuela;
-                    //console.log(tamanioCajuela);
-                    productosModeloAux = productos?.filter(function (product) {
-                        return (
-                        typeof tamanioCajuela === 'string'
-                            ? (product.subgrupo).toLowerCase() === tamanioCajuela
-                            : Array.isArray(tamanioCajuela) && tamanioCajuela.some(item => item.claveCajones === product.subgrupo));
-                    }); 
-                    setProductosFinal(productosModeloAux); 
-                    //setNumeroDeProductos(productosModeloAux.length);
                 break; 
-                case '19': //Epicentro
-                case '23': //Procesador 
-                case '25': //Tweeters
-                case '18': //Ecualizador
-                //console.log(productos);
-                    productosModeloAux = productos?.filter(function(product) {                        
-                        const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase().trim() : '';            
-                        return (product.tipoCategoria).toLowerCase().trim() === tipoConfiguracion2;
-                    });
-                    setProductosFinal(productosModeloAux);
-                break;
                 case '21': //Kit de cables 
-                    console.log("Entra a filtar kits de cables");
+                    //console.log("Entra a filtar kits de cables");
                     const fetchCaracteristicasKitCables = async () => {
                     try {    
                     let modeloamplificador = "";
@@ -416,33 +395,45 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     //console.log("Woofers");
                     const fetchCaracteristicasCajones = async () => {
                         try {
-                    const response = await fetch(APICajones);
-                    const caracteristicasCajones = await response.json();
-                    editarCantidad = false;  // No permitimos editar la cantidad
-                    let cajonesPulgadas = caracteristicasCajones.pulgadas;
-                    let tipoWoofer = caracteristicasCajones.tipoWoofer;
-                    //let cantidadFija = caracteristicasCajones.cantidadWoofers;
-                    setCantidadFija(caracteristicasCajones.cantidadWoofers);
-                    const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';  
-                    /*console.log("Filta los Woofers de acuerdo al numero de cantidadWoofers que tenga el cajon");
-                    console.log("Filta los Woofers de al tipo de categoria ("+tipoConfiguracion2+")");
-                    console.log("Pulgadas: "+cajonesPulgadas);
-                    console.log("Tipo: "+tipoWoofer);*/
-                    productosModeloAux = productos?.filter(function(product) {                                 
-                        return (
-                            (product.tipoCategoria).toLowerCase() === tipoConfiguracion2 && 
-                            product.pulgadas == cajonesPulgadas && // validar el tamaño de la pulgada woofers (AK) cajones (AL)
-                            product.tipo == tipoWoofer // woofers Tipo(AO) cajones (tipo woofer)
-                        );
-                    });        
-                        setProductosFinal(productosModeloAux);
-                    } catch (error) {
-                        console.error('Error fetching data:', error);
-                    }
-                };
-
-                fetchCaracteristicasCajones();
+                            const response = await fetch(APICajones);
+                            const caracteristicasCajones = await response.json();
+                            editarCantidad = false;  // No permitimos editar la cantidad
+                            let cajonesPulgadas = caracteristicasCajones.pulgadas;
+                            let tipoWoofer = caracteristicasCajones.tipoWoofer;
+                            //let cantidadFija = caracteristicasCajones.cantidadWoofers;
+                            setCantidadFija(caracteristicasCajones.cantidadWoofers);
+                            const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';  
+                            /*console.log("Filta los Woofers de acuerdo al numero de cantidadWoofers que tenga el cajon");
+                            console.log("Filta los Woofers de al tipo de categoria ("+tipoConfiguracion2+")");
+                            console.log("Pulgadas: "+cajonesPulgadas);
+                            console.log("Tipo: "+tipoWoofer);*/
+                            productosModeloAux = productos?.filter(function(product) {                                 
+                                return (
+                                    (product.tipoCategoria).toLowerCase() === tipoConfiguracion2 && 
+                                    product.pulgadas == cajonesPulgadas && // validar el tamaño de la pulgada woofers (AK) cajones (AL)
+                                    product.tipo == tipoWoofer // woofers Tipo(AO) cajones (tipo woofer)
+                                );
+                            });        
+                                setProductosFinal(productosModeloAux);
+                        } catch (error) {
+                            console.error('Error fetching data:', error);
+                        }
+                    };
+                    fetchCaracteristicasCajones();
                 break;
+                case '19': //Epicentro
+                case '23': //Procesador 
+                case '25': //Tweeters
+                case '18': //Ecualizador
+                //console.log(productos);
+                    productosModeloAux = productos?.filter(function(product) {                        
+                        const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase().trim() : '';            
+                        return (product.tipoCategoria).toLowerCase().trim() === tipoConfiguracion2;
+                    });
+                    setProductosFinal(productosModeloAux);
+                break;
+                
+                
 
                 default:
                     productosModeloAux = productos;

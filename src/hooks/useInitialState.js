@@ -244,6 +244,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     };
     const handlematchOrdersTodas = (data,dataCart,montoTotal,cartOrderId,confOrderId,payloadLogin) =>{ //data= orden configurador,dataCart = carrito Normal
         //console.log("Inicia handlematchOrdersTodas");
+        //console.log(montoTotal);
         //console.log(data.tieneBocinaReemplazo_Configurador);
         //console.log(data.tieneBocinaReemplazo);
         const  dataPost = {
@@ -320,7 +321,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //AQUI CARGAMOS TODOS LOS ESTADOS:
         //Este es el que haria en el login ya que no podemos actualizar el setState 2 veces
         //console.log("Inicia setMatchOrdersTodas");
-        //console.log(configuracion);
+        //console.log(montoTotal);
         const updatedState = { ...state };
         updatedState.user = payloadLogin.user;
         updatedState.token = payloadLogin.token;
@@ -575,9 +576,9 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             const cartData = await cartResponse.json();
             const confData = await confResponse.json();
             
-            console.log(APICart);
-            console.log(APIConf);
-            console.log(payloadLogin.token);
+            //console.log(APICart);
+            //console.log(APIConf);
+            //console.log(payloadLogin.token);
             const cartOrderId = cartData.orders?.[0]?.id;
             const confOrderId = confData.orders?.[0]?.id;
             //console.log("Vemos si me trajo algun dato");
@@ -613,12 +614,10 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             const tieneAccesorioC = dataConf.items?.some(item => item.categoryIdConfigurador === '1');
             const configuratorCompleted = dataConf.terminaConfiguracion1 === 'si' || tieneAccesorioC || dataConf.tieneEcualizador === 'no';
             const finalTotalCart = calculateTotal(dataCart.items);
-            const finalTotalConf = configuratorCompleted ? calculateTotal(dataConf.items) : 0;
+            //Inicialmente solo lo calculabamos si tenia el configurador finalizado
+            const finalTotalConf = calculateTotal(dataConf.items);
+            //const finalTotalConf = configuratorCompleted ? calculateTotal(dataConf.items) : 0;
             const montoTotal = finalTotalCart + finalTotalConf;
-
-            
-            //console.log("dataConf");
-            //console.log(dataConf);
             handlematchOrdersTodas(dataConf, dataCart, montoTotal,cartOrderId,confOrderId,payloadLogin);
         } catch (error) {
             console.error('Error fetching order data:', error);
