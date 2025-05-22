@@ -1,7 +1,7 @@
 @import '../../styles/_vars.css';
 .CheckOutCart2Form{
     background-color: var(--white);
-    //width: 450px;
+    width: 90%;
     border: 1px solid var(--border-green);
     //padding: 8px;
     background-color: white;
@@ -20,7 +20,7 @@
    
 }
 .CheckOutCont{
-    margin: 4rem auto;
+    margin: 2rem auto;
     width: 95%;
     padding-bottom: 20px;
     display: block;
@@ -46,6 +46,7 @@
         margin-top: 4rem;
     }
     .CheckOutCart2Form{
+        //background-color: green;
         width: 450px;
     }
 }

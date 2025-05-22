@@ -80,6 +80,15 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     const [refresh,setRefresh] = useState(true);
 
 
+    const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
+    const openProductDetail = () => setIsProductDetailOpen(true);
+    const closeProductDetail = () => setIsProductDetailOpen(false);
+    const [productToShow, setProductToShow] = useState({
+        title: "",
+        price: "",
+        description: "",
+        images: [],  //Para evitar problema de que no lo encuentre
+    });
 
     const refreshState = () => {
         console.log("Refreshing state...");
@@ -116,10 +125,9 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 }
                 else {
                   navigate('/Dashboard');
-                }*/
-      
+                }*/      
               }
-              //setLoading(false);
+              setLoading(false);
             }
             catch(error){
               setLoading(false);
@@ -128,6 +136,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
               console.log(error);
             }
           //},3000) 
+          setLoading(false);
         },[refresh]
     );
 
@@ -234,6 +243,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         return response.json();
     };
     const calculateTotal = (items) => {
+        //console.log(items);
         if (!items) return 0;
         return items.reduce((total, item) => {
             const unitPrice = item.precioPromoTotal !== null
@@ -242,6 +252,32 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             return total + unitPrice * item.amount;
         }, 0);
     };
+
+
+    /*const calculateTotal = (items) => {
+        if (!items || !Array.isArray(items)) return 0;
+        //Group items by SKU and sum their amounts
+        const grouped = items.reduce((acc, item) => {
+            const sku = item.SKU;
+            const key = sku;
+            if (!acc[key]) {
+                acc[key] = { ...item };
+            } else {
+                acc[key].amount += item.amount;
+            }
+            return acc;
+        }, {});
+        
+        console.log(grouped);
+        return Object.values(grouped).reduce((total, item) => {
+            const unitPrice = item.precioPromoTotal !== null
+                ? parseFloat(item.precioPromoTotal)
+                : parseFloat(item.precioTotal);
+            return total + unitPrice * item.amount;
+        }, 0);
+    }*/
+
+
     const handlematchOrdersTodas = (data,dataCart,montoTotal,cartOrderId,confOrderId,payloadLogin) =>{ //data= orden configurador,dataCart = carrito Normal
         //console.log("Inicia handlematchOrdersTodas");
         //console.log(montoTotal);
@@ -256,7 +292,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             tipoConfiguracion: data.tipoConfiguracion,//data.tipoConfiguracion || 'Basica',
             orderType: data.orderType,
             bocinaReemplazoTraseraC:'',
-            mejorarAudio: data.mejorarAudio, //Quitar Luis, poner como espacio vacio mientras
+            mejorarAudio: data.mejorarAudio, 
             tieneEstereoOriginalC: data.tieneEstereoOriginalC,
             tieneBocinaReemplazo: data.tieneBocinaReemplazo, 
             terminaConfiguracion1: data.terminaConfiguracion1,
@@ -321,6 +357,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //AQUI CARGAMOS TODOS LOS ESTADOS:
         //Este es el que haria en el login ya que no podemos actualizar el setState 2 veces
         //console.log("Inicia setMatchOrdersTodas");
+        //console.log(payload);
         //console.log(montoTotal);
         const updatedState = { ...state };
         updatedState.user = payloadLogin.user;
@@ -455,9 +492,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                         default: console.log("Otro producto");
                     }
                 }    
-                );
-
-
+                );     
+             
                 updatedState.marcaC = state.cartConf.length === 0 ? marcaCC : state.marcaC;
                 updatedState.modeloC = state.cartConf.length === 0 ? modeloCC : state.modeloC;
                 updatedState.anioC = state.cartConf.length === 0 ? anioCC : state.anioC;
@@ -555,7 +591,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         //console.log("Inicia fetchOrderData");
         try {
             // 1. Check if I have active orders of cart and configurador
-            const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=tienda`; //MANDAR TASK A LUIS, NO SIRVE FILTRO DE TYPE
+            const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=tienda`;
             const APIConf = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador`; 
             const [cartResponse, confResponse] = await Promise.all([
                 fetch(APICart, {
@@ -605,7 +641,9 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             const [dataCart, dataConf] = await Promise.all([
                 cartOrderId ? fetchFullData(cartOrderId, payloadLogin.token) : Promise.resolve({ items: [] }),
                 confOrderId ? fetchFullData(confOrderId, payloadLogin.token) : Promise.resolve({ items: [] }),
-            ]);           
+            ]);      
+            //console.log("DATA CONFFF");
+            //console.log(dataConf);     
             /*const itemOrder = createOrderItemDataContext(dataCart.items[0]);
             addToCart(itemOrder);*/
             //setDataCarrito(dataCart);
@@ -616,7 +654,6 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             const finalTotalCart = calculateTotal(dataCart.items);
             //Inicialmente solo lo calculabamos si tenia el configurador finalizado
             const finalTotalConf = calculateTotal(dataConf.items);
-            //const finalTotalConf = configuratorCompleted ? calculateTotal(dataConf.items) : 0;
             const montoTotal = finalTotalCart + finalTotalConf;
             handlematchOrdersTodas(dataConf, dataCart, montoTotal,cartOrderId,confOrderId,payloadLogin);
         } catch (error) {
@@ -625,6 +662,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     };
 
     const setEstereo = (payload,payload2,amountProducts) =>{
+        
+        //console.log("Set estereo");
         //console.log(payload);
         //console.log(payload2);
         setState({
@@ -688,10 +727,28 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             totalCompra:state.totalCompra+amountProducts,
         });
     };
+    const setBocinaPremiumDelantera = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            bocinaPremiumDelanteraC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
     const setCalzaBocinaReemplazoDelantera = (payload,payload2,amountProducts) =>{
         setState({
             ...state, 
             calzaBocinaReemplazoDelanteraC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };    
+    const setCalzaBocinaPremiumDelantera = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            calzaBocinaPremiumDelanteraC:payload,
             cartConf:[...state.cartConf, payload],
             orderConf:[...state.orderConf, payload2],
             totalCompra:state.totalCompra+amountProducts,
@@ -710,6 +767,15 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setState({
             ...state, 
             calzaBocinaReemplazoTraseraC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
+    const setBocinaPremiumTrasera = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            bocinaPremiumTraseraC:payload,
             cartConf:[...state.cartConf, payload],
             orderConf:[...state.orderConf, payload2],
             totalCompra:state.totalCompra+amountProducts,
@@ -1902,7 +1968,9 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setMejoraAudio,  
         setTieneBocinaReemplazo,   
         setBocinaReemplazoDelantera,
+        setBocinaPremiumDelantera,
         setCalzaBocinaReemplazoDelantera, 
+        setCalzaBocinaPremiumDelantera,
         setBocinaReemplazoTrasera,
         setCalzaBocinaReemplazoTrasera,
         setTerminaConfiguracion1,
@@ -1916,12 +1984,20 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setAmplificador,
         setTieneBocinaOriginal,
         setCalzaBocinaPremiumTrasera,
+        setBocinaPremiumTrasera,
         setTieneEcualizador,
         setEcualizador,
         setEpicentro,
         setProcesador,
         setTweeter,
         state,
+
+        openProductDetail,
+        closeProductDetail,
+        isProductDetailOpen,
+        productToShow,
+        setProductToShow,
+
     }
 }
 export default useInitialState;

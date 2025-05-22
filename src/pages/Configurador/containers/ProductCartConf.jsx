@@ -1,24 +1,18 @@
 import React, { useContext } from 'react';
 import './ProductCart.scss';
-import useGet from '@hooks/useGet';
 import { Stack, Typography, Grid, Box, Button } from "@mui/material";
 import '@styles/_vars.css';
 import AppContext from '@context/AppContext';
 import { useNavigate } from 'react-router-dom';
 const API = process.env.REACT_APP_API_URL;
-const APIOrders = API+'orders/19';
 var formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
   });
 const ProductCartConf = (props) => {
     const {addToOrder} = useContext(AppContext);
-    const handleOrder = item =>{ addToOrder(item); };
-    const order = useGet(APIOrders);
-    const items = order.items;
     const { state } = useContext(AppContext);
     const products = state.cartConf;
-    const products2 = state.orderConf;
     const navigate = useNavigate();
     const handleSubmit = (orderType2) => {
         if (orderType2 == 'openshow'){
@@ -42,33 +36,6 @@ const ProductCartConf = (props) => {
         return sum;
     }
     /****SACAMOS EL RESULTADO DELA ORDEN DE COMPRA****/
-    const result2 = [...products2.reduce( (mp, o) => {
-        if (!mp.has(o.sku)) mp.set(o.sku, { ...o, amount: 0 });
-        mp.get(o.sku).amount =  parseInt(mp.get(o.sku).amount) + parseInt(o.amount);
-        return mp;
-    }, new Map).values()];
-    var total3 = 0;
-    if(typeof items !== "undefined")
-        {
-        const sumTotal3 = () =>{ 
-            const reducer = (accumulator, currentValue) => accumulator + (parseInt(currentValue.precioPromoTotal ? currentValue.precioPromoTotal : currentValue.precioTotal)*currentValue.amount);
-            const sum = items.reduce(reducer,0);
-            return sum;
-        }
-        total3 = sumTotal3();
-    } 
-    var  data = {};
-    //Borramos todos los productos de la orden 33 TAREA LUIS
-    result.map(orden => {
-        data = {
-            orderId: 9,
-            productId: orden.id,
-            categoryId: orden.categoryId,
-            amount: orden.amount
-        }
-        //handleOrder(data);
-        }    
-    );
     //console.log('termina'+state.terminaConfiguracion1);
     //console.log(state.accesorioC.id_item);
     //console.log(state.tieneEcualizado);
@@ -81,7 +48,7 @@ const ProductCartConf = (props) => {
         )?
         <Stack className="ProductCartConfContainer" direction='column'>
             <Box className='ProductCartTitleContainer'>
-                <Typography className="ProductCartTitle" sx={{pt:"10px"}} variant="h6"> Resumen de {state.orderType == 'openshow' ? 'Open Show': 'Configurador'}</Typography>
+                <Typography className="ProductCartTitle" sx={{pt:"10px"}} variant="h6"> Resumen de {state.orderType == 'openshow' ? 'Open Show': 'Configurador'} ({state.confOrderId})</Typography>
                 {
                     props.editVisible &&
                     <Button   onClick={() =>handleSubmit(state.orderType)}  className='primary-basic'>Editar Configurador</Button>       
@@ -97,7 +64,8 @@ const ProductCartConf = (props) => {
                             <Box sx={{color:'var(--gray-letter)'}}>{orden.descripcionProducto}</Box>
                         </Grid>
                         <Grid  className="ProductCardGridElement"  item xs={2}>
-                        {orden.amount}
+                            <Box>{orden.amount} </Box>
+                            <Box sx={{color:'grey'}}>${ orden.precioPromoTotal != null ? orden.precioPromoTotal: orden.precioTotal}</Box>                        
                         </Grid>
                         <Grid  className="ProductCardGridElement"  sx={{ textAlign:"end", paddingRight:"8px" }} item xs={3}>
                         {
@@ -115,8 +83,7 @@ const ProductCartConf = (props) => {
                     <Grid item xs={4} display="flex" justifyContent="flex-end"> 
                         {
                         //formatter.format(order.precioTotal)  //De la orden
-                        formatter.format(sumTotal())  //Del cart                      
-                        //formatter.format(total3)
+                        formatter.format(sumTotal())  //Del cart   
                         }
                     </Grid>
                     <Grid item xs={8} display="flex" justifyContent="flex-end">Envio</Grid>
@@ -168,8 +135,7 @@ const ProductCartConf = (props) => {
                     <Grid item xs={4} display="flex" justifyContent="flex-end"> 
                         {
                         //formatter.format(order.precioTotal)  //De la orden
-                        formatter.format(sumTotal())  //Del cart                      
-                        //formatter.format(total3)
+                        formatter.format(sumTotal())  //Del cart     
                         }
                     </Grid>
                     <Grid item xs={8} display="flex" justifyContent="flex-end">Envio</Grid>

@@ -48,7 +48,7 @@ const MenuHeader = () => {
     };
     const data = [
         { icon: <People />, label: 'Mi perfil' },
-        { icon: <Dns />, label: 'Mis direcciones' },    
+        { icon: <Dns />, label: 'Mis Ordenes' },    
         {
             icon: <PermMedia />,
             label: isAuthenticated

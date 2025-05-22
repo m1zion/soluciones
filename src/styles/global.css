@@ -77,12 +77,30 @@ primary-button-login:hover {
   color: var(--white) !important;
   cursor: pointer !important;
 }
-.primary-basic:hover {
+
+.primary-basic-full {
+  background-color: var(--logo-green-darker) !important;
+  border-radius: 6px;
+  border: none;
+  color: var(--white) !important;
+  cursor: pointer !important;
+  width: 100%;
+  max-width: 450px;
+  height: 3rem;
+}
+
+.primary-basic:hover, .primary-basic-full:hover {
   background-color: var(--logo-green-darker2) !important;
 }
-.primary-basic_disabled {
+.primary-basic_disabled, .primary-basic-full_disabled {
   background-color: var(--blueConfigurador5) !important;
 }
+
+.primary-basic-full_disabled {
+  width: 100%;
+  height: 3rem;
+}
+
 
 
 .primary-basic2 {
@@ -110,7 +128,31 @@ s
   width: 14px;
   height: 16px;
 }
-.trashCanConf:hover{
+.trashCanConf:hover,
+.viewIconConf:hover {
   transform: scale(1.1); 
   cursor: pointer;
 }
+
+
+/*
+@media (min-width: 600px) {
+  .primary-basic-full {
+  
+  width: 100%;
+  height: 3rem;
+  }
+
+  .primary-basic:hover, .primary-basic-full:hover {
+  background-color: var(--logo-green-darker2) !important;
+  }
+  .primary-basic_disabled, .primary-basic-full_disabled {
+  background-color: var(--blueConfigurador5) !important;
+  }
+
+  .primary-basic-full_disabled {
+  width: 100%;
+  height: 3rem;
+  }
+}
+*/

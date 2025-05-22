@@ -2,6 +2,8 @@
 MLd1234_
 
 Proces Login 
+misaelzion@gmail.com	MLd1234_	Administrador
+prueba@prueba.com	1234Abcd_	Cliente
 
 A) setLogin()
 
@@ -56,69 +58,6 @@ D) setMatchOrdersTodas(data.items,               dataPost,              dataCart
 
 
 Estado Inicial cuando Inicia Sesion desde 0
-
-{
-    "userId": "1",
-    "user": "misaelzion@gmail.com",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJjbGllbnRlIiwiaWF0IjoxNzM5OTE2NzY0fQ.oGib3ft_i5dSoq61lcm4ApEkataQf8oMe7OZDoMLOSY",
-    "userName": "",
-    "role": "cliente",
-    "proveedorId": "undefined",
-    "totalCompra": "",
-    "cartOrderId": "",
-    "cart": [],
-    "confOrderId": "",
-    "cartConf": [],
-    "marcaC": [],
-    "modeloC": [],
-    "anioC": [],
-    "configC": [],
-    "dinesC": [],
-    "estereoC": [],
-    "ocultaBotonUnDinC": true,
-    "ocultaBotonDobleDinC": true,
-    "ocultaBotonC": true,
-    "ocultaBotonOriginalC": true,
-    "mensajeC": "",
-    "numItems": 0,
-    "tipoConfiguracionC": [],
-    "orderConf": [],
-    "cartConfOrder": [],
-    "baseC": [],
-    "arnesC": [],
-    "adaptadorC": [],
-    "mejorarAudio": [],
-    "tieneBocinaReemplazo": [],
-    "bocinaReemplazoDelanteraC": [],
-    "calzaBocinaReemplazoDelanteraC": [],
-    "bocinaReemplazoTraseraC": [],
-    "calzaBocinaReemplazoTraseraC": [],
-    "terminaConfiguracion1": [],
-    "amplificadorC": [],
-    "tieneBocinaOriginal": [],
-    "bocinaPremiumDelanteraC": [],
-    "calzaBocinaPremiumDelanteraC": [],
-    "bocinaPremiumTraseraC": [],
-    "calzaBocinaPremiumTraseraC": [],
-    "tieneAmplificadorBajos": [],
-    "amplificadorWooferC": [],
-    "amplificador3en1C": [],
-    "wooferC": [],
-    "cajonAcusticoC": [],
-    "kitCablesC": [],
-    "tieneEcualizador": [],
-    "ecualizadorC": [],
-    "epicentroC": [],
-    "procesadorC": [],
-    "tweeterC": [],
-    "tweeterCP": [],
-    "accesorioC": [],
-    "tieneEstereoOriginalC": [],
-    "tieneEstereoTipoOriginalC": [],
-    "adaptadorImpedanciaC": [],
-    "medioRangoO": [],
-    "setComponentesO": []
-}
 
 
 

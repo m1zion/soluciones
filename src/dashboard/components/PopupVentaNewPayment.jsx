@@ -143,7 +143,7 @@ const PopupVentaNewPayment = (props) => {
             concepto,
             monto,
             referenciaId: String(referencia),
-            notas: notas ? notas : '-',  //Quitar cuando Luis lo haga opcional
+            notas: notas ? notas : '-', 
             saldo: parseFloat(nuevoSaldo).toFixed(2)
         };
     };

@@ -78,7 +78,6 @@ const CheckOutCart = () => {
       refreshState();
   }, []);
   const handleSubmit = () => {
-    console.log("Entra a handleSubmit");
     setLoadingLocal(true);
     setErrorNombre(false); setMsgNombre("Nombre");
     setErrorTelefono(false); setMsgTelefono("Teléfono");
@@ -120,11 +119,10 @@ const CheckOutCart = () => {
       }
     }
     if (hasErrors) return;
-
     const APIconfCaracteristicas = API+'orders/'+ state.confOrderId;
     let data = {
       orderType: 'configurador',
-      status: 'activo',
+      status: 'esperando surtido',
       calle,
       numExterior: numeroExterior,
       numInterior: numeroInterior ? numeroInterior : '-',
@@ -136,13 +134,13 @@ const CheckOutCart = () => {
       nombreCompleto: nombre
     }   
     try {
-        usePut2V(APIconfCaracteristicas,data, state.token); //Actualiza los items API
-        navigate("/CheckOutCart4");    
+      usePut2V(APIconfCaracteristicas,data, state.token); //Actualiza los items API
+      navigate("/CheckOutCart4");    
     } catch (error) {
-        console.error("Error al generar la orden. code:002");
-        console.error(error);
+      console.error("Error al generar la orden. code:002");
+      console.error(error);
     } finally {
-        setLoadingLocal(false);  // Ensure loading state is reset
+      setLoadingLocal(false);  // Ensure loading state is reset
     }
   }
 
@@ -152,8 +150,8 @@ const CheckOutCart = () => {
     return(
       <Box className="CheckOutCart2Container">
         <Stack spacing={2} sx={{pt:'1rem', pb:'2rem',pl:'1rem'}} className="CheckOutCart2Form" direction = {{xs:"column", md:"column"}}>              
-          <Typography variant="h5" >Tu carrito se encuentra vacío</Typography>              
-          <Typography>Puedes continuar comprando en el configurador o en la pagina principal</Typography>              
+          <Typography variant="h5" >Tu configuración aún no está completa</Typography>              
+          <Typography>Puedes continuar comprando en el configurador.</Typography>              
         </Stack>
       </Box>
     );
@@ -162,6 +160,7 @@ const CheckOutCart = () => {
     <Box>
       <Stepper activeStep={4} alternativeLabel 
       sx={{
+        display: { xs: 'flex', flexWrap:'wrap' },
         mt: "7rem",
         "& .MuiStepIcon-root.Mui-active": {
           color: "#B1B803", // Color of the active step icon
@@ -176,133 +175,133 @@ const CheckOutCart = () => {
           </Step>
         ))}
       </Stepper>
-        <Box className="CheckOutCont">             
-            <Box className="CheckOutCart2FormCont">                    
-              <Box className="CheckOutCart2Form" >
-                <Typography className="ProductCartTitle"  sx={{pt:"10px",mb:"1rem", mt:".5rem"}} variant="h6">Completa tu orden</Typography>
-                <Stack spacing={2} direction = {{xs:"column", md:"column"}}>              
-                    <TextField className="InputBasic2"
-                    error={errorNombre}
-                    required
-                    id="outlined-basic" 
-                    label={msgNombre} 
-                    size="small"
-                    name="nombre"
-                    value={nombre}
-                    onChange={e=>setNombre(e.target.value)}
-                    inputProps={{maxLength:100 }}
+      <Box className="CheckOutCont">             
+        <Box className="CheckOutCart2FormCont">                    
+          <Box className="CheckOutCart2Form" >
+            <Typography className="ProductCartTitle"  sx={{pt:"10px",mb:"1rem", mt:".5rem"}} variant="h6">Completa tu orden</Typography>
+            <Stack spacing={2} direction = {{xs:"column", md:"column"}}>              
+                  <TextField className="InputBasic2"
+                  error={errorNombre}
+                  required
+                  id="outlined-basic" 
+                  label={msgNombre} 
+                  size="small"
+                  name="nombre"
+                  value={nombre}
+                  onChange={e=>setNombre(e.target.value)}
+                  inputProps={{maxLength:100 }}
+                >
+                </TextField> 
+                <TextField className="InputBasic2"
+                  error={errorTelefono}
+                  required
+                  id="outlined-basic" 
+                  label="Telefono" 
+                  size="small"
+                  name="telefono"
+                  value={telefono}
+                  onChange={e=>setTelefono(e.target.value)}
+                  inputProps={{maxLength:10 }}
                   >
-                  </TextField> 
+                </TextField>
+                <TextField className="InputBasic2"
+                  error={errorCalle}
+                  required
+                  id="outlined-basic" 
+                  label="Calle" 
+                  size="small"
+                  name="calle"
+                  value={calle}
+                  onChange={e=>setCalle(e.target.value)}
+                  inputProps={{maxLength:100 }}>
+                </TextField>
+                <Stack spacing={2} direction="row"                 
+                      sx={{
+                      width: '100%',
+                      }}>
                   <TextField className="InputBasic2"
-                    error={errorTelefono}
-                    required
-                    id="outlined-basic" 
-                    label="Telefono" 
-                    size="small"
-                    name="telefono"
-                    value={telefono}
-                    onChange={e=>setTelefono(e.target.value)}
-                    inputProps={{maxLength:10 }}
-                    >
+                      error={errorNumeroExterior}
+                      required
+                      id="outlined-basic" 
+                      label="No. Exterior" 
+                      size="small"
+                      name="numeroExterior"
+                      value={numeroExterior}
+                      onChange={e=>setNumeroExterior(e.target.value)}
+                      inputProps={{maxLength:10 }}>
                   </TextField>
                   <TextField className="InputBasic2"
-                    error={errorCalle}
-                    required
-                    id="outlined-basic" 
-                    label="Calle" 
-                    size="small"
-                    name="calle"
-                    value={calle}
-                    onChange={e=>setCalle(e.target.value)}
-                    inputProps={{maxLength:100 }}>
+                      id="outlined-basic" 
+                      label="No. Interior" 
+                      size="small"
+                      name="numeroInterior"
+                      value={numeroInterior}
+                      onChange={e=>setNumeroInterior(e.target.value)}
+                      inputProps={{maxLength:6 }}>
                   </TextField>
-                  <Stack spacing={2} direction="row"                 
-                        sx={{
-                        width: '100%',
-                        }}>
-                    <TextField className="InputBasic2"
-                        error={errorNumeroExterior}
-                        required
-                        id="outlined-basic" 
-                        label="No. Exterior" 
-                        size="small"
-                        name="numeroExterior"
-                        value={numeroExterior}
-                        onChange={e=>setNumeroExterior(e.target.value)}
-                        inputProps={{maxLength:10 }}>
-                    </TextField>
-                    <TextField className="InputBasic2"
-                        id="outlined-basic" 
-                        label="No. Interior" 
-                        size="small"
-                        name="numeroInterior"
-                        value={numeroInterior}
-                        onChange={e=>setNumeroInterior(e.target.value)}
-                        inputProps={{maxLength:6 }}>
-                    </TextField>
-                  </Stack>
-                  <TextField className="InputBasic2"
-                    error={errorCp}
-                    required
-                    id="outlined-basic" 
-                    label="C.P." 
-                    size="small"
-                    name="cp"
-                    type="text"     
-                    value={cp}
-                    onChange={e=>setCp(e.target.value)}    
-                    inputProps={{maxLength:5}}               
-                    >
-                  </TextField>
-                  <FormControl  error={errorEstado}  className="input_select2" size="small">
-                        <InputLabel required id="ddl-estado-label">Estado</InputLabel>
-                        <Select   
-                        labelId="ddl-estado-label"
-                        id="ddl-estado-select"
-                        name="estado"
-                        label="Estado"
-                        value={estado}
-                        onChange={handleChange}
-                        >
-                        {      
-                        estadosMexicanos && estadosMexicanos !== undefined ?      
-                          estadosMexicanos.map((estadoMexicano,index) =>{
-                              return (
-                                  <MenuItem key={index} value={estadoMexicano}>{estadoMexicano}</MenuItem>
-                              )
-                          })
-                          :''                   
-                        }
-                        </Select>
-                  </FormControl>
-                  <TextField className="InputBasic2"
-                    error={errorCiudad}
-                    required
-                    id="outlined-basic" 
-                    label="Ciudad" 
-                    size="small"
-                    name="ciudad"
-                    value={ciudad}
-                    onChange={e=>setCiudad(e.target.value)}   
-                    inputProps={{maxLength:100 }}>
-                  </TextField> 
-                  <Box sx={{width:'100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    <Button onClick={() => handleSubmit()}  variant="contained" className="primary-basic2" >Enviar Orden</Button>
-                  </Box>                                              
                 </Stack>
-              </Box>
-            </Box> 
-            <Box>
-                <ProductCart/>      
-                <Box sx={{height:'10px'}}></Box>          
-                <ProductCartConf editVisible={true}/>
-                <Box className="total_compra">
-                  <Typography >Total de la Compra:</Typography> 
-                  <Typography  className="total_config">{formatter.format(state.totalCompra)}</Typography>
-                </Box>
+                <TextField className="InputBasic2"
+                  error={errorCp}
+                  required
+                  id="outlined-basic" 
+                  label="C.P." 
+                  size="small"
+                  name="cp"
+                  type="text"     
+                  value={cp}
+                  onChange={e=>setCp(e.target.value)}    
+                  inputProps={{maxLength:5}}               
+                  >
+                </TextField>
+                <FormControl  error={errorEstado}  className="input_select2" size="small">
+                      <InputLabel required id="ddl-estado-label">Estado</InputLabel>
+                      <Select   
+                      labelId="ddl-estado-label"
+                      id="ddl-estado-select"
+                      name="estado"
+                      label="Estado"
+                      value={estado}
+                      onChange={handleChange}
+                      >
+                      {      
+                      estadosMexicanos && estadosMexicanos !== undefined ?      
+                        estadosMexicanos.map((estadoMexicano,index) =>{
+                            return (
+                                <MenuItem key={index} value={estadoMexicano}>{estadoMexicano}</MenuItem>
+                            )
+                        })
+                        :''                   
+                      }
+                      </Select>
+                </FormControl>
+                <TextField className="InputBasic2"
+                  error={errorCiudad}
+                  required
+                  id="outlined-basic" 
+                  label="Ciudad" 
+                  size="small"
+                  name="ciudad"
+                  value={ciudad}
+                  onChange={e=>setCiudad(e.target.value)}   
+                  inputProps={{maxLength:100 }}>
+                </TextField> 
+                <Box sx={{width:'100%', display: 'flex', alignItems: 'center', justifyContent: 'center', pb: '1rem'}}>
+                  <Button onClick={() => handleSubmit()}  variant="contained" className="primary-basic-full" >Enviar Orden</Button>
+                </Box>                                              
+              </Stack>
             </Box>
-        </Box>
+          </Box> 
+          <Box>
+              {Array.isArray(state.cart) && state.cart.length > 0 && <ProductCart />}
+              <Box sx={{height:'10px'}}></Box>          
+              <ProductCartConf editVisible={true}/>
+              <Box className="total_compra">
+                <Typography >Total de la Compra:</Typography> 
+                <Typography  className="total_config">{formatter.format(state.totalCompra)}</Typography>
+              </Box>
+          </Box>
       </Box>
+    </Box>
 	);
 }
 export default CheckOutCart;

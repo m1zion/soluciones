@@ -98,7 +98,6 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("login");
     try {
       const response = await fetch(`${baseURL}auth/login`, {
         method: 'POST',

@@ -1,4 +1,3 @@
-//LIGAR CUANDO LUIS TENGA LA TABLA DE MOVIMIENTOS
 import { Alert, Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import React, { useState, useEffect, useRef, useContext } from "react";
 import PrintIcon from '@mui/icons-material/Print';

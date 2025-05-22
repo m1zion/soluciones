@@ -1,7 +1,7 @@
 //m2134256161 
 import React, {useRef, useState, useEffect, useContext} from "react";
 import { Typography, Stack, Button, Stepper, Step, StepLabel } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, sizeHeight } from "@mui/system";
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 //import useDelete from '@hooks/useDelete';
 import { styled } from '@mui/material/styles';
@@ -20,6 +20,8 @@ import GradientCircularProgress from "./GradientCircularProgress";
 import ConfiguradorCategoria from "./containers/ConfiguradorCategoria";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DeleteForever, DeleteOutline } from "@mui/icons-material";
+import ProductDetail from './Components/ProductDetail';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -72,8 +74,16 @@ const Configurador4 = () => {
     setTerminaConfiguracion1,
     setTieneAmplificadorBajos,
     setTieneBocinaOriginal,
-    setTieneEcualizador
+    setTieneEcualizador,
+    setProductToShow,
+    openProductDetail,
   } = useContext(AppContext);
+  const showProduct = (productDetail) => {
+    //console.log("Show product");
+    //console.log(productDetail);
+    openProductDetail();
+    setProductToShow(productDetail);
+  };  
   const API = process.env.REACT_APP_API_URL;
   const APIDelete = API+'orders/delete-item/';
   const APIDeleteAll = API+'orders/delete-all-items/';
@@ -283,10 +293,21 @@ const Configurador4 = () => {
   const expandCalzaBocinaPT = (state.bocinaPremiumTraseraC.SKU != undefined && state.calzaBocinaPremiumTraseraC.length === 0) ||
     (state.bocinaPremiumTraseraC === 'N/A' && state.calzaBocinaPremiumTraseraC.length === 0);
   const expandAmplificadorVoz =  state.amplificadorC.length === 0 && state.tieneBocinaReemplazo === 'no';//Cuando No quiere bocinas de reemplazo N0 = AMPLIFICARLA
-  const expandedAmplificadorWoofer =  (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no' && state.mejorarAudio === 'no') || 
+  /*let expandedAmplificadorWoofer =  (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no' && state.mejorarAudio === 'no') || 
     (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no' && state.terminaConfiguracion1 === 'no') || 
     (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no'  && state.tieneBocinaOriginal === 'si' ) ||
-    (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no'  && state.calzaBocinaPremiumTraseraC.length != 0 );   
+    (state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos != 'no'  && state.calzaBocinaPremiumTraseraC.length != 0 );  
+  expandedAmplificadorWoofer = !(state.amplificador3en1C?.SKU != null && state.amplificador3en1C?.SKU !== '');*/
+  const hasAmplificador3en1 = state.amplificador3en1C?.SKU != null && state.amplificador3en1C?.SKU !== '';
+  const baseCondition = state.amplificadorWooferC.length === 0 && state.tieneAmplificadorBajos !== 'no';
+  const extraCondition = (
+    state.mejorarAudio === 'no' ||
+    state.terminaConfiguracion1 === 'no' ||
+    state.tieneBocinaOriginal === 'si' ||
+    state.calzaBocinaPremiumTraseraC.length !== 0
+  );
+  const expandedAmplificadorWoofer = baseCondition && extraCondition && !hasAmplificador3en1;
+  
   const expandAmplificador3en1 = (state.tieneAmplificadorBajos === 'no' && state.amplificador3en1C.length === 0);
   const expandCajonAcustico = (state.amplificadorWooferC.SKU != undefined && state.cajonAcusticoC.length === 0) || 
     (state.amplificadorWooferC === 'N/A' && state.cajonAcusticoC.length === 0);
@@ -443,89 +464,93 @@ const Configurador4 = () => {
           //navigate("/configurador1");
         }
       break;
-      case "8": //bases
+      
+      case "20": //Estereos
+        data = {orderId: state.confOrderId,categoryId: 1,categoryIdConfigurador: 20}; //Borro Estereos
+        useDeleteOrderItem(APIDelete,data);
+      case "20": case "8": //bases
         data = {orderId: state.confOrderId,categoryId: 13,categoryIdConfigurador: 8}; //Borro bases
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": //arneses
+      case "20": case "8": case "7": //arneses
         data = {orderId: state.confOrderId,categoryId: 14,categoryIdConfigurador: 7}; //Borro arneses
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": // Adaptadores de antena
+      case "20": case "8": case "7": case "2": // Adaptadores de antena
         data = {orderId: state.confOrderId,categoryId: 15,categoryIdConfigurador: 2}; 
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "3": // Adaptadores de impedancia
+      case "20": case "8": case "7": case "3": // Adaptadores de impedancia
         data = {orderId: state.confOrderId,categoryId: 27,categoryIdConfigurador: 3}; 
         //console.log(data);
         //console.log(APIDelete);
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3": case "11": // Bocina RD Borro bocinas y componentes
+      case "20": case "8": case "7": case "2": case "3": case "11": // Bocina RD Borro bocinas y componentes
         data = {orderId: state.confOrderId,categoryId: 16,categoryIdConfigurador: 11}; 
         useDeleteOrderItem(APIDelete,data);
         data = {orderId: state.confOrderId,categoryId: 29,categoryIdConfigurador: 11}; 
         useDeleteOrderItem(APIDelete,data)
-      case "8": case "7": case "2": case "3":  case "11": case "16": // Base Bocina RD
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": // Base Bocina RD
         data = {orderId: state.confOrderId,categoryId: 28,categoryIdConfigurador: 16}; 
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": //Bocina RT  Borro bocinas y componentes
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": //Bocina RT  Borro bocinas y componentes
         data = {orderId: state.confOrderId,categoryId: 16,categoryIdConfigurador: 12}; 
         useDeleteOrderItem(APIDelete,data);
         data = {orderId: state.confOrderId,categoryId: 29,categoryIdConfigurador: 12}; 
         useDeleteOrderItem(APIDelete,data)
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": //Base Bocina RT
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": //Base Bocina RT
         data = {orderId: state.confOrderId,categoryId: 28,categoryIdConfigurador: 17}; 
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": //Amplificador de voz
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": //Amplificador de voz
         data = {orderId: state.confOrderId,categoryId: 17,categoryIdConfigurador: 5}; 
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": //Bocina PD  Borro bocinas y componentes
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": //Bocina PD  Borro bocinas y componentes
         data = {orderId: state.confOrderId,categoryId: 16,categoryIdConfigurador: 9}; 
         useDeleteOrderItem(APIDelete,data);
         data = {orderId: state.confOrderId,categoryId: 29,categoryIdConfigurador: 9}; 
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": //Base BPD
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": //Base BPD
         data = {orderId: state.confOrderId,categoryId: 28,categoryIdConfigurador: 14}; 
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": //Bocina PT  Borro bocinas y componentes
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": //Bocina PT  Borro bocinas y componentes
         data = {orderId: state.confOrderId,categoryId: 16,categoryIdConfigurador: 10}; 
         useDeleteOrderItem(APIDelete,data);
         data = {orderId: state.confOrderId,categoryId: 29,categoryIdConfigurador: 10}; 
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": //Base BPT
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": //Base BPT
         data = {orderId: state.confOrderId,categoryId: 28,categoryIdConfigurador: 15}; 
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6":  //Amplificador Woofer
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6":  //Amplificador Woofer
         data = {orderId: state.confOrderId,categoryId: 17,categoryIdConfigurador: 6}; 
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "4":  //Amplificador 3 en 1
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "4":  //Amplificador 3 en 1
         data = {orderId: state.confOrderId,categoryId: 38,categoryIdConfigurador: 4}; 
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "13": //cajon acustico
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "13": //cajon acustico
         data = {orderId: state.confOrderId,categoryId: 7,categoryIdConfigurador: 13};
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "13":
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "13":
       case "26":  //Woofer
         data = {orderId: state.confOrderId,categoryId: 21,categoryIdConfigurador: 26}; 
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "26":
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "26":
       case "13": case "21": case "4":  //Kit de cables
         data = {orderId: state.confOrderId,categoryId: 25,categoryIdConfigurador: 21}; 
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "26":
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "26":
       case "13": case "21": case "18":  //Ecualizador
         data = {orderId: state.confOrderId,categoryId: 20,categoryIdConfigurador: 18}; 
         useDeleteOrderItem(APIDelete,data);        
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "26":
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "26":
       case "13": case "21": case "18": case "19": //Epicentro
         data = {orderId: state.confOrderId,categoryId: 23,categoryIdConfigurador: 19};
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "26":
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "26":
       case "13": case "21": case "18": case "19": case "23": //Procesador
         data = {orderId: state.confOrderId,categoryId: 24,categoryIdConfigurador: 23};
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "26":
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "26":
       case "13": case "21": case "18": case "19": case "23": case "25": //Tweeters
         data = {orderId: state.confOrderId,categoryId: 19,categoryIdConfigurador: 25};
         useDeleteOrderItem(APIDelete,data);
-      case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "26":
+      case "20": case "8": case "7": case "2": case "3":  case "11": case "16": case "12": case "17": case "5": case "9": case "14": case "10": case "15": case "6": case "26":
       case "13": case "21": case "18": case "19": case "23": case "25": case "1": case "4":  //Accesorios
         data = {orderId: state.confOrderId,categoryId: 26,categoryIdConfigurador: 1};
         useDeleteOrderItem(APIDelete,data);
@@ -542,7 +567,7 @@ const Configurador4 = () => {
     }
     //Lo ejecutamos nuevamente para borrar las variables independientes de la API y posteriormentee sean cargadas
     switch(categoryIdConfigurador){  
-      case "8": case "7": case "2": case "11": case '3': // Bases, Arneses, Adaptadores de antena, Bocinas RD, adaptadores de Impedancia
+      case "8": case "7": case "2": case "11": case '3': case '20': // Bases, Arneses, Adaptadores de antena, Bocinas RD, adaptadores de Impedancia, Estereos
         usePut(APIconfCaracteristicas,dataCaracteristicas1);
       break;
       case "16": // Calza Bocina RD
@@ -849,8 +874,7 @@ const Configurador4 = () => {
     break;
     }
   }
-  console.log("===========");
-  console.log(state.mejorarAudio);
+  /*console.log("===========");*/
   return (
     <React.Fragment>
       {(loading || loadingLocal) && <Box className="Loading_Container"> <GradientCircularProgress /></Box>}
@@ -858,6 +882,7 @@ const Configurador4 = () => {
       <Box>        
       <Stepper activeStep={3} alternativeLabel 
         sx={{
+            display: { xs: 'flex', flexWrap:'wrap' },
             mt: "7rem",
             width: "-webkit-fill-available",
             "& .MuiStepIcon-root.Mui-active": {
@@ -897,42 +922,66 @@ const Configurador4 = () => {
           {
           //------------------------------------------------------ESTEREO--------------------------------------------------------------
           }                   
-          <Accordion expanded={expandEstereo || expanded === 'panel1'}  
-            disabled = {state.tieneEstereoOriginalC === 'si' || state.tieneEstereoTipoOriginalC === true}
-            onChange={handleChange('panel1')} 
-           >
-              <Box className="configurador-accordionSummary">
-                <AccordionSummary 
-                  className="configurador-accordion-header" 
-                  aria-controls="panel1d-content" 
-                  id="panel1d-header">
-                    <Typography>Estereos</Typography><Typography className="configurador-item-selected"> - {state.estereoC.modelo} </Typography>  
-                  </AccordionSummary>
-                <Box className="configurador-button-borrar">
-                {(state.estereoC?.SKU && state.estereoC.SKU !== "") ?
-                 <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('20','1')}  />:  ''
-                
+          <Accordion 
+            expanded={expandEstereo || expanded === 'panel1'}  
+            disabled = {state.tieneEstereoOriginalC === 'si' || state.tieneEstereoTipoOriginalC === true || (state.estereoC?.SKU != null && state.estereoC.SKU !== '')} //|| state.estereoC?.SKU? !== ''
+            onChange={handleChange('panel1')}      
+          >
+            <Box className="configurador-accordionSummary">
+              <AccordionSummary 
+                aria-controls="panel1d-content" 
+                id="panel1d-header"              
+                className={state.estereoC?.SKU != null && state.estereoC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+              >    
+                <Typography>Estereos</Typography><Typography className="configurador-item-selected"> - {state.estereoC.modelo} </Typography>  
+              </AccordionSummary>
+              <Box className="configurador-button-borrar">
+                {(state.estereoC?.SKU && state.estereoC.SKU !== "") && (
+                <>
+                <VisibilityIcon
+                  className="viewIconConf"
+                  style={{ marginRight: '8px',marginLeft: '8px' }}
+                  onClick={() => showProduct(state.estereoC)}
+                />
+                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('20','1')}  />
+                </>
+                )
                 }             
-                </Box>
               </Box>
-              <AccordionDetails>   
-                {(expanded === 'panel1' || expandEstereo) && (     
-                  <ConfiguradorCategoria category="20" value={valor} value2= {valor2} optional="false" carFeatures={caracteristicas}/>
-                )}
-              </AccordionDetails>
+            </Box>
+            <AccordionDetails>   
+              {(expanded === 'panel1' || expandEstereo) && (     
+                <ConfiguradorCategoria category="20" value={valor} value2= {valor2} optional="false" carFeatures={caracteristicas}/>
+              )}
+            </AccordionDetails>
           </Accordion>  
+
+
           {/*------------------------------------------------------BASES--------------------------------------------------------------*/}
-          <Accordion expanded={expandBases || expanded === 'panel2'}  onChange={handleChange('panel2')} 
-          disabled = {(!state.estereoC?.SKU || state.estereoC.SKU === "")} id="accordion_base"
+          <Accordion 
+            expanded={expandBases || expanded === 'panel2'}  
+            onChange={handleChange('panel2')} 
+            disabled = {(!state.estereoC?.SKU || state.estereoC.SKU === ""  || (state.baseC?.SKU != null && state.baseC.SKU !== '') )} 
+            id="accordion_base"
           >{/* disabled={enabledBase}*/}
            <Box className="configurador-accordionSummary">
-            <AccordionSummary className="configurador-accordion-header" aria-controls="panel2d-content" id="panel2d-header">
+            <AccordionSummary 
+              className={state.baseC?.SKU != null && state.baseC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+              aria-controls="panel2d-content" 
+              id="panel2d-header">
               <Typography>Bases</Typography><Typography className="configurador-item-selected"> - {state.baseC.modelo} </Typography>
             </AccordionSummary>
               <Box className="configurador-button-borrar">
-              {(state.baseC.length != 0) ?
-                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('8','13')}  />:  ''
-              }
+              {(state.baseC.length != 0) && (
+                <>
+                  <VisibilityIcon
+                    className="viewIconConf"
+                    style={{ marginRight: '8px',marginLeft: '8px' }}
+                    onClick={() => showProduct(state.baseC)}
+                  />
+                  <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('8','13')}  />
+                </>
+              )}            
               </Box>
             </Box>
             <AccordionDetails>
@@ -942,18 +991,31 @@ const Configurador4 = () => {
             </AccordionDetails>
           </Accordion>
           {/*------------------------------------------------------ARNESES--------------------------------------------------------------*/}
-          <Accordion expanded={expandArneses || expanded === 'panel3'} onChange={handleChange('panel3')} 
-          disabled = {state.baseC.length === 0}
+          <Accordion 
+            expanded={expandArneses || expanded === 'panel3'} 
+            onChange={handleChange('panel3')} 
+            disabled = {state.baseC.length === 0 || (state.arnesC?.SKU != null && state.arnesC.SKU !== '')}
           >
             <Box className="configurador-accordionSummary">
-            <AccordionSummary className="configurador-accordion-header" aria-controls="panel3d-content" id="panel3d-header">
+            <AccordionSummary 
+              className={state.arnesC?.SKU != null && state.arnesC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+              aria-controls="panel3d-content" 
+              id="panel3d-header">
               <Typography>Arneses</Typography><Typography className="configurador-item-selected"> - {(state.arnesC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.arnesC.modelo}</Typography>
             </AccordionSummary>
             <Box className="configurador-button-borrar">
-              {(state.arnesC.length != 0) ?
-                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('7','14')}  />:  ''
+              {(state.arnesC.length != 0) && (
+              <>
+                <VisibilityIcon
+                  className="viewIconConf"
+                  style={{ marginRight: '8px',marginLeft: '8px' }}
+                  onClick={() => showProduct(state.arnesC)}
+                />
+                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('7','14')}  />
+              </>
+              )
               }
-              </Box>
+            </Box>
             </Box>
             <AccordionDetails>
             {(expandArneses || expanded === 'panel3') && ( 
@@ -962,17 +1024,29 @@ const Configurador4 = () => {
             </AccordionDetails>
           </Accordion>
          {/*------------------------------------------------------ADAPTADORES--------------------------------------------------------------*/}
-          <Accordion expanded={expandAdaptadores || expanded === 'panel4'} onChange={handleChange('panel4')} 
-          disabled = {state.arnesC.length === 0}
+          <Accordion 
+            expanded={expandAdaptadores || expanded === 'panel4'} 
+            onChange={handleChange('panel4')} 
+            disabled = {(state.arnesC.length === 0 || (state.adaptadorC?.SKU != null && state.adaptadorC.SKU !== ''))}
           >
              <Box className="configurador-accordionSummary">
-            <AccordionSummary className="configurador-accordion-header" aria-controls="panel4-content" id="panel4d-header">
+            <AccordionSummary 
+              className={state.adaptadorC?.SKU != null && state.adaptadorC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+              aria-controls="panel4-content" 
+              id="panel4d-header">
               <Typography>Adaptadores</Typography><Typography className="configurador-item-selected"> - {state.adaptadorC.modelo}</Typography>
             </AccordionSummary>
               <Box className="configurador-button-borrar">
-              {(state.adaptadorC.length != 0) ?
-                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('2','15')}  />:  ''
-              }
+              {(state.adaptadorC.length != 0) && (
+                <>
+                  <VisibilityIcon
+                    className="viewIconConf"
+                    style={{ marginRight: '8px',marginLeft: '8px' }}
+                    onClick={() => showProduct(state.adaptadorC)}
+                  />
+                  <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('2','15')}  />
+                </>
+              )}
               </Box>
             </Box>
             <AccordionDetails>
@@ -982,15 +1056,28 @@ const Configurador4 = () => {
             </AccordionDetails>
           </Accordion>
           {/*------------------------------------------------------ADAPTADOR DE IMPEDANCIA--------------------------------------------------------------*/}
-          <Accordion expanded={expandAdaptadoresImpedancia || expanded === 'panel23'} onChange={handleChange('panel23')} 
-          disabled = {state.tieneEstereoOriginalC!= 'si'}>
+          <Accordion 
+            expanded={expandAdaptadoresImpedancia || expanded === 'panel23'} 
+            onChange={handleChange('panel23')} 
+            disabled = {state.tieneEstereoOriginalC!= 'si' || state.adaptadorImpedanciaC.length != 0}>
               <Box className="configurador-accordionSummary">
-            <AccordionSummary className="configurador-accordion-header" aria-controls="panel4-content" id="panel4d-header">
+            <AccordionSummary 
+              className={state.adaptadorImpedanciaC?.SKU != null && state.adaptadorImpedanciaC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+              aria-controls="panel4-content" 
+              id="panel4d-header">
               <Typography>Adaptador de Impedancia (Solo Estereo Original)</Typography><Typography className="configurador-item-selected"> - {state.adaptadorImpedanciaC.modelo}</Typography>
             </AccordionSummary>
               <Box className="configurador-button-borrar">
-              {(state.adaptadorImpedanciaC.length != 0) ?
-                 <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('3','27')}  />:  ''
+              {(state.adaptadorImpedanciaC.length != 0)&& (
+                <>
+                  <VisibilityIcon
+                    className="viewIconConf"
+                    style={{ marginRight: '8px',marginLeft: '8px' }}
+                    onClick={() => showProduct(state.adaptadorImpedanciaC)}
+                  />
+                 <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('3','27')}  />
+                </>
+              )
               }
               </Box>
             </Box>
@@ -1007,17 +1094,30 @@ const Configurador4 = () => {
           disabled = {
             (state.adaptadorC.length === 0 && (state.adaptadorImpedanciaC.length === 0 && state.tieneEstereoTipoOriginalC != true)) ||
             (state.mejorarAudio === 'no') || 
-            state.tieneBocinaReemplazo == 'no'}>
-              <Box className="configurador-accordionSummary">
-            <AccordionSummary className="configurador-accordion-header" aria-controls="panel5d-content" id="panel5d-header">
+            state.tieneBocinaReemplazo == 'no' ||
+            (state.bocinaReemplazoDelanteraC.length != 0)
+          }
+          >
+            <Box className="configurador-accordionSummary">
+            <AccordionSummary 
+              className={state.bocinaReemplazoDelanteraC?.SKU != null && state.bocinaReemplazoDelanteraC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+              aria-controls="panel5d-content" 
+              id="panel5d-header">
               <Typography>  Bocina de Reemplazo Delantera</Typography><Typography className="configurador-item-selected"> - {(state.bocinaReemplazoDelanteraC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' : state.bocinaReemplazoDelanteraC.modelo}</Typography>
             </AccordionSummary>
             <Box className="configurador-button-borrar">
-                {(state.bocinaReemplazoDelanteraC.length != 0) ?
-                   <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('11','16')}  />:  ''
+                {(state.bocinaReemplazoDelanteraC.length != 0) && 
+                <>
+                  <VisibilityIcon
+                    className="viewIconConf"
+                    style={{ marginRight: '8px',marginLeft: '8px' }}
+                    onClick={() => showProduct(state.bocinaReemplazoDelanteraC)}
+                  />
+                   <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('11','16')}  />
+                </>
                 }
                 </Box>
-              </Box>
+            </Box>
             <AccordionDetails>
               {
                   (state.mejorarAudio.length === 0)
@@ -1046,14 +1146,24 @@ const Configurador4 = () => {
           </Accordion>
           {/*------------------------------------------------------CALZAS BOCINA DE REEMPLAZO DELANTERA--------------------------------------------------------------*/}
           <Accordion expanded={(expandBaseBocinaRD || expanded === 'panel6')} onChange={handleChange('panel6')} 
-            disabled = {state.bocinaReemplazoDelanteraC.length === 0}>
+            disabled = {state.bocinaReemplazoDelanteraC.length === 0 || (state.calzaBocinaReemplazoDelanteraC?.SKU != null && state.calzaBocinaReemplazoDelanteraC?.SKU !== '') }>
               <Box className="configurador-accordionSummary">
-                <AccordionSummary className="configurador-accordion-header" aria-controls="panel6d-content" id="panel6d-header">
+                <AccordionSummary 
+                  className={state.calzaBocinaReemplazoDelanteraC?.SKU != null && state.calzaBocinaReemplazoDelanteraC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+                  aria-controls="panel6d-content" 
+                  id="panel6d-header">
                   <Typography>Base para Bocina Delantera</Typography><Typography className="configurador-item-selected"> - {(state.calzaBocinaReemplazoDelanteraC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' : state.calzaBocinaReemplazoDelanteraC.modelo}</Typography>
                 </AccordionSummary>
                 <Box className="configurador-button-borrar">
-                  {(state.calzaBocinaReemplazoDelanteraC.length != 0) ?
-                    <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('16','28')}  />:  ''
+                  {(state.calzaBocinaReemplazoDelanteraC.length != 0) && 
+                  <>
+                    <VisibilityIcon
+                      className="viewIconConf"
+                      style={{ marginRight: '8px',marginLeft: '8px' }}
+                      onClick={() => showProduct(state.calzaBocinaReemplazoDelanteraC)}
+                    />
+                    <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('16','28')}  />
+                  </>
                   }
                 </Box>
               </Box>
@@ -1064,16 +1174,28 @@ const Configurador4 = () => {
               </AccordionDetails>
           </Accordion>
           {/*------------------------------------------------------BOCINA DE REEMPLAZO TRASERA--------------------------------------------------------------*/}
-          <Accordion expanded={(expandBocinaRT || expanded === 'panel7')} onChange={handleChange('panel7')} 
-          disabled = {state.calzaBocinaReemplazoDelanteraC.length === 0}>
+          <Accordion 
+            expanded={(expandBocinaRT || expanded === 'panel7')} 
+            onChange={handleChange('panel7')} 
+            disabled = {state.calzaBocinaReemplazoDelanteraC.length === 0 || (state.bocinaReemplazoTraseraC.length != 0)}>
             <Box className="configurador-accordionSummary">
-              <AccordionSummary className="configurador-accordion-header" aria-controls="panel7d-content" id="panel7d-header">
+              <AccordionSummary 
+                className={state.bocinaReemplazoTraseraC?.SKU != null && state.bocinaReemplazoTraseraC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+                aria-controls="panel7d-content" 
+                id="panel7d-header">
                 <Typography>Bocina de Reemplazo Trasera</Typography>
                 <Typography className="configurador-item-selected"> - {(state.bocinaReemplazoTraseraC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.bocinaReemplazoTraseraC.modelo}</Typography>
               </AccordionSummary>
               <Box className="configurador-button-borrar">
-                {(state.bocinaReemplazoTraseraC.length != 0) ?
-                   <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('12','16')}  />:  ''
+                {(state.bocinaReemplazoTraseraC.length != 0) && 
+                  <>
+                    <VisibilityIcon
+                      className="viewIconConf"
+                      style={{ marginRight: '8px',marginLeft: '8px' }}
+                      onClick={() => showProduct(state.bocinaReemplazoTraseraC)}
+                    />
+                   <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('12','16')}  />
+                  </>
                 }
               </Box>
             </Box>
@@ -1086,15 +1208,27 @@ const Configurador4 = () => {
             </AccordionDetails>
         </Accordion>
         {/*------------------------------------------------------CALZAS BOCINA DE REEMPLAZO TRASERA--------------------------------------------------------------*/}
-        <Accordion expanded={(expandBaseBocinaRT || expanded === 'panel8')} onChange={handleChange('panel8')} 
-        disabled = {state.bocinaReemplazoTraseraC.length === 0}>
+        <Accordion 
+          expanded={(expandBaseBocinaRT || expanded === 'panel8')} 
+          onChange={handleChange('panel8')} 
+          disabled = {(state.bocinaReemplazoTraseraC.length === 0 || (state.calzaBocinaReemplazoTraseraC.length != 0))}>
           <Box className="configurador-accordionSummary">
-            <AccordionSummary className="configurador-accordion-header" aria-controls="panel8d-content" id="panel8d-header">
+            <AccordionSummary 
+              className={state.calzaBocinaReemplazoTraseraC?.SKU != null && state.calzaBocinaReemplazoTraseraC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+              aria-controls="panel8d-content" 
+              id="panel8d-header">
               <Typography>Base para Bocina Trasera</Typography><Typography className="configurador-item-selected"> - {(state.calzaBocinaReemplazoTraseraC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.calzaBocinaReemplazoTraseraC.modelo}</Typography>
             </AccordionSummary>
             <Box className="configurador-button-borrar">
-              {(state.calzaBocinaReemplazoTraseraC.length != 0) ?
-               <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('17','28')}  />:  ''
+              {(state.calzaBocinaReemplazoTraseraC.length != 0) && 
+              <>
+                <VisibilityIcon
+                  className="viewIconConf"
+                  style={{ marginRight: '8px',marginLeft: '8px' }}
+                  onClick={() => showProduct(state.calzaBocinaReemplazoTraseraC)}
+                />
+                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('17','28')}  />
+              </>
               }
             </Box>
           </Box>
@@ -1127,17 +1261,30 @@ const Configurador4 = () => {
               }          
         </Accordion>
         {/*------------------------------------------------------AMPLIFICADOR DE VOZ (Previo adaptador)--------------------------------------------------------------*/}
-        <Accordion expanded={(expandAmplificadorVoz || expanded === 'panel10')} onChange={handleChange('panel10')} 
-        disabled = {(state.adaptadorC.length === 0) || 
-        (state.tieneBocinaReemplazo.length === 0) || 
-        (state.tieneBocinaReemplazo === 'si') }>
+        <Accordion 
+          expanded={(expandAmplificadorVoz || expanded === 'panel10')} 
+          onChange={handleChange('panel10')} 
+          disabled = {(state.adaptadorC.length === 0) || 
+          (state.tieneBocinaReemplazo.length === 0) || 
+          (state.tieneBocinaReemplazo === 'si') ||
+          state.amplificadorC.length != 0 }>
           <Box className="configurador-accordionSummary">
-            <AccordionSummary className="configurador-accordion-header" aria-controls="panel10d-content" id="panel10d-header">
+            <AccordionSummary 
+              className={state.amplificadorC?.SKU != null && state.amplificadorC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+              aria-controls="panel10d-content" 
+              id="panel10d-header">
               <Typography>Amplificador de Voz</Typography><Typography className="configurador-item-selected"> - {state.amplificadorC.modelo}</Typography>
             </AccordionSummary>
             <Box className="configurador-button-borrar">
-              {(state.amplificadorC.length != 0) ?
-                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('5')}  />:  ''
+              {(state.amplificadorC.length != 0) && 
+                <>
+                  <VisibilityIcon
+                    className="viewIconConf"
+                    style={{ marginRight: '8px',marginLeft: '8px' }}
+                    onClick={() => showProduct(state.amplificadorC)}
+                  />
+                  <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('5')}  />
+                </>
               }
             </Box>
           </Box>
@@ -1148,15 +1295,27 @@ const Configurador4 = () => {
           </AccordionDetails>
         </Accordion>   
         {/*------------------------------------------------- BOCINAS ORIGINALES O PREMIUM --------------------------------------------------------*/}
-        <Accordion expanded={(expandBocinasOriginalesPremium || expanded === 'panel11')} onChange={handleChange('panel11')} 
-        disabled = {state.amplificadorC.length === 0 || state.tieneBocinaOriginal === 'si'}>
+        <Accordion 
+          expanded={(expandBocinasOriginalesPremium || expanded === 'panel11')} 
+          onChange={handleChange('panel11')} 
+          disabled = {state.amplificadorC.length === 0 || state.tieneBocinaOriginal === 'si' || state.bocinaPremiumDelanteraC.length != 0}>
            <Box className="configurador-accordionSummary">
-          <AccordionSummary className="configurador-accordion-header" aria-controls="panel11d-content" id="panel11d-header">
+          <AccordionSummary 
+            className={state.bocinaPremiumDelanteraC?.SKU != null && state.bocinaPremiumDelanteraC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''} 
+            aria-controls="panel11d-content" 
+            id="panel11d-header">
             <Typography>Bocina Premium Delatera</Typography><Typography className="configurador-item-selected"> - {(state.bocinaPremiumDelanteraC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.bocinaPremiumDelanteraC.modelo}</Typography>
           </AccordionSummary>
           <Box className="configurador-button-borrar">
-              {(state.bocinaPremiumDelanteraC.length != 0) ?
-                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('9','16')}  />:  ''
+              {(state.bocinaPremiumDelanteraC.length != 0) && 
+              <>
+                <VisibilityIcon
+                  className="viewIconConf"
+                  style={{ marginRight: '8px',marginLeft: '8px' }}
+                  onClick={() => showProduct(state.bocinaPremiumDelanteraC)}
+                />
+                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('9','16')}  />
+              </>
               }
               </Box>
             </Box>
@@ -1177,15 +1336,27 @@ const Configurador4 = () => {
             </AccordionDetails>
           </Accordion>
         {/*------------------------------------------------------CALZAS BOCINA PREMIUM DELANTERA--------------------------------------------------------------*/}
-        <Accordion expanded={(expandCalzaBocinaPD || expanded === 'panel12')} onChange={handleChange('panel12')} 
-        disabled = {state.bocinaPremiumDelanteraC.length === 0}>
+        <Accordion 
+          expanded={(expandCalzaBocinaPD || expanded === 'panel12')} 
+          onChange={handleChange('panel12')} 
+          disabled = {state.bocinaPremiumDelanteraC.length === 0 || state.calzaBocinaPremiumDelanteraC.length != 0}>
           <Box className="configurador-accordionSummary">
-            <AccordionSummary className="configurador-accordion-header" aria-controls="panel12d-content" id="panel12d-header">
+            <AccordionSummary 
+              className={state.calzaBocinaPremiumDelanteraC?.SKU != null && state.calzaBocinaPremiumDelanteraC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''} 
+              aria-controls="panel12d-content" 
+              id="panel12d-header">
               <Typography>Base para Bocina Premium Delantera</Typography><Typography className="configurador-item-selected"> - {(state.calzaBocinaPremiumDelanteraC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.calzaBocinaPremiumDelanteraC.modelo}</Typography>
             </AccordionSummary>
             <Box className="configurador-button-borrar">
-              {(state.calzaBocinaPremiumDelanteraC.length != 0) ?
-                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('14','28')}  />:  ''
+              {(state.calzaBocinaPremiumDelanteraC.length != 0) && 
+              <>
+                <VisibilityIcon
+                  className="viewIconConf"
+                  style={{ marginRight: '8px',marginLeft: '8px' }}
+                  onClick={() => showProduct(state.calzaBocinaPremiumDelanteraC)}
+                />
+                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('14','28')}  />
+              </>
               }
             </Box>
           </Box>
@@ -1199,16 +1370,28 @@ const Configurador4 = () => {
 
 
           {/*------------------------------------------------------BOCINA PREMIUM TRASERA--------------------------------------------------------------*/}
-        <Accordion expanded={(expandBocinaPT || expanded === 'panel13')} onChange={handleChange('panel13')} 
-          disabled = {state.calzaBocinaPremiumDelanteraC.length === 0}>
+        <Accordion 
+          expanded={(expandBocinaPT || expanded === 'panel13')} 
+          onChange={handleChange('panel13')} 
+          disabled = {state.calzaBocinaPremiumDelanteraC.length === 0 || state.bocinaPremiumTraseraC.length != 0}>
           <Box className="configurador-accordionSummary">
-            <AccordionSummary className="configurador-accordion-header" aria-controls="panel13d-content" id="panel13d-header">
+            <AccordionSummary 
+              className={state.bocinaPremiumTraseraC?.SKU != null && state.bocinaPremiumTraseraC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''} 
+              aria-controls="panel13d-content" 
+              id="panel13d-header">
               <Typography>Bocina Premium Trasera</Typography>
               <Typography className="configurador-item-selected"> - {(state.bocinaPremiumTraseraC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.bocinaPremiumTraseraC.modelo}</Typography>
             </AccordionSummary>
             <Box className="configurador-button-borrar">
-              {(state.bocinaPremiumTraseraC.length != 0) ?
-                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('10','16')}  />:  ''
+              {(state.bocinaPremiumTraseraC.length != 0) && 
+              <>
+                <VisibilityIcon
+                  className="viewIconConf"
+                  style={{ marginRight: '8px',marginLeft: '8px' }}
+                  onClick={() => showProduct(state.bocinaPremiumTraseraC)}
+                />
+                <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('10','16')}  />
+              </>
               }
             </Box>
           </Box>
@@ -1219,15 +1402,27 @@ const Configurador4 = () => {
           </AccordionDetails>
         </Accordion>
       {/*------------------------------------------------------CALZAS BOCINA PREMIUM TRASERA--------------------------------------------------------------*/}
-      <Accordion expanded={(expandCalzaBocinaPT || expanded === 'panel14')} onChange={handleChange('panel14')} 
-      disabled = {state.bocinaPremiumTraseraC.length === 0}>
+      <Accordion 
+        expanded={(expandCalzaBocinaPT || expanded === 'panel14')} 
+        onChange={handleChange('panel14')} 
+        disabled = {state.bocinaPremiumTraseraC.length === 0 || state.calzaBocinaPremiumTraseraC.length}>
       <Box className="configurador-accordionSummary">
-        <AccordionSummary className="configurador-accordion-header" aria-controls="panel14d-content" id="panel14d-header">
+        <AccordionSummary 
+          className={state.calzaBocinaPremiumTraseraC?.SKU != null && state.calzaBocinaPremiumTraseraC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}  
+          aria-controls="panel14d-content" 
+          id="panel14d-header">
           <Typography>Base para Bocina Premium Trasera</Typography><Typography className="configurador-item-selected"> - {(state.calzaBocinaPremiumTraseraC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.calzaBocinaPremiumTraseraC.modelo}</Typography>
         </AccordionSummary>
         <Box className="configurador-button-borrar">
-          {(state.calzaBocinaPremiumTraseraC.length != 0) ?
-            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('15','28')}  />:  ''
+          {(state.calzaBocinaPremiumTraseraC.length != 0) && 
+            <>
+              <VisibilityIcon
+                className="viewIconConf"
+                style={{ marginRight: '8px',marginLeft: '8px' }}
+                onClick={() => showProduct(state.calzaBocinaPremiumTraseraC)}
+              />
+              <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('15','28')}  />
+          </>
           }
         </Box>
       </Box>
@@ -1239,20 +1434,33 @@ const Configurador4 = () => {
     </Accordion>
     {/*------------------------------------------------------AMPLIFICADOR DE WOOFER--------------------------------------------------------------*/}
       {/*ACTIVAR disabled={!activarBotonWoofer} para desactivar el boton*/}
-    <Accordion expanded={(expandedAmplificadorWoofer || expanded === 'panel15')} onChange={handleChange('panel15')} 
+    <Accordion 
+      expanded={(expandedAmplificadorWoofer || expanded === 'panel15')} 
+      onChange={handleChange('panel15')} 
       disabled = {
-      (state.mejorarAudio.length === 0 && state.mejorarAudio != 'no') ||
-      (state.terminaConfiguracion1 != 'no' &&
-      state.tieneBocinaOriginal != 'si'  &&
-      state.mejorarAudio != 'no' && 
-      state.calzaBocinaPremiumTraseraC.length === 0)}>
+        (state.mejorarAudio.length === 0 && state.mejorarAudio != 'no') ||
+        (state.terminaConfiguracion1 != 'no' &&
+        state.tieneBocinaOriginal != 'si'  &&
+        state.mejorarAudio != 'no' && 
+        state.calzaBocinaPremiumTraseraC.length === 0) || (state.amplificadorWooferC.length != 0)}
+      >
         <Box className="configurador-accordionSummary">
-      <AccordionSummary className="configurador-accordion-header" aria-controls="panel15d-content" id="panel15d-header">
-        <Typography>Amplificador de Woofer</Typography><Typography className="configurador-item-selected"> - {(state.amplificadorWooferC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.amplificadorWooferC.modelo}</Typography>
-      </AccordionSummary>
-      <Box className="configurador-button-borrar">
-          {(state.amplificadorWooferC.length != 0) ?
-            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('6','17')}  />:  ''
+        <AccordionSummary 
+          className={state.amplificadorWooferC?.SKU != null && state.amplificadorWooferC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+          aria-controls="panel15d-content" 
+          id="panel15d-header">
+          <Typography>Amplificador de Woofer</Typography><Typography className="configurador-item-selected"> - {(state.amplificadorWooferC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.amplificadorWooferC.modelo}</Typography>
+        </AccordionSummary>
+        <Box className="configurador-button-borrar">
+          {(state.amplificadorWooferC.length != 0) && 
+          <>
+            <VisibilityIcon
+              className="viewIconConf"
+              style={{ marginRight: '8px',marginLeft: '8px' }}
+              onClick={() => showProduct(state.amplificadorWooferC)}
+            />
+            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('6','17')}  />
+          </>
           }
           </Box>
         </Box>
@@ -1274,16 +1482,28 @@ const Configurador4 = () => {
       </AccordionDetails>
     </Accordion>
   {/*------------------------------------------------------AMPLIFICADOR 3 en 1 --------------------------------------------------------------*/}
-  <Accordion expanded={(expandAmplificador3en1 || expanded === 'panel24')} onChange={handleChange('panel24')} 
-    disabled = {state.tieneAmplificadorBajos != 'no'}>
+  <Accordion 
+    expanded={(expandAmplificador3en1 || expanded === 'panel24')} 
+    onChange={handleChange('panel24')} 
+    disabled = {state.tieneAmplificadorBajos != 'no' || state.amplificador3en1C.length != 0}>
       <Box className="configurador-accordionSummary">
-        <AccordionSummary className="configurador-accordion-header" aria-controls="panel16d-content" id="panel16d-header">
+        <AccordionSummary 
+          className={state.amplificador3en1C?.SKU != null && state.amplificador3en1C?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+          aria-controls="panel16d-content" 
+          id="panel16d-header">
           <Typography>Amplificador 3 en 1</Typography>
           <Typography className="configurador-item-selected"> - {state.amplificador3en1C.modelo}</Typography>
         </AccordionSummary>
         <Box className="configurador-button-borrar">
-          {(state.amplificador3en1C.length != 0) ?
-            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('4','38')}  />:  ''
+          {(state.amplificador3en1C.length != 0)&& 
+          <>
+            <VisibilityIcon
+              className="viewIconConf"
+              style={{ marginRight: '8px',marginLeft: '8px' }}
+              onClick={() => showProduct(state.amplificador3en1C)}
+            />
+            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('4','38')}  />
+          </>
           }
         </Box>
       </Box>
@@ -1294,17 +1514,28 @@ const Configurador4 = () => {
       </AccordionDetails>
     </Accordion>
     {/*------------------------------------------------------CAJON ACUSTICO--------------------------------------------------------------*/}
-    <Accordion expanded={(expandCajonAcustico || expanded === 'panel16')} 
-    onChange={handleChange('panel16')} 
-    disabled = {state.amplificadorWooferC.length === 0}>
+    <Accordion 
+      expanded={(expandCajonAcustico || expanded === 'panel16')} 
+      onChange={handleChange('panel16')} 
+      disabled = {(state.amplificadorWooferC.length === 0 || state.cajonAcusticoC.length != 0)}>
       <Box className="configurador-accordionSummary">
-        <AccordionSummary className="configurador-accordion-header" aria-controls="panel16d-content" id="panel16d-header">
+        <AccordionSummary 
+          className={state.cajonAcusticoC?.SKU != null && state.cajonAcusticoC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+          aria-controls="panel16d-content" 
+          id="panel16d-header">
           <Typography>Cajon Acustico</Typography>
           <Typography className="configurador-item-selected"> - {(state.cajonAcusticoC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.cajonAcusticoC.modelo}</Typography>
         </AccordionSummary>
         <Box className="configurador-button-borrar">
-          {(state.cajonAcusticoC.length != 0) ?
-            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('13','7')}  />:  ''
+          {(state.cajonAcusticoC.length != 0) && 
+          <>
+            <VisibilityIcon
+              className="viewIconConf"
+              style={{ marginRight: '8px',marginLeft: '8px' }}
+              onClick={() => showProduct(state.cajonAcusticoC)}
+            />
+            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('13','7')}  />
+          </>
           }
         </Box>
       </Box>
@@ -1315,16 +1546,28 @@ const Configurador4 = () => {
       </AccordionDetails>
     </Accordion>
   {/*------------------------------------------------------WOOFER--------------------------------------------------------------*/}
-  <Accordion expanded={(expandWoofer || expanded === 'panel17')} onChange={handleChange('panel17')} 
-    disabled = {state.cajonAcusticoC.length === 0}>
+  <Accordion 
+    expanded={(expandWoofer || expanded === 'panel17')} 
+    onChange={handleChange('panel17')} 
+    disabled = {(state.cajonAcusticoC.length === 0 || state.wooferC.length != 0)}>
       <Box className="configurador-accordionSummary">
-        <AccordionSummary className="configurador-accordion-header" aria-controls="panel17d-content" id="panel17d-header">
+        <AccordionSummary 
+          className={state.wooferC?.SKU != null && state.wooferC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+          aria-controls="panel17d-content" 
+          id="panel17d-header">
           <Typography>Woofer</Typography>
           <Typography className="configurador-item-selected"> - {(state.wooferC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.wooferC.modelo}</Typography>
         </AccordionSummary>
         <Box className="configurador-button-borrar">
-          {(state.wooferC.length != 0) ?
-             <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('26','21')}  />:  ''
+          {(state.wooferC.length != 0) && 
+          <>
+            <VisibilityIcon
+              className="viewIconConf"
+              style={{ marginRight: '8px',marginLeft: '8px' }}
+              onClick={() => showProduct(state.wooferC)}
+            />
+             <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('26','21')}  />
+          </>
           }
         </Box>
       </Box>
@@ -1337,16 +1580,28 @@ const Configurador4 = () => {
 
 
     {/*------------------------------------------------------KIT DE CABLES --------------------------------------------------------------*/}
-    <Accordion expanded={(expandKitCables || expanded === 'panel18')} onChange={handleChange('panel18')} 
-    disabled = {state.wooferC.length === 0 && state.amplificador3en1C.length === 0 }>
+    <Accordion 
+      expanded={(expandKitCables || expanded === 'panel18')} 
+      onChange={handleChange('panel18')} 
+      disabled = {(state.wooferC.length === 0 && state.amplificador3en1C.length === 0) || (state.kitCablesC.length != 0)}>
       <Box className="configurador-accordionSummary">
-        <AccordionSummary className="configurador-accordion-header" aria-controls="panel18d-content" id="panel18d-header">
+        <AccordionSummary 
+          className={state.kitCablesC?.SKU != null && state.kitCablesC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+          aria-controls="panel18d-content" 
+          id="panel18d-header">
           <Typography>Kit de Cables</Typography>
           <Typography className="configurador-item-selected"> - {(state.kitCablesC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.kitCablesC.modelo}</Typography>
         </AccordionSummary>
         <Box className="configurador-button-borrar">
-          {(state.kitCablesC.length != 0) ?
-             <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('21','25')}  />:  ''
+          {(state.kitCablesC.length != 0) && 
+          <>
+            <VisibilityIcon
+              className="viewIconConf"
+              style={{ marginRight: '8px',marginLeft: '8px' }}
+              onClick={() => showProduct(state.kitCablesC)}
+            />
+             <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('21','25')}  />
+          </>
           }
         </Box>
       </Box>
@@ -1358,17 +1613,29 @@ const Configurador4 = () => {
     </Accordion>
 
     {/*---------------------------------------------TERMINAR CONFIGURACION 2 / ECUALIZADOR--------------------------------------------------------*/}
-    <Accordion expanded={(expandEcualizador || expanded === 'panel18a')} onChange={handleChange('panel18a')} 
+    <Accordion 
+      expanded={(expandEcualizador || expanded === 'panel18a')} 
+      onChange={handleChange('panel18a')} 
       disabled = {
         (state.tieneEcualizador != 'si' &&
-        state.kitCablesC.length === 0) || state.tieneAmplificadorBajos === 'no'}>
+        state.kitCablesC.length === 0) || state.tieneAmplificadorBajos === 'no' || state.ecualizadorC.length != 0}>
         <Box className="configurador-accordionSummary">
-      <AccordionSummary className="configurador-accordion-header" aria-controls="panel18d-content" id="panel18d-header">
+      <AccordionSummary 
+        className={state.ecualizadorC?.SKU != null && state.ecualizadorC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+        aria-controls="panel18d-content" 
+        id="panel18d-header">
         <Typography>Ecualizador</Typography><Typography className="configurador-item-selected"> - {(state.ecualizadorC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.ecualizadorC.modelo}</Typography>
       </AccordionSummary>
       <Box className="configurador-button-borrar">
-          {(state.ecualizadorC.length != 0) ?
-            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('18','20')}  />:  ''
+          {(state.ecualizadorC.length != 0) && 
+          <>
+            <VisibilityIcon
+              className="viewIconConf"
+              style={{ marginRight: '8px',marginLeft: '8px' }}
+              onClick={() => showProduct(state.ecualizadorC)}
+            />
+            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('18','20')}  />
+          </>
           }
           </Box>
         </Box>
@@ -1389,17 +1656,28 @@ const Configurador4 = () => {
       </AccordionDetails>
     </Accordion>
   {/*------------------------------------------------------EPICENTRO --------------------------------------------------------------*/}
-  <Accordion expanded={(expandEpicentro || expanded === 'panel19')} 
+  <Accordion 
+    expanded={(expandEpicentro || expanded === 'panel19')} 
     onChange={handleChange('panel19')} 
-    disabled = {state.ecualizadorC.length === 0}>
+    disabled = {state.ecualizadorC.length === 0 || state.epicentroC.length != 0}>
       <Box className="configurador-accordionSummary">
-        <AccordionSummary className="configurador-accordion-header" aria-controls="panel19d-content" id="panel19d-header">
+        <AccordionSummary 
+          className={state.epicentroC?.SKU != null && state.epicentroC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+          aria-controls="panel19d-content" 
+          id="panel19d-header">
           <Typography>Epicentro</Typography>
           <Typography className="configurador-item-selected"> - {(state.epicentroC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.epicentroC.modelo}</Typography>
         </AccordionSummary>
         <Box className="configurador-button-borrar">
-          {(state.epicentroC.length != 0) ?
-              <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('19','23')}  />:  ''
+          {(state.epicentroC.length != 0) && 
+          <>
+            <VisibilityIcon
+              className="viewIconConf"
+              style={{ marginRight: '8px',marginLeft: '8px' }}
+              onClick={() => showProduct(state.epicentroC)}
+            />
+            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('19','23')}  />
+          </>
           }
         </Box>
       </Box>
@@ -1410,16 +1688,28 @@ const Configurador4 = () => {
       </AccordionDetails>
     </Accordion>
     {/*------------------------------------------------------PROCESADOR --------------------------------------------------------------*/}
-    <Accordion expanded={(expandProcesador || expanded === 'panel20')} onChange={handleChange('panel20')} 
-    disabled = {state.epicentroC.length === 0}>
+    <Accordion 
+      expanded={(expandProcesador || expanded === 'panel20')} 
+      onChange={handleChange('panel20')} 
+      disabled = {state.epicentroC.length === 0 || state.procesadorC.length != 0}>
       <Box className="configurador-accordionSummary">
-        <AccordionSummary className="configurador-accordion-header" aria-controls="panel20d-content" id="panel20d-header">
+        <AccordionSummary 
+          className={state.procesadorC?.SKU != null && state.procesadorC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
+          aria-controls="panel20d-content" 
+          id="panel20d-header">
           <Typography>Procesador</Typography>
           <Typography className="configurador-item-selected"> - {(state.procesadorC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.procesadorC.modelo}</Typography>
         </AccordionSummary>
         <Box className="configurador-button-borrar">
-          {(state.procesadorC.length != 0) ?
-              <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('23','24')}  />:  ''
+          {(state.procesadorC.length != 0) && 
+          <>
+            <VisibilityIcon
+              className="viewIconConf"
+              style={{ marginRight: '8px',marginLeft: '8px' }}
+              onClick={() => showProduct(state.procesadorC)}
+            />
+            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('23','24')}  />
+          </>
           }
         </Box>
       </Box>
@@ -1430,16 +1720,28 @@ const Configurador4 = () => {
       </AccordionDetails>
     </Accordion>
     {/*------------------------------------------------------TWEETERS --------------------------------------------------------------*/}
-    <Accordion expanded={(expandTweeters || expanded === 'panel21')} onChange={handleChange('panel21')} 
-    disabled = {state.procesadorC.length === 0}>
+    <Accordion 
+      expanded={(expandTweeters || expanded === 'panel21')} 
+      onChange={handleChange('panel21')} 
+      disabled = {state.procesadorC.length === 0 || state.tweeterC.length != 0}>
       <Box className="configurador-accordionSummary">
-        <AccordionSummary className="configurador-accordion-header" aria-controls="panel21d-content" id="panel21d-header">
+        <AccordionSummary 
+          className={state.tweeterC?.SKU != null && state.tweeterC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''} 
+          aria-controls="panel21d-content" 
+          id="panel21d-header">
           <Typography>Tweeter</Typography>
           <Typography className="configurador-item-selected"> - {(state.tweeterC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.tweeterC.modelo}</Typography>
         </AccordionSummary>
         <Box className="configurador-button-borrar">
-          {(state.tweeterC.length != 0) ?
-            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('25','19')}  />:  ''
+          {(state.tweeterC.length != 0) && 
+          <>
+            <VisibilityIcon
+              className="viewIconConf"
+              style={{ marginRight: '8px',marginLeft: '8px' }}
+              onClick={() => showProduct(state.tweeterC)}
+            />
+            <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('25','19')}  />
+          </>
           }
         </Box>
       </Box>
@@ -1450,17 +1752,29 @@ const Configurador4 = () => {
       </AccordionDetails>
     </Accordion>
     {/*------------------------------------------------------ACCESORIOS --------------------------------------------------------------*/}
-    <Accordion expanded={(expandAccesorios || expanded === 'panel22')} onChange={handleChange('panel22')} 
+    <Accordion 
+      expanded={(expandAccesorios || expanded === 'panel22')} 
+      onChange={handleChange('panel22')} 
       disabled = {
-        !((state.tweeterC.SKU != undefined || state.tweeterC === 'N/A') || ((state.kitCablesC.SKU != undefined || state.kitCablesC === 'N/A') && state.amplificador3en1C.SKU != undefined))}>
+        !((state.tweeterC.SKU != undefined || state.tweeterC === 'N/A') || ((state.kitCablesC.SKU != undefined || state.kitCablesC === 'N/A') && state.amplificador3en1C.SKU != undefined)) || state.accesorioC.length != 0}>
         <Box className="configurador-accordionSummary">
-          <AccordionSummary className="configurador-accordion-header" aria-controls="panel21d-content" id="panel21d-header">
+          <AccordionSummary 
+            className={state.accesorioC?.SKU != null && state.accesorioC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''} 
+            aria-controls="panel21d-content" 
+            id="panel21d-header">
             <Typography>Accesorios</Typography>
             <Typography className="configurador-item-selected"> - {(state.accesorioC === 'N/A') ? 'NO DESEO ESTE PRODUCTO' :  state.accesorioC.modelo}</Typography>
           </AccordionSummary>
           <Box className="configurador-button-borrar">
-            {(state.accesorioC.length != 0) ?
-              <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('1','26')}  />:  ''
+            {(state.accesorioC.length != 0) && 
+            <>
+              <VisibilityIcon
+                className="viewIconConf"
+                style={{ marginRight: '8px',marginLeft: '8px' }}
+                onClick={() => showProduct(state.accesorioC)}
+              />
+              <DeleteForever className = "trashCanConf" alt="close"  onClick={() => handleRemove('1','26')}  />
+            </>
             }
           </Box>
         </Box>
@@ -1488,7 +1802,7 @@ const Configurador4 = () => {
                 (state.terminaConfiguracion1 == "si" ||
                 state.accesorioC.length != 0 ||
                 state.tieneEcualizador == "no"
-                )? 'primary-basic' : 'primary-basic_disabled' }>
+                )? 'primary-basic-full' : 'primary-basic-full_disabled' }>
                   Siguiente paso
             </Button>
           </Box>
@@ -1498,6 +1812,7 @@ const Configurador4 = () => {
     </Box>
     }
     
+        <ProductDetail/>
         
     </React.Fragment>
   );

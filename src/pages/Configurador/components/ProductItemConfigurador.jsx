@@ -15,6 +15,8 @@ const APIaddItem = API+'orders/add-item/';
 const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidadFija,orderId}) => {
   //hacemos un nuevo Arreglo, por alguna extraña razon el state reemplaza el amout si utilizo el arreglo original
   //product2 lo utilizamos para llenar el cart y lo pasamos como parametro
+  
+  const { state,openProductDetail,setProductToShow } = useContext(AppContext);
   let fotos =  product.fotos;
   let fotoDefault = noImage;
   if(typeof fotos !== "undefined"){
@@ -24,6 +26,10 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
       //fotoDefault = product.fotos[0].url;
     }
   }
+  const showProduct = (productDetail) => {
+    openProductDetail();
+    setProductToShow(productDetail);
+  };  
   var product2 = {
     categoryId: product.categoryId,
     categoryIdConfigurador: category,
@@ -39,10 +45,14 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
     SKU: product.sku,
     id_categoria: product.id_categoria,
     precio:product.precio,
+
+    alto:product.alto,
+    ancho:product.ancho,
+    largo:product.largo,
+    marca:product.marca,
   };
   //console.log("--Producto2");
   //console.log(product2);
-  const { state } = useContext(AppContext);
   const navigate = useNavigate();
   const navigateToProductDetail = () => {
     navigate(`/productDetail/${product.id}`);
@@ -67,9 +77,22 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
       productSKU: item.sku,
       categoryId: item.categoryId,
       categoryIdConfigurador: category,
-      modelo: item.Modelo,
+      modelo: item.Modelo || item.modelo || '',  
+      
+      
+
+      /*marca: item.Marca || item.marca || '',
+      alto: item.alto,*/
       amount: numberProducts
     };
+
+    //PARA QUE SALGA LOS DATOS ADICIONALES SE TENDRIA QUE MODIFICAR EL ENDPOINT DE ORDER PRODUCTS Y ACEPTAR LOS SIGUIENTES PARAMETROS  **LUIS
+    // alto
+    // ancho
+    // largo
+    // peso
+    // marca
+
 
     /*const data = {
       id_item: item.id, // Matches id from item
@@ -196,42 +219,40 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
 
   return (
     <form action="/" ref={form}>
-    <Box className="ProductItemConfig">
-      <Box>
+      <Box className="ProductItemConfig">
         <Box>
-          <img  className="ProductItemImageConfig"  src={fotoDefault} alt={product.title}/>
-          {
-          (product.precioPromoTotal != null && product.precioTotal > 0 ) ? 
-            (<Typography className='ProductItem-sale-text-green'>{((product.precioTotal - product.precioPromoTotal) * 100 / product.precioTotal).toFixed(0)}% Off</Typography>)
-          : 
-            ('')
-        }
-        </Box>
-    
-
-
-        <Box className='ProductItemConfig-NumProductos'>
-          {editarCantidad ? <NumProductos/>: <Box className='boton_bloqueado'><Typography>Cantidad: {cantidadFija}</Typography></Box> }
-        </Box>
-      </Box>
-      <Box className="product-info-Config-container">
-        <Box className="product-info-Config">
           <Box>
-            <Typography className="descripcion-Producto" onClick={() => navigate("/productDetail/"+product.categoryId+"/"+product.Modelo)}  product={product}>{product.Nombre} - {product.Modelo}</Typography>
-            <Typography onClick={() => navigate("/productDetail/"+product.categoryId+"/"+product.Modelo)}>${product.precioTotal != null ? product.precioTotal : ''}</Typography>
-            <Typography>${product.precioPromoTotal != null ? product.precioPromoTotal: product.precioTotal}</Typography>
+            <img  className="ProductItemImageConfig"  src={fotoDefault} alt={product.title}/>
+            {
+            (product.precioPromoTotal != null && product.precioTotal > 0 ) ? 
+              (<Typography className='ProductItem-sale-text-green'>{((product.precioTotal - product.precioPromoTotal) * 100 / product.precioTotal).toFixed(0)}% Off</Typography>)
+            : 
+              ('')
+          }
+          </Box> 
+          <Box className='ProductItemConfig-NumProductos'>
+            {editarCantidad ? <NumProductos/>: <Box className='boton_bloqueado'><Typography>Cantidad: {cantidadFija}</Typography></Box> }
           </Box>
+        </Box>
+        <Box className="product-info-Config-container">
+          <Box 
+          className="product-info-Config"
+          onClick={() => showProduct(product)}>
+            <Box>
+              <Typography className="descripcion-Producto"  product={product}>{product.Nombre} - {product.Modelo}</Typography>
+              <Typography>${product.precioTotal != null ? product.precioTotal : ''}</Typography>
+              <Typography>${product.precioPromoTotal != null ? product.precioPromoTotal: product.precioTotal}</Typography>
+            </Box>
 
-          {cart}
-        </Box>
-        <Box className='product-config-button'>
-            <figure className='product-config-button-figure' onClick={() => handleClick(product,category,product2)}>
-              <BotonAgregarDark />
-            </figure>
-        </Box>
+            {cart}
+          </Box>
+          <Box className='product-config-button'>
+              <figure className='product-config-button-figure' onClick={() => handleClick(product,category,product2)}>
+                <BotonAgregarDark />
+              </figure>
+          </Box>
+        </Box>      
       </Box>
-    
-    </Box>
     </form>
   );
   }

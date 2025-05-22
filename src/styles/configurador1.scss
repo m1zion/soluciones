@@ -135,10 +135,13 @@
     margin: 0 auto;
     background-color: var(--blueConfigurador5);
 }
+
 .configurador-accordion-header-disabled{
+    //background:  red !important;
+    //color: red !important;
     background:  #999E54 !important;
-    color: white !important;
     width: 85%;
+    opacity: .9 !important;
 }
 .configurador-accordion-header div:nth-child(2){
 color:white !important
@@ -168,8 +171,11 @@ margin-left: auto !important;
     color: var(--white) !important;
 }
 .configurador-item-selected{
-    color: white;
+    color: white !important;
     margin-left: 5px !important;
+}
+.configurador-item-selected:hover{
+    cursor: pointer !important;
 }
 .NextStepButton2Bright{
     background-color: white !important;

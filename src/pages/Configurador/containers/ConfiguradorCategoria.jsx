@@ -65,13 +65,29 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     //console.log(categoryAPI);
     const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };
     let API2 = APIProducts.concat(categoryAPI,"/?administrador=false&offset=0&limit=700"); 
-    console.log(API2);
+    //console.log(API2);
     //==============================CONSULTAMOS LOS PRODUCTOS==========================================
     const { data: productFetchData, loading, error:errorE } = useGet7(API2);
+    const [catalogoProfundidades, setCatalogoProfundidades] = useState([]);
     useEffect(() => {
         if (!productFetchData) return; 
-        console.log("Consulta productos");
+        //console.log("Consulta productos");
+        //console.log(categoryAPI);
         setLoadingP(true);
+        if (categoryAPI === 'bocinas' || categoryAPI === 'componentes') {
+            const fetchProfundidades = fetch(API + "tablasConfigurador/profundidadBocinas/?offset=0&limit=10")
+            .then(res => res.json())
+            .then(data => {
+                //console.log("Setea el catalogode profundidades");
+                setCatalogoProfundidades(data.ProfundidadBocinas || []);
+            })
+            .catch(err => {
+                console.error("Error fetching profundidad catalog:", err);
+                setCatalogoProfundidades([]);
+            });
+        }
+
+
         if(errorE){
             setSuccess(false);
             setErrMsg("Error al consultar los productos");
@@ -84,12 +100,12 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
             //setLoadingP(false);
         }
         else{
-            console.log(productFetchData);
+            //console.log(productFetchData);
             if(productFetchData.products){
                 const productos = productFetchData.products;
                 if (categoryComplement !== "") {
                     let APIComplement = APIProducts.concat(categoryComplement,"/?administrador=true&offset=0&limit=50"); 
-                    console.log(APIComplement);
+                    //console.log(APIComplement);
                     fetch(APIComplement)
                     .then(response => response.json())
                     .then(dataComplement => {
@@ -115,7 +131,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     }, [productFetchData,errorE,categoryComplement]);
     //=======================================================================================================
     const filterAndSetProductosFinal = (productos) => {
-        console.log("filterAndSetProductosFinal");
+        //console.log("filterAndSetProductosFinal");
         if (value !== 'N/A') {  // Esta es la categoria
             let productosModeloAux = [];
             switch (category) { 
@@ -138,6 +154,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     //setNumeroDeProductos(productosModeloAux.length);
                 break; 
                 case '5': // Amplificador de Voz
+                    //console.log("amplificador de voz");
                     productosModeloAux = productos?.filter(function (product) {
                         const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';
                         return (
@@ -163,7 +180,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                         if (caracteristicas){ 
                             const arnesAI = caracteristicas?.arnesAI;
                             const arnesHF = caracteristicas?.arnesHF; 
-                            console.log('Filtrara los arneses de acuerdo a los siguientes modelos '+arnesAI+' '+arnesHF);
+                            //console.log('Filtrara los arneses de acuerdo a los siguientes modelos '+arnesAI+' '+arnesHF);
                             productosModeloAux = productos?.filter(function(product){ 
                                 return  product.Modelo== arnesAI || product.Modelo == arnesHF;
                             });                       
@@ -229,30 +246,38 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                 case '9': //BOCINA PREMIUM DELANTERA
                 case '11': //BOCINAS REEMPLAZO DELANTERAS FILTROS:  
                     //Las bocinas van combinadas con los componentes, cuando es componente quito el filtro de categoria
-                    //console.log("Entra a bocinas delanteras");
-                    //console.log(caracteristicas);
-                    if(typeof caracteristicas !== "undefined"){
+                                  if(typeof caracteristicas !== "undefined"){
                         //console.log("Entra a filtrar delanteras");
                         if (caracteristicas){ 
-                            const diametroBocinaFrontal = parseFloat(caracteristicas.diametroBocinaFrontal); //console.log(diametroBocinaFrontal);
-                            const diametroBocinaFrontalString = diametroBocinaFrontal.toString().replace('.', 'x'); //console.log(diametroBocinaFrontalString);
-                            const profundidadBocinaFrontal = caracteristicas.profundidadBocinaFrontal; //console.log(profundidadBocinaFrontal);
+                            const diametroBocinaFrontal = caracteristicas.diametroBocinaFrontal;//parseFloat(caracteristicas.diametroBocinaFrontal); 
+                            const diametroBocinaFrontalString = diametroBocinaFrontal.toString().replace(',', '.'); //console.log(diametroBocinaFrontalString);                            
+                            const profundidadBocinaFrontal = caracteristicas.profundidadBocinaFrontal.toString().replace(',', '.'); //console.log(profundidadBocinaFrontal);
                             let categoria = (caracteristicas.bocinaCompatibleFrontal).toLowerCase(); //console.log(categoria);
                             const tipoBocinaFrontal = (caracteristicas.tipoBocinaFrontal).toLowerCase(); //console.log(tipoBocinaFrontal);     
-                            
                             productosModeloAux = productos?.filter(function(product){ 
                                 const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';                                    
-                                //console.log(tipoConfiguracion2); //básico
+                                
+                                /*//Vemos que la profundidad de la bocina este con la profundidad del Auto, tomando en cuenta
+                                //el catalogo de profunidades
+                                const productProfundidad = (product.Profundidad ?? product.profundidad ?? '').toUpperCase();
+                                let profundidadValida = false;
+                                const rango = catalogoProfundidades.find(p => p.claveProfundidad === productProfundidad); 
+                                if (rango) { //PA
+                                    const min = parseFloat(rango.profundidadMinimaCM);
+                                    const max = parseFloat(rango.profundidadMaximaCM);
+                                    profundidadValida = profundidadBocinaFrontal >= min && profundidadBocinaFrontal <= max;
+                                } else {
+                                    profundidadValida = (productProfundidad.toLowerCase() === caracteristicas.profundidadBocinaFrontal.toLowerCase());
+                                }*/
+                                
                                 return (
-                                    (product.diametro == diametroBocinaFrontal || (product.diametro ?? '').toLowerCase() == diametroBocinaFrontalString) &&
-                                    (product.Profundidad ?? '').toLowerCase() == profundidadBocinaFrontal.toLowerCase() &&
+                                    (product.diametro == diametroBocinaFrontal || (product.diametro ?? '').toLowerCase() == diametroBocinaFrontalString) 
+                                    && (product.Profundidad ?? '').toLowerCase() == profundidadBocinaFrontal.toLowerCase()
+                                     //profundidadValida &&
                                      //Cuando es componente (bocinaCompatibleFrontal) quito el filtro (categoria) y hago la union con los componentes
-                                    //(product.Categoria ?? '').toLowerCase() == categoria.toLowerCase() &&
-                                    (categoria.toLowerCase() === 'componente' || (product.Categoria ?? '').toLowerCase() == categoria.toLowerCase()) &&
-                                    
-                                    //((Carro)pb === 'componente' || (producto)'Bocinas' == (carro)'pb' )
-                                    (product.tipoBocinas ?? '').toLowerCase() == tipoBocinaFrontal.toLowerCase() &&
-                                    (product.tipoCategoria ?? '').toLowerCase() == tipoConfiguracion2.toLowerCase()
+                                    && (categoria.toLowerCase() === 'componente' || (product.Categoria ?? '').toLowerCase() == categoria.toLowerCase())  //Categoria  = (bocinaCompatibleFrontal del producto)
+                                    && (product.tipoBocinas ?? '').toLowerCase() == tipoBocinaFrontal.toLowerCase() 
+                                    && (product.tipoCategoria ?? '').toLowerCase() == tipoConfiguracion2.toLowerCase()
                                 );
                             });                                             
                         }
@@ -270,21 +295,21 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     if(typeof caracteristicas !== "undefined"){
                         if (caracteristicas){ 
                             //console.log("Entra a filtrar traseras");
-                            const diametroBocinaTrasera = parseFloat(caracteristicas.diametroBocinaTrasera); //console.log(diametroBocinaTrasera);
-                            const diametroBocinaTraseraString = diametroBocinaTrasera.toString().replace('.', 'x'); //console.log(diametroBocinaTraseraString);
-                            const profundidadBocinaTrasera = caracteristicas.profundidadBocinaTrasera; //console.log(profundidadBocinaTrasera);
+                            const diametroBocinaTrasera = caracteristicas.diametroBocinaTrasera; //console.log(diametroBocinaTrasera);
+                            const diametroBocinaTraseraString = diametroBocinaTrasera.toString().replace(',', '.'); //console.log(diametroBocinaTraseraString);
+                            const profundidadBocinaTrasera = caracteristicas.profundidadBocinaTrasera.toString().replace(',', '.'); //console.log(profundidadBocinaTrasera);
                             let categoria = (caracteristicas.bocinaCompatibleTrasera).toLowerCase(); //console.log(categoria);        
-                            const tipoBocinaTrasera = (caracteristicas.tipoBocinaTrasera).toLowerCase(); //console.log(tipoBocinaFrontal);                          
+                            const tipoBocinaTrasera = (caracteristicas.tipoBocinaTrasera).toLowerCase(); //console.log(tipoBocinaFrontal);                         
                             productosModeloAux = productos?.filter(function(product){ 
                                 const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';
-                                return (
-                                    (product.diametro == diametroBocinaTrasera || (product.diametro ?? '').toLowerCase() == diametroBocinaTraseraString) &&
-                                    (product.Profundidad ?? '').toLowerCase() == profundidadBocinaTrasera.toLowerCase() &&
-                                    //Cuando es componente (bocinaCompatibleFrontal) quito el filtro (categoria) y hago la union con los componentes
-                                    //(product.Categoria ?? '').toLowerCase() == categoria.toLowerCase() &&
-                                    (categoria.toLowerCase() === 'componente' || (product.Categoria ?? '').toLowerCase() == categoria.toLowerCase()) &&
-                                    (product.tipoBocinas ?? '').toLowerCase() == tipoBocinaTrasera.toLowerCase() &&
-                                    (product.tipoCategoria ?? '').toLowerCase() == tipoConfiguracion2.toLowerCase()
+                                return (                                    
+                                    (product.diametro == diametroBocinaTrasera || (product.diametro ?? '').toLowerCase() == diametroBocinaTraseraString)
+                                    && (product.Profundidad ?? '').toLowerCase() == profundidadBocinaTrasera.toLowerCase()
+                                   //Cuando es componente (bocinaCompatibleTrasera) quito el filtro (categoria) y hago la union con los componentes
+                                    //(product.Categoria ?? '').toLowerCase() == categoria.toLowerCase() &&                                                             
+                                    && (categoria.toLowerCase() === 'componente' || (product.Categoria ?? '').toLowerCase() == categoria.toLowerCase()) 
+                                    && (product.tipoBocinas ?? '').toLowerCase() == tipoBocinaTrasera.toLowerCase() 
+                                    && (product.tipoCategoria ?? '').toLowerCase() == tipoConfiguracion2.toLowerCase()
                                 );
                             });
                         }                       
@@ -297,14 +322,11 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     setProductosFinal(productosModeloAux);
                 break;
                 case '13':  //Cajon Acustico
-                    //console.log("Cajon Acustico");
-                    //console.log("Filtra los cajones que tengan el subgrupo del modelo");
                     const tamanioCajuela = caracteristicas?.tamanioCajuela;
-                    //console.log(tamanioCajuela);
                     productosModeloAux = productos?.filter(function (product) {
                         return (
                         typeof tamanioCajuela === 'string'
-                            ? (product.subgrupo).toLowerCase() === tamanioCajuela
+                            ? (product.subgrupo).toLowerCase() === tamanioCajuela.toLowerCase()
                             : Array.isArray(tamanioCajuela) && tamanioCajuela.some(item => item.claveCajones === product.subgrupo));
                     }); 
                     setProductosFinal(productosModeloAux); 
@@ -354,37 +376,35 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                         return (product.Dines==dines) && (tipoConfiguracion2 === '' || (product.tipoCategoria).toLowerCase() == tipoConfiguracion2);
                         }
                     );
-                    productosModeloAux = productos;  //CAMBIAR MISAEL
                     setProductosFinal(productosModeloAux);
                 break; 
                 case '21': //Kit de cables 
                     //console.log("Entra a filtar kits de cables");
                     const fetchCaracteristicasKitCables = async () => {
                     try {    
-                    let modeloamplificador = "";
-                    if (typeof state.amplificadorC.modelo !== "undefined"){
-                        modeloamplificador = state.amplificadorC.modelo;
-                    }
-                    if(typeof state.amplificadorWooferC.modelo !== "undefined"){
-                        modeloamplificador = state.amplificadorWooferC.modelo;
-                    }
-                    const APIAmplificador = API + 'products/amplificadores/getmodel?model='+modeloamplificador;   
-                    const response = await fetch(APIAmplificador);
-                    const caracteristicasAmplificador = await response.json();
-                    let subgrupoAmplificadores = caracteristicasAmplificador?.subgrupo ?? ''; 
-                    const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';                      
-                    console.log("Filta los Woofers de al tipo de categoria ("+tipoConfiguracion2+")");
-                    productosModeloAux = productos?.filter(function(product) {
-                        if (typeof state.amplificador3en1C.modelo !== "undefined"){
-                            return ((product.tipoCategoria).toLowerCase() === tipoConfiguracion2);
-                        }       
-                        else{                            
-                            return ((product.tipoCategoria).toLowerCase() === tipoConfiguracion2 && (product.subgrupo).toLowerCase() == subgrupoAmplificadores.toLowerCase());
+                        let modeloamplificador = "";
+                        if (typeof state.amplificadorC.modelo !== "undefined"){
+                            modeloamplificador = state.amplificadorC.modelo;
                         }
-                        
-                    });      
-
-                    setProductosFinal(productosModeloAux);
+                        if(typeof state.amplificadorWooferC.modelo !== "undefined"){
+                            modeloamplificador = state.amplificadorWooferC.modelo;
+                        }
+                        const APIAmplificador = API + 'products/amplificadores/getmodel?model='+modeloamplificador;   
+                        const response = await fetch(APIAmplificador);
+                        const caracteristicasAmplificador = await response.json();
+                        let subgrupoAmplificadores = caracteristicasAmplificador?.subgrupo ?? ''; 
+                        const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';                      
+                        //console.log("Filta los Woofers de al tipo de categoria ("+tipoConfiguracion2+")");
+                        productosModeloAux = productos?.filter(function(product) {
+                            if (typeof state.amplificador3en1C.modelo !== "undefined"){
+                                return ((product.tipoCategoria).toLowerCase() === tipoConfiguracion2);
+                            }       
+                            else{                            
+                                return ((product.tipoCategoria).toLowerCase() === tipoConfiguracion2 && (product.subgrupo).toLowerCase() == subgrupoAmplificadores.toLowerCase());
+                            }
+                            
+                        }); 
+                        setProductosFinal(productosModeloAux);
                     } catch (error) {
                         console.error('Error fetching data Kit Cables:', error);
                     }
