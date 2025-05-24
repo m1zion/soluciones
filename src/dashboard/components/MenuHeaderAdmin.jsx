@@ -29,7 +29,7 @@ const MenuHeaderAdmin = () => {
       icon: <Logout />,
       label: isAuthenticated
         ? 'Cerrar sesión'
-        : 'Iniciar sesión',
+        : 'Iniciar Sesión',
       onClick: isAuthenticated
         ? () => handleLogout()
         : () => navigate('/Login/'),

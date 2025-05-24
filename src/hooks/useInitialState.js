@@ -558,7 +558,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     }; 
      //-------------------------------------------
      const setLogin = async(payloadLogin) =>{
-        console.log("Inicia setLogin");
+        //console.log("Inicia setLogin");
+        //console.log(payloadLogin);
         //Aqui dependiendo si es cliente cargo los carritos, si no solo el token 
         //Traemos el nombre del usuario
         const clientData = await getClientData(payloadLogin.userId);
@@ -588,7 +589,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     }
 
     const fetchOrderData = async (payloadLogin) => {
-        //console.log("Inicia fetchOrderData");
+        console.log("Inicia fetchOrderData");        
+        console.log(payloadLogin);
         try {
             // 1. Check if I have active orders of cart and configurador
             const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=tienda`;
@@ -632,9 +634,10 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 updatedState.marcaC = [];
                 updatedState.modeloC = [];
                 updatedState.anioC = [];
+                updatedState.token = payloadLogin.token;
                 updatedState.userName = payloadLogin.userName;
                 setState(updatedState); 
-                console.log("Estado Vacio");
+                console.log("No tiene ordenes");
                 return;
             }
             // 2. If I have any of them, then retrieve the full data 

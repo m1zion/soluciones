@@ -23,7 +23,7 @@ const Login = () => {
   const [user, setUser] = useState(null); // Estado para almacenar el token
   const [proveedorId, setProveedorId] = useState(null); // Estado para almacenar el token
   //const loginContext = useContext(LoginContext);
-  const {setLogin,state} = useContext(AppContext);
+  const {setLogin} = useContext(AppContext);
   const setDataLogin = item =>{setLogin(item);};
   const [message, setMessage] = useState(''); 
   const navigate = useNavigate();
@@ -55,12 +55,10 @@ const Login = () => {
           const localStorageproveedorId = localStorage.getItem('proveedorIdL');
           const localStorageUserId = localStorage.getItem('userIdL');  
           const localStorageRole = localStorage.getItem('roleL');
-          //Adicionalmente hay que validar que el token es valido     
-          
+          //Adicionalmente hay que validar que el token es valido            
           if(localStorageToken && localStorageToken !== 'null' && 
             localStorageUser && localStorageUser !== 'null'){
-            console.log("Entra aca");
-            console.log(localStorageUser);
+            console.log("1");
             setToken(localStorageToken);
             setUser(localStorageUser);
             setProveedorId(localStorageproveedorId)
@@ -73,15 +71,8 @@ const Login = () => {
             }
             //Enviando datos de sesion del local storage'
             setDataLogin(dataLogin);  //State (setLogin)
-            //setDataLogin(dataLogin);  //State (setLogin)
-
-            if (localStorageRole == 'cliente'){
-              navigate('/');
-            }
-            else {
-              navigate('/Dashboard');
-            }
-  
+            if (localStorageRole == 'cliente'){ navigate('/'); }
+            else { navigate('/Dashboard'); }  
           }
           setLoading(false);
         }

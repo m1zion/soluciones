@@ -874,6 +874,9 @@ const Configurador4 = () => {
     break;
     }
   }
+
+  console.log("---------------");
+  console.log(state.mejorarAudio);
   /*console.log("===========");*/
   return (
     <React.Fragment>
@@ -1120,7 +1123,8 @@ const Configurador4 = () => {
             </Box>
             <AccordionDetails>
               {
-                  (state.mejorarAudio.length === 0)
+                  //(state.mejorarAudio.length === 0)
+                  (!state.mejorarAudio || state.mejorarAudio.length === 0)
                   ?
                     <Stack alignItems="center" direction="column" sx={{marginTop:"10px"}}>
                       <Typography>¿Deseas mejorar el audio de tus bocinas?</Typography>
@@ -1321,7 +1325,7 @@ const Configurador4 = () => {
             </Box>
           <AccordionDetails>
             {
-                (state.tieneBocinaOriginal.length === 0) 
+              (!state.tieneBocinaOriginal || state.tieneBocinaOriginal.length === 0)                
                 ? 
                   <Stack alignItems="center" direction="column" sx={{marginTop:"10px"}}>
                     <Typography>¿Que tipo de Bocinas deseas incluir?</Typography>
@@ -1438,11 +1442,13 @@ const Configurador4 = () => {
       expanded={(expandedAmplificadorWoofer || expanded === 'panel15')} 
       onChange={handleChange('panel15')} 
       disabled = {
-        (state.mejorarAudio.length === 0 && state.mejorarAudio != 'no') ||
-        (state.terminaConfiguracion1 != 'no' &&
-        state.tieneBocinaOriginal != 'si'  &&
-        state.mejorarAudio != 'no' && 
-        state.calzaBocinaPremiumTraseraC.length === 0) || (state.amplificadorWooferC.length != 0)}
+        ((!state.mejorarAudio || state.mejorarAudio.length === 0) && state.mejorarAudio !== 'no') ||
+        (state.terminaConfiguracion1 !== 'no' &&
+          state.tieneBocinaOriginal !== 'si' &&
+          state.mejorarAudio !== 'no' && 
+          (!state.calzaBocinaPremiumTraseraC || state.calzaBocinaPremiumTraseraC.length === 0)) || 
+        (state.amplificadorWooferC && state.amplificadorWooferC.length !== 0)
+      }      
       >
         <Box className="configurador-accordionSummary">
         <AccordionSummary 
@@ -1466,7 +1472,7 @@ const Configurador4 = () => {
         </Box>
       <AccordionDetails>
         {
-            (state.tieneAmplificadorBajos.length === 0) 
+          (!state.tieneAmplificadorBajos || state.tieneAmplificadorBajos.length === 0)
             ? 
               <Stack alignItems="center" direction="column" sx={{marginTop:"10px"}}>
                 <Typography>¿Selecciona el tipo de amplificador de Woofer?</Typography>
@@ -1641,7 +1647,7 @@ const Configurador4 = () => {
         </Box>
       <AccordionDetails>
         {
-            (state.tieneEcualizador.length === 0) 
+            (!state.tieneEcualizador || state.tieneEcualizador.length === 0)
             ? 
               <Stack alignItems="center" direction="column" sx={{marginTop:"10px"}}>
                 <Typography>¿Que deseas hacer?</Typography>
