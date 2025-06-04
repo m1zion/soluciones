@@ -8,7 +8,7 @@ import GradientCircularProgress from "./GradientCircularProgress";
 const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
 const Configurador2 = () => {
     const API = process.env.REACT_APP_API_URL; 
-    const {state,loading,error,refreshState} = useContext(AppContext);
+    const {state,loading,error,refreshState,setConfig} = useContext(AppContext);
     const [loadingLocal,setLoadingLocal] = useState(false);
     const navigate = useNavigate();
     //VALIDACIONES PARA VER SI EXISTEN BASES,ESTEREOS y ADAPTADORES
@@ -26,11 +26,17 @@ const Configurador2 = () => {
             status: 'activo',
             tipoConfiguracion: configuracion,
         };
+        const dataPost = {
+            marca: state.marcaC,
+            modelo: state.modeloC,
+            anio: state.anioC,
+            tipoConfiguracionC: configuracion,
+        }
         try {           
             const updatedConfiguradorResponse = await updateConfigurador(dataConfCaracteristicas);
             if(updatedConfiguradorResponse){
                 alert("Configuracion actualizada con exito");            
-                //setConfigurador(dataPost);  //Hay que mandarlo al estado y al localStorage?
+                setConfig(dataPost);  //Hay que mandarlo al estado y al localStorage?
                 switch (configuracion){
                     case 'OpenShow':
                         navigate("/OpenShow");

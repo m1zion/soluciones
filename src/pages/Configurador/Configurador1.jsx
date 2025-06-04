@@ -11,6 +11,8 @@ import GradientCircularProgress from "./GradientCircularProgress";
 const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
 const Configurador1 = () => {
   const { state,fetchOrderData,loading} = useContext(AppContext);
+  console.log(state.userId);
+  console.log(state.token);
   //const setConfigurador = item =>{setConfigInicial(item);};
   const navigate = useNavigate();
   const API = process.env.REACT_APP_API_URL;
@@ -134,7 +136,6 @@ const handleSubmit = async (event) => {
 //VERIFICA SI HAY UNA ORDEN ACTIVA
 const verifyActiveCart = async () =>{
   const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador`; 
-  //console.log(APICart);
   //console.log(state.token);
   const response = await fetch(APICart, {
     headers: {

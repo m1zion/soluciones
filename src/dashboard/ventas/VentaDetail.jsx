@@ -8,12 +8,11 @@ import AppContext from '@context/AppContext';
 const API = process.env.REACT_APP_API_URL;
 const APICATEGORIAS = API+'categories/?offset=0&limit=100';
 const APIClientes = API+'clientes/';
-const APIDirecciones = API+'direcciones/';
+const APIUsers = API+'users/';
 const steps = [
     'activo',
     'esperando surtido',
-    'surtido', 
-    'pagado'
+    'surtido'
   ];
 const VentaDetail = () => {
     const{ordenVentaId} = useParams();
@@ -99,6 +98,20 @@ const VentaDetail = () => {
             setEstatusOrden(ordenVentaFetchData.status);
             setOrdenVenta(ordenVentaFetchData.order_id)
             setSaldoPendiente(ordenVentaFetchData.total - ordenVentaFetchData.saldoVenta);
+
+            const datosDireccionTemp = {
+                nombreCompleto: ordenVentaFetchData.nombreCompleto,
+                calle: ordenVentaFetchData.calle,
+                numExterior: ordenVentaFetchData.numExterior,
+                numInterior: ordenVentaFetchData.numInterior,
+                codigoPostal: ordenVentaFetchData.codigoPostal,
+                ciudad: ordenVentaFetchData.ciudad,
+                estado: ordenVentaFetchData.estado,
+                pais: ordenVentaFetchData.pais,
+            }
+            setDatosDireccion(datosDireccionTemp);
+
+
             var usuarioId;
             //==========BUSCAMOS EL CLIENTE
             if (ordenVentaFetchData.clienteId) {           
@@ -111,10 +124,10 @@ const VentaDetail = () => {
                 .then(response => response.json())
                 .then(data => { 
                     //console.log(data);
+                    const dataUsuario = data;
                     usuarioId = data.usuarioId;
-                    setDatosCliente(data); 
-                    //==========BUSCAMOS LA DIRECCION
-                    fetch(APIDirecciones+usuarioId, {
+                    //==========BUSCAMOS datos del usuario
+                    fetch(APIUsers+usuarioId, {
                         headers: {
                           'Authorization': `Bearer ${state.token}`,  
                           'Content-Type': 'application/json',
@@ -122,18 +135,17 @@ const VentaDetail = () => {
                       })
                     .then(response => response.json())
                     .then(data => {
-                        const direcciones = data.direcciones ? data.direcciones : [];                                     
-                        const direccionPredeterminada = direcciones.find(item => item.predeterminada) || direcciones[0];
-                        if(direccionPredeterminada){
-                            setDatosDireccion(direccionPredeterminada); 
-                        }
+                        const usuarioCorreo = data.correo ? data.correo : '';                            
+                        const clienteConEmail = { ...dataUsuario, correo: usuarioCorreo };   
+                        setDatosCliente(clienteConEmail); 
                         setLoadingVenta(false);
                     })
                     .catch(error => {
                         setLoadingVenta(false);
-                        console.error("Error fetching data from APIDirecciones:", error);
-                        setErrMsg("Error al consultar direccion");
-                    });                })
+                        console.error("Error fetching data from APIUsers:", error);
+                        setErrMsg("Error al consultar Usuario");
+                    });                
+                })
                 .catch(error => {
                     setLoadingVenta(false);
                     console.error("Error fetching data from APIClientes:", error);

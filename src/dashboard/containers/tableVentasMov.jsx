@@ -11,7 +11,7 @@ import PopupVentaNewPayment from '@componentsDashboard/PopupVentaNewPayment';
 import AppContext from '@context/AppContext';
 const API = process.env.REACT_APP_API_URL;
 const TableVentasMov = ({ordenVentaId,ordenVenta,edit,editMovimiento,setTotalOrden,categoryData,clienteId,saldoPendiente}) => {
-    console.log("TABLA VENTAS");
+    //console.log("TABLA VENTAS");
     const { state } = useContext(AppContext);
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
@@ -27,11 +27,15 @@ const TableVentasMov = ({ordenVentaId,ordenVenta,edit,editMovimiento,setTotalOrd
     const { data: detalleventaFetchData, loading: loadingV, error: errorV } = useGet8V(API+"orders/"+ordenVentaId,itemChanged,state.token);
     useEffect(() => {
         const fetchAdditionalData = async () => {
+            //console.log("Entra a fetchAdditionalData ");
+            //console.log(API+"orders/"+ordenVentaId);
+            //console.log(detalleventaFetchData);
             if(detalleventaFetchData.items && categoryData != undefined){
                 setSuccess(true);
                 setErrMsg("");
                 //Para cada Item le agregamos el costo promedio itemsWithAdditionalData
                 try {
+                    //console.log("try");
                     const itemsWithAdditionalData = await Promise.all(detalleventaFetchData.items.map(async (item) => {            
                         const category = categoryData.find(cat => cat.id === item.id_categoria);
                         if (!category) {
@@ -44,7 +48,11 @@ const TableVentasMov = ({ordenVentaId,ordenVenta,edit,editMovimiento,setTotalOrd
                             costoPromedio: data.costoPromedio // Assuming the API response structure
                         };
                         }   
-                    ));        
+                    ));     
+                    
+                    
+                    //console.log(itemsWithAdditionalData);
+                    
                     setDetalleVentaData(itemsWithAdditionalData);
                     setLoadingAD(false);
                 } catch (error) {
@@ -189,54 +197,10 @@ const TableVentasMov = ({ordenVentaId,ordenVenta,edit,editMovimiento,setTotalOrd
                 </TableBody>
             </Table>
         </TableContainer> 
-
-
-        <Box className="ordenCompra-footer">
-            {/*Este movimiento solo se hara en la edicion ya que necesita estar finalizada la orden */}
-            <Box className="sistemaPagosCompras">
-                <Box className="sistemaPagosNuevo">
-                {(editMovimiento && !ocultaBoton) ? ( <Button className= "admin-newButton" variant="contained" onClick={handleNewPayment}>+ Nuevo Pago</Button>)
-                :null }
-                </Box>
-                <Table size="small"  sx={{minWidth:'unset'}}  className='admin-crudTable'>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell className='admin-tableHead' align="right">FECHA</TableCell>
-                            <TableCell className='admin-tableHead admin-actionsCell' align="right">REFERENCIA</TableCell>
-                            <TableCell className='admin-tableHead admin-actionsCell' align="right">MONTO</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {clienteMovimientoData.map((row) => (
-                        <TableRow
-                            key={row.id}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell align="right">{row.fecha}</TableCell>
-                            <TableCell align="right">{row.referencia}</TableCell>
-                            <TableCell align="right">{row.monto}</TableCell>
-                        </TableRow>
-                        ))}
-                    </TableBody>
-
-                </Table>
-            </Box>
+        {/*Este movimiento solo se hara en la edicion ya que necesita estar finalizada la orden */}
+        <Box className="ordenCompra-footer">     
             <OrdenVentaResumen detalleVentaData={detalleVentaData}></OrdenVentaResumen>
         </Box>
-
-
-        <PopupVentaNewPayment
-            trigger={popupPayment} 
-            setTrigger={setPopupPayment}
-            setItemChangedMov={setItemChangedMov}
-            setOcultaBoton={setOcultaBoton}
-            ordenVentaId={ordenVentaId}
-            ordenVenta={ordenVenta}
-            clienteId={clienteId}
-            saldoPendiente={saldoPendiente}
-        >
-        </PopupVentaNewPayment>
-
         <PopupVentaCreateItem 
             trigger={buttonPopup} 
             setTrigger={setButtonPopup}

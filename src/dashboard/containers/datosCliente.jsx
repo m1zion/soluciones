@@ -1,6 +1,7 @@
 import { Box, Grid, Stack,Typography } from "@mui/material";
 import React from "react";
 const DatosCliente = ({datosCliente,datosDireccion}) => {
+    
     const nombre = datosCliente.nombre ? datosCliente.nombre : ''; 
     const telefono = datosCliente.telefono ? datosCliente.telefono : '';  
     const correo = datosCliente.correo ? datosCliente.correo : '';  //CAMBIAR LUIS

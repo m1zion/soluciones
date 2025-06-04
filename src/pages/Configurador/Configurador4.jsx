@@ -875,8 +875,8 @@ const Configurador4 = () => {
     }
   }
 
-  console.log("---------------");
-  console.log(state.mejorarAudio);
+  //console.log("---------------");
+  //console.log(state.mejorarAudio);
   /*console.log("===========");*/
   return (
     <React.Fragment>
@@ -919,7 +919,7 @@ const Configurador4 = () => {
                 <Typography sx={{paddingLeft:"6px"}}>No. Orden: {state.confOrderId}</Typography> 
             </Box>    
             <Box className="configurador_tuAuto1">
-                <Typography sx={{paddingLeft:"6px"}}>Tipo de Configuración: {state.tipoConfiguracionC}</Typography> 
+                <Typography sx={{paddingLeft:"6px"}}>Tipo de Configuración: {state.tipoConfiguracionC} {state.dinesC}</Typography> 
             </Box>         
           </Box>  
           {

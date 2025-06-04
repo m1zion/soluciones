@@ -118,6 +118,7 @@ const Login = () => {
         role: user.role,
         //clienteId: clienteId,
       }
+      console.log(dataLogin);
       localStorage.setItem('authToken', token);
       localStorage.setItem('authUser', user.correo);
       localStorage.setItem('roleL', user.role);

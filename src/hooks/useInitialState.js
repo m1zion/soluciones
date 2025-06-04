@@ -146,13 +146,24 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     }, [state.token]); */
 
 
+    const setConfig = (payload) =>{
+        setState({
+            ...state, 
+            tipoConfiguracionC: payload.tipoConfiguracionC,
+            marcaC:payload.marca,
+            modeloC:payload.modelo,
+            anioC:payload.anio,
+            dinesC:payload.dines,
+            tieneEstereoOriginalC: payload.tieneEstereoOriginalC,
+        });       
+    };
 
     const setConfigInicial = (payload) =>{
         //En esta funcion borramos toda la configuracion, ya que al llamar 2 funciones que modifican el state, solo hace caso a una
         //Lo usamoes en el configurador 1
         //Borramos todo del state
-        console.log("Payload SetConfigInicial");
-        console.log(payload);
+        //console.log("Payload SetConfigInicial");
+        //console.log(payload);
         let data = [];
         let sumTotalPrecioPromo = 0;
         data = state.cartConf;
@@ -216,7 +227,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         // Add more localStorage.removeItem('key') if needed
     };
     const getClientData = async (userId) => {
-        console.log("Entra a getClientData");
+        //console.log("Entra a getClientData");
         try {
             const response = await fetch(`${API}clientes/${userId}`);
             console.log(`${API}clientes/${userId}`);
@@ -573,6 +584,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         localStorage.setItem('authToken', payloadLogin.token);
         localStorage.setItem('payloadLogin', payloadLogin.role);
         localStorage.setItem('userName', payloadLogin.userName);
+        //localStorage.setItem('userId', payloadLogin.userId);
         if(payloadLogin.role != 'cliente'){
             setState({
                 ...state, 
@@ -581,6 +593,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 role: payloadLogin.role,
                 proveedorId: payloadLogin.proveedorId,
                 userName: payloadLogin.userName,
+                userId: payloadLogin.userId,
             });           
         }
         else{
@@ -589,8 +602,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     }
 
     const fetchOrderData = async (payloadLogin) => {
-        console.log("Inicia fetchOrderData");        
-        console.log(payloadLogin);
+        //console.log("Inicia fetchOrderData");        
+        //console.log(payloadLogin);
         try {
             // 1. Check if I have active orders of cart and configurador
             const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=tienda`;
@@ -636,6 +649,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 updatedState.anioC = [];
                 updatedState.token = payloadLogin.token;
                 updatedState.userName = payloadLogin.userName;
+                updatedState.userId = payloadLogin.userId;
+                //updatedState
                 setState(updatedState); 
                 console.log("No tiene ordenes");
                 return;
@@ -898,8 +913,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     };
     //PRODUCTOS OPCIONALES
     const setProductoOpcional = (category) =>{
-        console.log("Set Producto Opcional: ");
-        console.log(category);
+        //console.log("Set Producto Opcional: ");
+        //console.log(category);
         switch(category) {
             case '11': setState({...state,bocinaReemplazoDelanteraC:'N/A'}); break;
             case '16': setState({...state,calzaBocinaReemplazoDelanteraC:'N/A'}); break;
@@ -1957,6 +1972,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         loading,
         error,
         logout,
+        setConfig,
         //addToCart,
         //removeFromCart,
         refreshState,

@@ -12,7 +12,7 @@ import { CircularProgress } from "@mui/material";*/
 const Configurador3 = () => {
     
     const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
-    const {state,loading,error,refreshState} = useContext(AppContext);
+    const {state,loading,error,refreshState,setConfig} = useContext(AppContext);
     const [hideBotenes,setHideBotones] = useState(true); //Solo buscamos estereos tipo Original
     const [activeOrderId, setActiveOrderId] = useState(null);
     const [activeOrder, setActiveOrder] = useState([]);
@@ -154,11 +154,19 @@ const Configurador3 = () => {
         setLoadingLocal(true);
         const APIconfCaracteristicas = API+'orders/'+ state.confOrderId;
         let data = {};
+        let dataPost = {};
         if (configuracion == 4){
             data = {
                 orderType: 'configurador',
                 status: 'activo',
                 tieneEstereoOriginalC : 'si'
+            }
+            dataPost = {
+                marca: state.marcaC,
+                modelo: state.modeloC,
+                anio: state.anioC,
+                tipoConfiguracionC: state.tipoConfiguracionC,  
+                tieneEstereoOriginalC: 'si',          
             }
         }
         else {
@@ -167,10 +175,17 @@ const Configurador3 = () => {
                 status: 'activo',
                 dines: configuracion,
             }
+            dataPost = {
+                marca: state.marcaC,
+                modelo: state.modeloC,
+                anio: state.anioC,
+                tipoConfiguracionC: state.tipoConfiguracionC,
+                dines: configuracion
+            }
         }
         try {
             usePut2V(APIconfCaracteristicas,data, state.token); //Actualiza los items API
-            //setConfigurador(dataPost);  //Actualiza los elementos en el state
+            setConfig(dataPost);  //Actualiza los elementos en el state
             navigate("/configurador4");    
         } catch (error) {
             console.error("Error al generar la orden. code:002");
@@ -179,8 +194,8 @@ const Configurador3 = () => {
             setLoadingLocal(false);  // Ensure loading state is reset
         }
     }
-    console.log(hideUnDin);
-    console.log(hasItemsUndin);
+    //console.log(hideUnDin);
+    //console.log(hasItemsUndin);
 
 	return (
         <React.Fragment>

@@ -39,7 +39,7 @@ const MenuHeader = () => {
     //const loginContext = useContext(LoginContext);
     const { state, logout } = useContext(AppContext);
     const isAuthenticated = state.token ? true : false;
-    console.log(state.token);
+    //console.log(state.token);
     const navigate = useNavigate();
     const handleLogout = () => {
         console.log("loging out");

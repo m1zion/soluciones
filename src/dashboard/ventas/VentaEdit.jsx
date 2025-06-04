@@ -16,8 +16,7 @@ import AppContext from '@context/AppContext';
 const steps = [
     'activo',
     'esperando surtido',
-    'surtido', 
-    'pagado',
+    'surtido'
   ];
 const VentaEdit = () => {
     const { state } = useContext(AppContext);
@@ -35,7 +34,6 @@ const VentaEdit = () => {
     const [totalOrden,setTotalOrden] = useState('');
     const [categorias,setCategorias] = useState('');
     const [APICliente,setAPICliente] = useState('');
-    const [APIDireccion,setAPIDireccion] = useState('');
     const [datosCliente,setDatosCliente] = useState('');
     const [datosOrden,setDatosOrden] = useState('');
     const [datosDireccion,setDatosDireccion] = useState('');
@@ -79,24 +77,19 @@ const VentaEdit = () => {
                 return 1;
             case "surtido":
                 return 2;
-            case "pagado":
-                return 3;
             default:
                 return 0; // Default to 0 if estatusOrden doesn't match any condition
         }
-    };
-   
+    };   
     //====================Hace la busqueda del cliente y la direccion ========================================
     const handleClienteId = (event) => {
         const clienteId = event.target.value; 
         if (clienteId != ""){
             setAPICliente(API+'clientes/'+clienteId);
-            //setAPIDireccion(API+'direcciones/'+clienteId); //Se buscara con el id de usuario
         }
         else{
             setDatosCliente([]);
             setDatosDireccion([]);
-            setAPIDireccion(''); 
         }        
     }
     const formatDate = (isoString) => {
@@ -140,7 +133,18 @@ const VentaEdit = () => {
                         throw new Error('Failed to fetch orden');
                     }
                     const jsonOrden = await ordenFetchData.json();   
-                    setClienteId(jsonOrden.clienteId);
+                    setClienteId(jsonOrden.clienteId);                   
+                    const datosDireccionTemp = {
+                        nombreCompleto: jsonOrden.nombreCompleto,
+                        calle: jsonOrden.calle,
+                        numExterior: jsonOrden.numExterior,
+                        numInterior: jsonOrden.numInterior,
+                        codigoPostal: jsonOrden.codigoPostal,
+                        ciudad: jsonOrden.ciudad,
+                        estado: jsonOrden.estado,
+                        pais: jsonOrden.pais,
+                    }
+                    setDatosDireccion(datosDireccionTemp);
                     setEstatusOrden(jsonOrden.status);   
                     if(jsonOrden.status == 'pagado') {
                         alert("La orden no se puede editar");
@@ -177,18 +181,30 @@ const VentaEdit = () => {
                     if (!clienteFetchData.ok) {
                         throw new Error('Failed to fetch clientes');
                     }
-                    const jsonClientes = await clienteFetchData.json();                
+                    const jsonClientes = await clienteFetchData.json();    
+                    //console.log(jsonClientes);   
+                    const userId = jsonClientes.id; // o usa jsonClientes.userId si es otro campo
+                    //setAPICliente(API+'clientes/'+jsonOrden.clienteId);
+                    const userResponse = await fetch(`${API}/users/${userId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${state.token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    if (!userResponse.ok) {
+                        throw new Error('Failed to fetch user');
+                    }
+                    const userData = await userResponse.json();
+                    const clienteConEmail = { ...jsonClientes, correo: userData.correo };                             
                     setSuccessCliente(true); 
                     setErrorClienteId(false);
                     setErrMsg("");
-                    setAPIDireccion(API+'direcciones/'+jsonClientes.usuarioId);
-                    setDatosCliente(jsonClientes);
                     setLoadingCliente(false);
+                    setDatosCliente(clienteConEmail);
                 } catch (error) {
                     console.error(error);
                     setDatosCliente([]);
                     setDatosDireccion([]);
-                    setAPIDireccion('');
                     setErrorClienteId(true);
                     setErrMsg("Error al consultar clientes / cliente no encontrado");
                     setSuccessCliente(false); 
@@ -198,44 +214,6 @@ const VentaEdit = () => {
             fetchData();
         }
     }, [APICliente]); // Empty dependency array ensures this effect runs only once
-    //===============DIRECCION=================
-    useEffect(() => {// PARA ESTE CASO USAMOS UN FETCH DIRECTO
-        if(clienteId != ""){
-            const fetchData = async () => {
-                try {
-                    const direccionFetchData = await fetch(APIDireccion, {
-                        headers: {
-                          'Authorization': `Bearer ${state.token}`,  
-                          'Content-Type': 'application/json',
-                        },
-                      }); 
-                    if (!direccionFetchData.ok) {
-                        throw new Error('Failed to fetch direccion');
-                    }
-                    const jsonDireccion = await direccionFetchData.json();  
-                    const direcciones = jsonDireccion.direcciones ? jsonDireccion.direcciones : [];                                     
-                    const direccionPredeterminada = direcciones.find(item => item.predeterminada) || direcciones[0];
-                    setDatosDireccion(direccionPredeterminada);
-                    setErrorClienteId(false);
-                    setSuccessCliente(true); 
-                    if (direccionPredeterminada != undefined){
-                        setErrMsg("");
-                    }
-                    else{                        
-                     setErrMsg("Error al consultar dirección");
-                    }
-                } catch (error) {
-                    setDatosDireccion([]);
-                    setErrorClienteId(true);
-                    if(errMsg === ''){
-                        setErrMsg("Error al consultar dirección");
-                    }
-                    setSuccessCliente(false); 
-                }          
-            };
-            fetchData();
-        }
-    }, [APIDireccion]); 
     //=======================================================================================================
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -264,8 +242,6 @@ const VentaEdit = () => {
             setErrMsg(error || "Error occurred during the request");
         }
     }
-
-
     const handleUpdate = async (event) => {
         event.preventDefault(); 
         setLoadingUpdate(true);
@@ -413,9 +389,9 @@ const VentaEdit = () => {
     const updateClienteSaldo = async (clienteId, saldoActualizado) => {
         const APIClienteUpdate = API + "clientes/" + clienteId;
         const saldoActualizadoData = { saldo: saldoActualizado };
-        console.log("Entra patch");
+        //console.log("Entra patch");
         const { success, error } = await usePatchV(APIClienteUpdate, saldoActualizadoData, state.token);
-        console.log("Sale patch");
+        //console.log("Sale patch");
         if (!success) throw new Error(error || "Error al actualizar el saldo del proveedor");
         return success;
     };
@@ -448,7 +424,7 @@ const VentaEdit = () => {
         <Container maxWidth="lg" className="justified-container">
             {loadingUpdate && <LoadingOverlay />}
             <Box className= "admin-tableHeader" >
-                <Typography  component="h2" variant="h5" color ="#1a237e" gutterBottom>Nueva orden de venta ({ordenVenta}) {estatusOrden ? estatusOrden : 'Activo'}</Typography>
+                <Typography  component="h2" variant="h5" color ="#1a237e" gutterBottom>Orden de venta ({ordenVenta}) {estatusOrden ? estatusOrden : 'Activo'}</Typography>
             </Box>
             <Box sx={{ width: '100%' }}>
                 <Stepper activeStep={getActiveStep()} alternativeLabel>

@@ -9,6 +9,7 @@ import '@styles/Pagination2.scss';
 import '@styles/ProductList.scss';
 import { CircularProgress } from "@mui/material";
 import Paginate from '@components/Paginate'; 
+import { CompressOutlined } from '@mui/icons-material';
 const API = process.env.REACT_APP_API_URL;
 const APIProducts = API+'products/';
 //                             category="20" config={state.configuracion} value={valor} value2= {valor2} optional="false" carFeatures={caracteristicas}/>
@@ -246,8 +247,13 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                 case '9': //BOCINA PREMIUM DELANTERA
                 case '11': //BOCINAS REEMPLAZO DELANTERAS FILTROS:  
                     //Las bocinas van combinadas con los componentes, cuando es componente quito el filtro de categoria
-                                  if(typeof caracteristicas !== "undefined"){
-                        //console.log("Entra a filtrar delanteras");
+                        if(typeof caracteristicas !== "undefined"){
+                        /*console.log("Entra a filtrar delanteras");
+                        console.log(productos);
+                        console.log(caracteristicas);
+                        console.log(tipoConfiguracion);
+                        console.log("=====================");*/
+
                         if (caracteristicas){ 
                             const diametroBocinaFrontal = caracteristicas.diametroBocinaFrontal;//parseFloat(caracteristicas.diametroBocinaFrontal); 
                             const diametroBocinaFrontalString = diametroBocinaFrontal.toString().replace(',', '.'); //console.log(diametroBocinaFrontalString);                            
@@ -368,7 +374,12 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     }
                     setProductosFinal(productosModeloAux);
                 break                        
-                case '20': //Estereos                   
+                case '20': //Estereos  
+                    //console.log("Estereos");
+                    //console.log(productos);    
+                    //console.log(tipoConfiguracion);  
+                    //console.log(dines);
+                    //console.log(tipoConfiguracion);             
                     productosModeloAux = productos?.filter(function(product){ 
                         const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase() : '';
                         //return (product.Dines==dines && (product.tipoCategoria).toLowerCase() == tipoConfiguracion2)
