@@ -16,10 +16,22 @@ import { ListItemButton, ListItemText } from '@mui/material';
 const MenuHeaderAdmin = () => {
   const { state, logout } = useContext(AppContext);
   const isAuthenticated = true; 
-  const handleLogout = () => {
+  const handleLogout_ = () => {
     logout();
     window.location.href = '/';    // Redireccionar a la página de login después de cerrar sesión
   };   
+  const handleLogout = () => {
+    window.location.href = '/';
+    setTimeout(() => {
+      logout(); // Clear context state after navigation
+    }, 50);
+  };
+  const handleLogout__ = () => {
+    logout(); // This clears the user context (sets role to null, etc.)
+    navigate('/'); // React-router handles the navigation smoothly
+  };
+
+
   const data = [   
     {
       icon: <Avatar />,

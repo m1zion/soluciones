@@ -150,8 +150,9 @@ const VentaEdit = () => {
                         alert("La orden no se puede editar");
                         navigate('/Dashboard/Ventas');
                     }
-                    setNotas(jsonOrden.notas ? jsonOrden.notas : '');   
-                    setAPICliente(API+'clientes/'+jsonOrden.clienteId);
+                    setNotas(jsonOrden.notas ? jsonOrden.notas : '');  
+                    //setAPICliente(API+'clientes/'+jsonOrden.clienteId);
+                    setAPICliente(`${API}clientes/?offset=0&limit=1`+`${jsonOrden.clienteId !== '' ? `&usuarioId=${jsonOrden.clienteId}` : ''}`); //USERID
                     setFecha(formatDate(jsonOrden.lastmodified));                
                     setDatosOrden(jsonOrden);
                     setLoadingVenta(false);
@@ -182,10 +183,8 @@ const VentaEdit = () => {
                         throw new Error('Failed to fetch clientes');
                     }
                     const jsonClientes = await clienteFetchData.json();    
-                    //console.log(jsonClientes);   
-                    const userId = jsonClientes.id; // o usa jsonClientes.userId si es otro campo
-                    //setAPICliente(API+'clientes/'+jsonOrden.clienteId);
-                    const userResponse = await fetch(`${API}/users/${userId}`, {
+                    const userId = jsonClientes.clientes[0].usuarioId; // o usa jsonClientes.userId si es otro campo
+                    const userResponse = await fetch(`${API}users/${userId}`, {
                         headers: {
                             'Authorization': `Bearer ${state.token}`,
                             'Content-Type': 'application/json',
@@ -195,7 +194,7 @@ const VentaEdit = () => {
                         throw new Error('Failed to fetch user');
                     }
                     const userData = await userResponse.json();
-                    const clienteConEmail = { ...jsonClientes, correo: userData.correo };                             
+                    const clienteConEmail = { ...jsonClientes.clientes[0], correo: userData.correo };                             
                     setSuccessCliente(true); 
                     setErrorClienteId(false);
                     setErrMsg("");

@@ -286,7 +286,6 @@ export default function VentasAdm() {
               <TableCell className='admin-tableHead' align="right">CLIENTE</TableCell>
               <TableCell className='admin-tableHead' align="right">ESTATUS</TableCell>
               <TableCell className='admin-tableHead admin-actionsCell' align="right">TOTAL</TableCell>
-              <TableCell className='admin-tableHead admin-actionsCell' align="right">PAGADO</TableCell>
               <TableCell className='admin-tableHead'  align="right">ACCION</TableCell>
             </TableRow>
           </TableHead>
@@ -302,7 +301,6 @@ export default function VentasAdm() {
                 <TableCell align="right">{row.clienteId}</TableCell>
                 <TableCell align="right">{row.status}</TableCell>
                 <TableCell align="right"><Typography variant='body2' noWrap>{row.total ? (`$ ${formatNumber(row.total)}`) : '-'}</Typography></TableCell>
-                <TableCell align="right">{row.status == 'pagado' ? 'PAGADO' : '$'+formatNumber(row.saldoVenta)}</TableCell>
                 <TableCell align="right">
                   <Box className="admin-actionButtons">
                   {row.status !== "cancelado" && row.status !== "pagado" && row.status !== "surtido" && (

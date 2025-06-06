@@ -46,10 +46,14 @@ const VentaDetail = () => {
     const [estatusOrden,setEstatusOrden] = useState('');  
     const authorizedRoles = ['ventas', 'admin', 'contabilidad'];
     useEffect(() => {
+        if (state.role === null) return; // Don't update if role is null (user might be logging out)
         if (!authorizedRoles.includes(state.role)) {
           setAuthorized(false);
+        } 
+        else {
+            setAuthorized(true);
         }
-      }, [state.role]);   
+    }, [state.role]);   
     const getActiveStep = (estatusOrden) => {
         switch (estatusOrden) {
             case "activo":
@@ -110,29 +114,29 @@ const VentaDetail = () => {
                 pais: ordenVentaFetchData.pais,
             }
             setDatosDireccion(datosDireccionTemp);
-
-
             var usuarioId;
             //==========BUSCAMOS EL CLIENTE
-            if (ordenVentaFetchData.clienteId) {           
-                fetch(APIClientes+ordenVentaFetchData.clienteId, {
+            //1:Buscamos el cliente y traemos el user_id
+            //2:Buscamos el usuario en user_id
+            ordenVentaFetchData.clienteId
+            if (ordenVentaFetchData.clienteId) { 
+                fetch(`${APIClientes}?offset=0&limit=1`+`${ordenVentaFetchData.clienteId !== '' ? `&usuarioId=${ordenVentaFetchData.clienteId}` : ''}`, {
                     headers: {
                       'Authorization': `Bearer ${state.token}`,  
                       'Content-Type': 'application/json',
                     },
-                  })  
+                })  
                 .then(response => response.json())
                 .then(data => { 
-                    //console.log(data);
-                    const dataUsuario = data;
-                    usuarioId = data.usuarioId;
+                    const dataUsuario = data.clientes[0];
+                    usuarioId = dataUsuario.usuarioId;
                     //==========BUSCAMOS datos del usuario
                     fetch(APIUsers+usuarioId, {
                         headers: {
                           'Authorization': `Bearer ${state.token}`,  
                           'Content-Type': 'application/json',
                         },
-                      })
+                    })
                     .then(response => response.json())
                     .then(data => {
                         const usuarioCorreo = data.correo ? data.correo : '';                            
@@ -162,6 +166,9 @@ const VentaDetail = () => {
         }
     }, [ordenVentaFetchData,error]);
     //===================================================================================================================
+    if (state.role === null) {
+        return null; // Or a loading spinner if needed
+    }
     if(!authorized){
         return (             
           <Box className = "noAuthorizedContainer">

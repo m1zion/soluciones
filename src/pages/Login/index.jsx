@@ -109,7 +109,9 @@ const Login = () => {
       // Guardar el token en el estado
       setToken(token);
       setUser(user.correo);
-      setProveedorId(user.proveedorId)
+      setProveedorId(user.proveedorId);
+      console.log("USUARIO INFO");
+      console.log(user);
       const  dataLogin = {
         token: token,
         user: user.correo,

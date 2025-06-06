@@ -875,8 +875,8 @@ const Configurador4 = () => {
     }
   }
 
-  //console.log("---------------");
-  //console.log(state.mejorarAudio);
+  console.log("---------------");
+  console.log(state.tieneBocinaReemplazo);
   /*console.log("===========");*/
   return (
     <React.Fragment>
@@ -1132,7 +1132,7 @@ const Configurador4 = () => {
                       <Button variant="contained" onClick={() => handleMejoraAudio('no')} className="configurador_sino_button" >No</Button>
                     </Stack>
                   :
-                      (state.tieneBocinaReemplazo.length === 0 && state.mejorarAudio === 'si') 
+                      ((state.tieneBocinaReemplazo?.length ?? 0) === 0 && state.mejorarAudio === 'si') // (state.tieneBocinaReemplazo.length === 0 && state.mejorarAudio === 'si') 
                       ? 
                         <Stack alignItems="center" direction="column" sx={{marginTop:"10px"}}>
                           <Typography>¿Que deseas hacer con tus bocinas?</Typography>
@@ -1244,7 +1244,8 @@ const Configurador4 = () => {
         </Accordion>  
         {/*------------------------------------------------------TERMINAR CONFIGURACION 1--------------------------------------------------------------*/}
         <Accordion expanded={(
-          (state.calzaBocinaReemplazoTraseraC.length != 0 && state.tieneBocinaReemplazo.length != 0) || 
+           // (state.calzaBocinaReemplazoTraseraC.length != 0 && state.tieneBocinaReemplazo.length != 0) 
+          ((state.calzaBocinaReemplazoTraseraC?.length ?? 0) !== 0 && (state.tieneBocinaReemplazo?.length ?? 0) !== 0) || 
           expanded === 'panel9')} onChange={handleChange('panel9')} 
           disabled = {state.calzaBocinaReemplazoTraseraC.length === 0 && state.calzaBocinaReemplazoTraseraC.length === 0}>
            <Box className="configurador-accordionSummary">
@@ -1269,7 +1270,8 @@ const Configurador4 = () => {
           expanded={(expandAmplificadorVoz || expanded === 'panel10')} 
           onChange={handleChange('panel10')} 
           disabled = {(state.adaptadorC.length === 0) || 
-          (state.tieneBocinaReemplazo.length === 0) || 
+
+          ((state.tieneBocinaReemplazo?.length ?? 0) === 0) ||
           (state.tieneBocinaReemplazo === 'si') ||
           state.amplificadorC.length != 0 }>
           <Box className="configurador-accordionSummary">
