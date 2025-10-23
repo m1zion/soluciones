@@ -16,7 +16,7 @@ const API = process.env.REACT_APP_API_URL;
 const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
 //==================================================================Checkout form=======
 const CheckOutCart = () => {
-  const { state,fetchOrderData,refreshState } = useContext(AppContext);
+  const { state,fetchOrderData,refreshState,removeFromCartConf} = useContext(AppContext);
   const [loadingLocal,setLoadingLocal] = useState(false);
   const navigate = useNavigate();
   const estadosMexicanos = [
@@ -135,6 +135,8 @@ const CheckOutCart = () => {
     }   
     try {
       usePut2V(APIconfCaracteristicas,data, state.token); //Actualiza los items API
+      //Borramos todos los items del state
+      removeFromCartConf('nuevo');
       navigate("/CheckOutCart4");    
     } catch (error) {
       console.error("Error al generar la orden. code:002");

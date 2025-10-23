@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 import GradientCircularProgress from "./GradientCircularProgress";
 const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
 const Configurador1 = () => {
-  const { state,fetchOrderData,loading} = useContext(AppContext);
-  console.log(state.userId);
-  console.log(state.token);
+  const { state,refreshState,fetchOrderData,loading} = useContext(AppContext);
+    useEffect(() => {
+        refreshState();
+    }, []);
+    console.log(state);
   //const setConfigurador = item =>{setConfigInicial(item);};
   const navigate = useNavigate();
   const API = process.env.REACT_APP_API_URL;
