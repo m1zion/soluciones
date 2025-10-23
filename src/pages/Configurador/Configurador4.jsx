@@ -20,7 +20,7 @@ import GradientCircularProgress from "./GradientCircularProgress";
 import ConfiguradorCategoria from "./containers/ConfiguradorCategoria";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DeleteForever, DeleteOutline } from "@mui/icons-material";
-import ProductDetail from './Components/ProductDetail';
+import ProductDetail from './components/ProductDetail';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />

@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "webpack serve --open --allowed-hosts all",
-    "build": "NODE_ENV=production npm run build-common",
+    "build": "NODE_ENV=production npx webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
