@@ -10,7 +10,12 @@ import { useNavigate } from "react-router-dom";
 import GradientCircularProgress from "./GradientCircularProgress";
 const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
 const Configurador1 = () => {
-  const { state,refreshState,fetchOrderData,loading} = useContext(AppContext);
+  const { 
+    state,
+    refreshState,
+    removeFromCartConf,
+    fetchOrderData,
+    loading} = useContext(AppContext);
     useEffect(() => {
         refreshState();
     }, []);
@@ -99,14 +104,16 @@ const handleSubmit = async (event) => {
     if (activeOrderId) {
       //AQUI BORRAREMOS LOS ARTICULOS Y actualizaremos LA NUEVA CONFIGURACION
       console.log("Orden Activa "+activeOrderId);
-      const deletedSuccess = await deleteAllItems(activeOrderId);
+      const deletedSuccess = await deleteAllItems(activeOrderId); //bd
       if(!deletedSuccess){
         console.error("No se pudo actualizar la orden");
         return;
       }
       console.log("Creamos array de la orden");
+      removeFromCartConf('nuevo'); 
       const dataConfCaracteristicas = createConfiguradorData();
       const updatedConfiguradorResponse = await updateConfigurador(dataConfCaracteristicas,activeOrderId);
+      
       if(updatedConfiguradorResponse){
         alert("Configuracion actualizada con exito");  
         const dataPost = {

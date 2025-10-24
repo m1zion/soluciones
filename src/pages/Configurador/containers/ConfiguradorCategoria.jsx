@@ -42,6 +42,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     switch (category){
         case '1': categoryAPI = 'accesorios'; categoriaOpcional = 'Accesorios'; break;  //26
         case '2': categoryAPI = 'adaptadoresAntena'; categoriaOpcional = 'Adaptadores de Antena'; break;  //15
+        case '3': categoryAPI = 'adaptadoresImpedancia'; categoriaOpcional = 'Adaptadores de Impedancia'; break; //38 
         case '4': categoryAPI = 'amplificadores3en1'; categoriaOpcional = 'Amplificadores 3 en 1'; break; //38 
         case '5': // Amplificador de Voz  4 canales, clase D = bajo/Woofer A/B = voz
         case '6': categoryAPI = 'amplificadores'; categoriaOpcional = 'Amplificadores'; break;  //17 //Amplificador de Woofer 
@@ -66,7 +67,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     //console.log(categoryAPI);
     const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };
     let API2 = APIProducts.concat(categoryAPI,"/?administrador=false&offset=0&limit=700"); 
-    //console.log(API2);
+    console.log(API2);
     //==============================CONSULTAMOS LOS PRODUCTOS==========================================
     const { data: productFetchData, loading, error:errorE } = useGet7(API2);
     const [catalogoProfundidades, setCatalogoProfundidades] = useState([]);
@@ -133,6 +134,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     //=======================================================================================================
     const filterAndSetProductosFinal = (productos) => {
         //console.log("filterAndSetProductosFinal");
+        //console.log(category);
         if (value !== 'N/A') {  // Esta es la categoria
             let productosModeloAux = [];
             switch (category) { 
@@ -463,14 +465,13 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     });
                     setProductosFinal(productosModeloAux);
                 break;
-                
-                
-
                 default:
-                    productosModeloAux = productos;
+                    productosModeloAux = productos;                    
                     setProductosFinal(productos);
                     //setNumeroDeProductos(productos.length);
             }
+            console.log("Productos Default");
+            console.log(productosModeloAux);
             setNumeroDeProductos(productosModeloAux.length);
         }
     };
