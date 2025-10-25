@@ -719,6 +719,16 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
             totalCompra:state.totalCompra+amountProducts,
         });
     };
+    
+    const setAdaptadorImpedancia = (payload,payload2,amountProducts) =>{
+        setState({
+            ...state, 
+            adaptadorImpedanciaC:payload,
+            cartConf:[...state.cartConf, payload],
+            orderConf:[...state.orderConf, payload2],
+            totalCompra:state.totalCompra+amountProducts,
+        });
+    };
 
     const setMejoraAudio = (payload)  => {
         setState({...state,mejorarAudio:payload})
@@ -1983,7 +1993,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setBase,
         setArnes,
         setProductoOpcional,
-        setAdaptador,   
+        setAdaptador, 
+        setAdaptadorImpedancia,  
         setMejoraAudio,  
         setTieneBocinaReemplazo,   
         setBocinaReemplazoDelantera,

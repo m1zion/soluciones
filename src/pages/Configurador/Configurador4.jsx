@@ -3,7 +3,7 @@ import React, {useRef, useState, useEffect, useContext} from "react";
 import { Typography, Stack, Button, Stepper, Step, StepLabel } from "@mui/material";
 import { Box, sizeHeight } from "@mui/system";
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-//import useDelete from '@hooks/useDelete';
+import useDelete from '@hooks/useDelete';
 import { styled } from '@mui/material/styles';
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
@@ -875,8 +875,8 @@ const Configurador4 = () => {
     }
   }
 
-  console.log("---------------");
-  console.log(state.tieneBocinaReemplazo);
+  //console.log("---------------");
+  //console.log(state.tieneBocinaReemplazo);
   /*console.log("===========");*/
   return (
     <React.Fragment>
