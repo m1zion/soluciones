@@ -48,8 +48,8 @@ const MenuHeader = () => {
         window.location.href = '/';
     };
     const data = [
-        { icon: <People />, label: 'Mi perfil' },
-        { icon: <Dns />, label: 'Mis Ordenes' },    
+        /*{ icon: <People />, label: 'Mi perfil' },
+        { icon: <Dns />, label: 'Mis Ordenes' },    */
         {
             icon: <PermMedia />,
             label: isAuthenticated
@@ -192,7 +192,7 @@ const MenuHeader = () => {
                     <ListItemButton component="a" href="#customized-list">               
                     <ListItemText
                         sx={{ my: 0 }}
-                        primary="NOMBRE"
+                        primary={state.userName ? state.userName: "Invitado"}
                         primaryTypographyProps={{
                         fontSize: 20,
                         fontWeight: 'medium',
@@ -219,39 +219,18 @@ const MenuHeader = () => {
                             },
                     ]}
                     >
-                    <ListItemButton
+                    {/*<ListItemButton
                         alignItems="flex-start"
                         onClick={() => setOpen2(!open2)}
-                        sx={[
-                        {
-                            px: 3,
-                            pt: 2.5,
-                        },
-                        open2
-                            ? {
-                                pb: 0,
-                            }
-                            : {
-                                pb: 2.5,
-                            },
-                        open2
-                            ? {
-                                '&:hover, &:focus': {
-                                '& svg': {
-                                    opacity: 1,
-                                },
-                                },
-                            }
-                            : {
-                                '&:hover, &:focus': {
-                                '& svg': {
-                                    opacity: 0,
-                                },
-                                },
-                            },
+                        sx={[{px: 3, pt: 2.5,},
+                            open2
+                                ? {pb: 0,}: {pb: 2.5,},
+                            open2
+                                ? {'&:hover, &:focus': {'& svg': {opacity: 1,},},}
+                                : {'&:hover, &:focus': {'& svg': {opacity: 0,},},},
                         ]}
-                    >                        
-                    </ListItemButton>
+                    >                  
+                    </ListItemButton>*/}
                     {
                         data.map((item) => (
                         <ListItemButton

@@ -19,8 +19,9 @@ const Configurador1 = () => {
     useEffect(() => {
         refreshState();
     }, []);
-    console.log(state);
   //const setConfigurador = item =>{setConfigInicial(item);};
+  console.log("STATE");
+  console.log(state);
   const navigate = useNavigate();
   const API = process.env.REACT_APP_API_URL;
   const APIMARCAS =  API+'configurador/marcas/?offset=0&limit=30';
@@ -103,13 +104,13 @@ const handleSubmit = async (event) => {
     const activeOrderId =  await verifyActiveCart(); //Verificamos orden activa de configurador y monto 
     if (activeOrderId) {
       //AQUI BORRAREMOS LOS ARTICULOS Y actualizaremos LA NUEVA CONFIGURACION
-      console.log("Orden Activa "+activeOrderId);
+      //console.log("Orden Activa "+activeOrderId);
       const deletedSuccess = await deleteAllItems(activeOrderId); //bd
       if(!deletedSuccess){
         console.error("No se pudo actualizar la orden");
         return;
       }
-      console.log("Creamos array de la orden");
+      //console.log("Creamos array de la orden");
       removeFromCartConf('nuevo'); 
       const dataConfCaracteristicas = createConfiguradorData();
       const updatedConfiguradorResponse = await updateConfigurador(dataConfCaracteristicas,activeOrderId);
@@ -127,7 +128,7 @@ const handleSubmit = async (event) => {
       }       
     }
     else { 
-      console.log("Creamos la nueva order");
+      //console.log("Creamos la nueva order");
       const newOrderId = await createNewOrder();
       if (newOrderId) {
         console.log("Se creo la nueva orden del configurador:"+newOrderId);
@@ -166,7 +167,8 @@ const verifyActiveCart = async () =>{
 //CREA NUEVA ORDEN
 const createNewOrder = async () => {
   const ordenVentaData = {
-    clienteId: state.userId,
+    //clienteId: state.userId,
+    clienteId: state.clienteId,
     orderType: "configurador",
     status: "activo",
     marca: marca,
@@ -174,8 +176,6 @@ const createNewOrder = async () => {
     anio: age3
   };
   const APIPost = API + 'ordenesUsuario/';
-  console.log(APIPost);
-  console.log(ordenVentaData);
   const { success, data, error } = await usePost2V(APIPost, ordenVentaData, state.token);
   if (!success) {
     setErrMsg(error || "Error occurred while creating a new order");
@@ -237,9 +237,8 @@ const updateConfigurador = async (ordenVentaData,ordenVentaId) => {
 const handleSubmitModificar = (event) => {
   event.preventDefault();
   navigate("/Configurador4");
-}/*
-console.log("======");
-
+}
+/*console.log("======");
 console.log(state);
 console.log(state.userName);
 console.log(loading);*/
@@ -360,7 +359,7 @@ console.log(loading);*/
               //Si tiene almenos un estereo puede editar la configuracion
               //
             (
-              (state.estereoC.id_item != undefined || state.estereoC.id != undefined || state.orderType == 'openshow'))? //
+              (state.estereoC.id_item != undefined || state.estereoC.id != undefined || state.orderType == 'openshow' || state.adaptadorImpedanciaC.id != undefined || state.adaptadorImpedanciaC.id_item != undefined))? //
                 (
                   <Box sx={{display: 'flex', alignItems: 'center', gap:'1rem', justifyContent: 'center', width: '90%', flexWrap: 'wrap'}}>
                     <Button variant="contained" onClick={handleSubmit} className="NextStepButton2" >Nueva Configuración</Button> 

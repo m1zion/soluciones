@@ -227,15 +227,13 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         // Add more localStorage.removeItem('key') if needed
     };
     const getClientData = async (userId) => {
-        //console.log("Entra a getClientData");
         try {
-            const response = await fetch(`${API}clientes/${userId}`);
-            console.log(`${API}clientes/${userId}`);
+            const response = await fetch(`${API}clientes/?usuarioId=${userId}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch client data");
             }
             const clientData = await response.json();
-            return clientData;
+            return clientData.clientes[0];
         } catch (error) {
             console.error("Error fetching client data:", error);
             return null;
@@ -578,6 +576,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         if (clientData){
             nombreUsuarioAux = clientData.nombre;
             payloadLogin.userName = nombreUsuarioAux;
+            payloadLogin.clienteId = clientData.id;
         }
         // Store values in localStorage
         localStorage.setItem('authUser', payloadLogin.user);
@@ -650,6 +649,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 updatedState.token = payloadLogin.token;
                 updatedState.userName = payloadLogin.userName;
                 updatedState.userId = payloadLogin.userId;
+                updatedState.clienteId = payloadLogin.clienteId;
                 //updatedState
                 setState(updatedState); 
                 console.log("No tiene ordenes");

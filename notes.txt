@@ -5,8 +5,8 @@ MLd1234_
 1. Cuando la configuracion es nueva no alcanza a mostrar los estereos
 2. Marca error en length configurador4
 Proces Login 
-misaelzion@gmail.com	MLd1234_	Administrador
-prueba@prueba.com	1234Abcd_	Cliente
+misaelzion@gmail.com	MLd12345_	Cliente
+prueba@prueba.com	1234Abcd_	Administrador
 
 A) setLogin()
 

@@ -77,7 +77,7 @@ const CheckOutCart = () => {
   useEffect(() => {
       refreshState();
   }, []);
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoadingLocal(true);
     setErrorNombre(false); setMsgNombre("Nombre");
     setErrorTelefono(false); setMsgTelefono("Teléfono");
@@ -134,10 +134,12 @@ const CheckOutCart = () => {
       nombreCompleto: nombre
     }   
     try {
-      usePut2V(APIconfCaracteristicas,data, state.token); //Actualiza los items API
+      await usePut2V(APIconfCaracteristicas,data, state.token); //Actualiza los items API
       //Borramos todos los items del state
       removeFromCartConf('nuevo');
-      navigate("/CheckOutCart4");    
+      //Enviamos el correo 
+      await sendOrderEmail(state.confOrderId, state.user);
+      navigate("/CheckOutCart4/"+state.confOrderId);    
     } catch (error) {
       console.error("Error al generar la orden. code:002");
       console.error(error);
@@ -146,9 +148,36 @@ const CheckOutCart = () => {
     }
   }
 
+  const sendOrderEmail = async (orderNumber, email) => {
+    console.log(orderNumber);
+    console.log(`${API}orderEmail`);
+    try {
+      const response = await fetch(`${API}orderEmail`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          orderNumber,
+          email,
+        }),
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        console.error('Error response:', text);
+        throw new Error('Error al enviar el correo');
+      }
+      console.log('Correo enviado exitosamente');
+    } catch (error) {
+      console.error('Error al enviar el correo:', error);
+      alert('Ocurrió un error al enviar el correo de confirmación.');
+    }
+  };
+
   //==================================FUNCIONES PARA TRAER EL CARRITO==================================
 	const form = useRef(null);
-  if (state.totalCompra <= 0){
+  if (state.totalCompra <= 0 && !setLoadingLocal){
     return(
       <Box className="CheckOutCart2Container">
         <Stack spacing={2} sx={{pt:'1rem', pb:'2rem',pl:'1rem'}} className="CheckOutCart2Form" direction = {{xs:"column", md:"column"}}>              

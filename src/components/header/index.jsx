@@ -34,7 +34,6 @@ export default function Header() {
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
     };
-
     const DrawerList = (
         <Box className="menu_list_container" role="presentation" onClick={toggleDrawer(false)}>
             <List>               
@@ -52,7 +51,6 @@ export default function Header() {
                         <ListItemText sx={{color:"var(--logo-green)"}} primary="Configurador" />
                     </ListItemButton>
                 </ListItem>
-
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
@@ -70,7 +68,6 @@ export default function Header() {
                         <ListItemText primary="Woofers" />
                     </ListItemButton>
                 </ListItem>
-
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
@@ -79,7 +76,6 @@ export default function Header() {
                         <ListItemText primary="Bocinas" />
                     </ListItemButton>
                 </ListItem>
-
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
@@ -88,7 +84,6 @@ export default function Header() {
                         <ListItemText primary="Cajones" />
                     </ListItemButton>
                 </ListItem>
-
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
@@ -97,7 +92,6 @@ export default function Header() {
                         <ListItemText primary="Seguridad" />
                     </ListItemButton>
                 </ListItem>
-
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
@@ -127,19 +121,17 @@ export default function Header() {
             </Box>        
         </Box>
     );
-
-
-
     return(
         <AppBar className="menuAppBar">
             <Container maxWidth="100%" className='navbar'>
                 <Toolbar  sx={{justifyContent: "space-between",minHeight: "auto", height: "5rem"}}>                
-                    <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+                    {/*Menu Drawer */}
+                    {/*<Box sx={{ display: { xs: 'block', md: 'none' } }}>
                         <IconButton
                         onClick={() => setOpen(true)}>
                             <MenuIcon sx={{ color: 'white' }}/>
                         </IconButton>
-                    </Box>
+                    </Box>*/}
                     <NavLink to="/"><img src={logo} alt="logo" className="nav-logo"/></NavLink>            
                     <Container className='toolbarContainer'>
                         {/*<Searcher inputProduct={inputProduct} setInputProduct={setInputProduct}></Searcher>*/}
@@ -147,11 +139,9 @@ export default function Header() {
                     <MenuHeader/> 
                 </Toolbar>
             </Container> 
-
-
-        <Drawer sx={{ "& .MuiDrawer-paper": { backgroundColor: "var(--black247)" } }} open={open} onClose={toggleDrawer(false)}>
-            {DrawerList}
-        </Drawer>
+            <Drawer sx={{ "& .MuiDrawer-paper": { backgroundColor: "var(--black247)" } }} open={open} onClose={toggleDrawer(false)}>
+                {DrawerList}
+            </Drawer>            
         {/*ESTE ES EL MENU ORIGINAL, 
             Dropdown.jsx
             MenuItemsBurguer.jsx

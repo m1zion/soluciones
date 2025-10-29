@@ -40,6 +40,8 @@ import '@styles/global.css';
 import Layout from '@containers/Layout';
 import LayoutAdmin from '@containersDashboard/LayoutAdmin';
 import NewAccount from "../pages/NewAccount";
+import ForgotPassword from "../pages/ForgotPassword";
+import Recovery from "../pages/Recovery";
 
 import ClientesAdm from '@dashboard/clientes/ClientesAdm';
 import ClienteCreate from '@dashboard/clientes/ClienteCreate';
@@ -73,9 +75,11 @@ const App = () => {
                         <Route exact path="/configurador4" element={<Layout><Configurador4/></Layout>} /> 
                         <Route exact path="/CheckOutCart3_1" element={<Layout><CheckOutCart3_1/></Layout>} /> 
                         <Route exact path="/CheckOutCart" element={<Layout><CheckOutCart/></Layout>} /> 
-                        <Route exact path="/CheckOutCart4" element={<Layout><CheckOutCart4/></Layout>} /> 
+                        <Route exact path="/CheckOutCart4/:order_id" element={<Layout><CheckOutCart4/></Layout>} /> 
                         <Route exact path="/login" element={<Layout><Login/></Layout>} />      
                         <Route exact path="/newAccount" element={<Layout><NewAccount/></Layout>} />   
+                        <Route exact path="/ForgotPassword" element={<Layout><ForgotPassword/></Layout>} />   
+                        <Route exact path="/Recovery" element={<Layout><Recovery/></Layout>} />   
 
                         <Route exact path="/Dashboard" element={<LayoutAdmin><Dashboard/></LayoutAdmin>}/>
                         <Route exact path="/Dashboard/Productos" element={<LayoutAdmin><ProductosAdm/></LayoutAdmin>} />
