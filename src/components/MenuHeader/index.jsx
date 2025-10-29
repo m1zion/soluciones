@@ -113,9 +113,9 @@ const MenuHeader = () => {
                 </Tooltip>
                 <Tooltip title="Mi orden" >
                     <IconButton
-                        onClick={handleClickOrder}
+                        //onClick={handleClickOrder}
                         size="large"
-                        sx={{ ml: 0}}
+                        sx={{ ml: 0, cursor:'default'}}
                         aria-controls={openOrder ? 'order-menu' : undefined}
                         aria-haspopup="true"
                         aria-expanded={openOrder ? 'true' : undefined}                 

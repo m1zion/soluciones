@@ -1,18 +1,11 @@
-//Instalar npm install @auth0/auth0-react
-// Manejador del submit  https://www.youtube.com/watch?v=raJjjm3rhhU 
-// https://www.youtube.com/watch?v=oUZjO00NkhY&t=143s
 import React, { useRef, useState, useContext, useEffect } from 'react';
 import { IconButton, Stack, TextField, InputAdornment, Button, Typography, Box, Divider,Alert, CircularProgress} from "@mui/material"; 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import './Login.scss';
 import '../NewAccount/NewAccount.scss';
-import googleIcon from '@icons/google-color-icon.svg';
 import { useNavigate } from 'react-router-dom';
-//import { LoginContext } from '../../context/LoginContext';
 import AppContext from '@context/AppContext';
-import { SubscriptionsOutlined } from '@mui/icons-material';
-//import { useAuth } from '@context/AuthContext'; // Importa el hook de AuthContext
 const baseURL = process.env.REACT_APP_API_URL; 
 const Login = () => {
   const errRef = useRef();
@@ -28,14 +21,10 @@ const Login = () => {
   const [message, setMessage] = useState(''); 
   const navigate = useNavigate();
   const form = useRef(null);
-  //const { state } = useContext(AppContext);
   const [loading,setLoading] = useState(true);
   const [error,setError] = useState(false); 
   //Persistencia de datos
-
-
   const [ready, setReady] = useState(false);
-  
   useEffect(() => {
     const img = new Image();
     img.src = require('../../assets/images/loginbg.jpg'); // adjust path if needed
@@ -58,7 +47,6 @@ const Login = () => {
           //Adicionalmente hay que validar que el token es valido            
           if(localStorageToken && localStorageToken !== 'null' && 
             localStorageUser && localStorageUser !== 'null'){
-            console.log("1");
             setToken(localStorageToken);
             setUser(localStorageUser);
             setProveedorId(localStorageproveedorId)
@@ -86,9 +74,9 @@ const Login = () => {
     },[]
   );
   //------------------------------------------------------------------------
-
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     try {
       const response = await fetch(`${baseURL}auth/login`, {
         method: 'POST',
@@ -102,16 +90,15 @@ const Login = () => {
       });
       if (!response.ok) {
         throw new Error('Error al iniciar sesión');
-      }
-      
+      }      
       const data = await response.json();
       const { token, user} = data; 
       // Guardar el token en el estado
       setToken(token);
       setUser(user.correo);
       setProveedorId(user.proveedorId);
-      console.log("USUARIO INFO");
-      console.log(user);
+      //console.log("USUARIO INFO");
+      //console.log(user);
       const  dataLogin = {
         token: token,
         user: user.correo,
@@ -120,7 +107,7 @@ const Login = () => {
         role: user.role,
         //clienteId: clienteId,
       }
-      console.log(dataLogin);
+      //console.log(dataLogin);
       localStorage.setItem('authToken', token);
       localStorage.setItem('authUser', user.correo);
       localStorage.setItem('roleL', user.role);
@@ -137,6 +124,7 @@ const Login = () => {
       }
       setMessage('¡Has iniciado sesión exitosamente!');
     } catch (error) {
+      setLoading(false);
       setMessage('Error al iniciar sesión. Verifica tus credenciales.');
       console.error('Error en el login:', error);
     }
@@ -161,13 +149,9 @@ const Login = () => {
   const handleRegister = categoria =>{
     navigate('/newAccount');
   }
-
-  if (!ready) {
+  if (!ready || loading) {
     return <div style={{ color: "white", textAlign: "center", marginTop: "20%" }}>Loading...</div>;
-  }
-
-
-  
+  } 
   return (
     <Box className="LoginBoxContainer" >
       <Stack className="LoginFormContainer" spacing={2} direction = {{xs:"column", md:"column"}} >

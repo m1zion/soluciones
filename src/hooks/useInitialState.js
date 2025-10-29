@@ -4,6 +4,7 @@ const initialState = {  //
     //VARIABLES DE SESION
     error: false,
     userId: localStorage.getItem('userIdL') || '',
+    clienteId: localStorage.getItem('clienteIdL') || '',
     user: localStorage.getItem('authUser') || '',
     token: localStorage.getItem('authToken') || '',
     userName: localStorage.getItem('userName') || 'Invitado',
@@ -22,8 +23,6 @@ const initialState = {  //
     configC: [], //marca,modelo,anio
     dinesC:[],
     estereoC: [],
-
-
 
     ocultaBotonUnDinC: true,
     ocultaBotonDobleDinC: true,
@@ -71,14 +70,13 @@ const initialState = {  //
     setComponentesO: []
 }
 
-
 const useInitialState = () =>{  //Funcion para inicializar el estado
     const [loading,setLoading] = useState(true);
+    const [loadingLoging,setLoadingLoging] = useState(true);
     const [error,setError] = useState(false); 
-    console.log("Loading state...");
+    //console.log("Loading state...");
     const [state, setState] = useState(initialState); 
     const [refresh,setRefresh] = useState(true);
-
 
     const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
     const openProductDetail = () => setIsProductDetailOpen(true);
@@ -91,7 +89,8 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     });
 
     const refreshState = () => {
-        console.log("Refreshing state...");
+        //console.log("Refreshing state...")   
+        setLoadingLoging(true);
         setRefresh(prev => !prev); // Toggle the refresh state
     };
 
@@ -104,6 +103,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
               const localStorageUser = localStorage.getItem('authUser');  
               const localStorageproveedorId = localStorage.getItem('proveedorIdL');
               const localStorageUserId = localStorage.getItem('userIdL');  
+              const localStorageClienteId = localStorage.getItem('clienteIdL');  
               const localStorageRole = localStorage.getItem('roleL');
               //Adicionalmente hay que validar que el token es valido     
               
@@ -113,6 +113,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                   token: localStorageToken,
                   user: localStorageUser,
                   userId: localStorageUserId,
+                  clienteId: localStorageClienteId,
                   proveedorId: localStorageproveedorId,
                   role: localStorageRole,
                 }
@@ -126,17 +127,18 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 else {
                   navigate('/Dashboard');
                 }*/      
+               // Delay one microtask to ensure React applied state update
+                setTimeout(() => setLoadingLoging(false), 0);
+                return;
               }
-              setLoading(false);
             }
             catch(error){
-              setLoading(false);
               //setError(true);
-              console.error("No se pudo encontrar la sesion");
-              console.log(error);
+              console.error("No se pudo encontrar la sesion",error);
             }
-          //},3000) 
-          setLoading(false);
+            finally {
+                 setTimeout(() => setLoadingLoging(false), 0);
+            }
         },[refresh]
     );
 
@@ -593,6 +595,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 proveedorId: payloadLogin.proveedorId,
                 userName: payloadLogin.userName,
                 userId: payloadLogin.userId,
+                clienteId: payloadLogin.clienteId,
             });           
         }
         else{
@@ -652,7 +655,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
                 updatedState.clienteId = payloadLogin.clienteId;
                 //updatedState
                 setState(updatedState); 
-                console.log("No tiene ordenes");
+                //console.log("No tiene ordenes");
                 return;
             }
             // 2. If I have any of them, then retrieve the full data 
@@ -863,7 +866,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         setState({...state, tieneEcualizador:payload});
     };
     const setAccesorio = (payload,payload2,amountProducts) =>{
-        console.log("Set accesorios nuevo total");
+        //console.log("Set accesorios nuevo total");
         //console.log(amountProducts);
         setState({
             ...state, 
@@ -1954,7 +1957,7 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
 
     const logout = () => {
         // Clear state by resetting user-related fields
-        console.log("Haciendo LogOut");
+        //console.log("Haciendo LogOut");
         setState({
             ...state,
             user: null,
@@ -1974,12 +1977,15 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
         localStorage.removeItem('cartOrderIdL');  // Clear the total purchase if necessary
         localStorage.removeItem('proveedorIdL');  // Clear the total purchase if necessary
         localStorage.removeItem('userIdL');  // Clear the total purchase if necessary
+        localStorage.removeItem('clienteIdL');  // Clear the total purchase if necessary
         localStorage.removeItem('userName');  // Clear the total purchase if necessary
     };
 
     return {
         setLogin,
         loading,
+        loadingLoging,
+        setLoadingLoging,
         error,
         logout,
         setConfig,

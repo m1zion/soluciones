@@ -17,6 +17,7 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
   //product2 lo utilizamos para llenar el cart y lo pasamos como parametro
   
   const { state,openProductDetail,setProductToShow } = useContext(AppContext);
+  console.log(product);
   let fotos =  product.fotos;
   let fotoDefault = noImage;
   if(typeof fotos !== "undefined"){

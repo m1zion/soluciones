@@ -9,7 +9,7 @@ import '@styles/Pagination2.scss';
 import '@styles/ProductList.scss';
 import { CircularProgress } from "@mui/material";
 import Paginate from '@components/Paginate'; 
-import { CompressOutlined } from '@mui/icons-material';
+import { CompressOutlined, ConstructionOutlined } from '@mui/icons-material';
 const API = process.env.REACT_APP_API_URL;
 const APIProducts = API+'products/';
 //                             category="20" config={state.configuracion} value={valor} value2= {valor2} optional="false" carFeatures={caracteristicas}/>
@@ -37,8 +37,6 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     //let cantidadFija = 1;
     let caracteristicas = carFeatures;
     const APICajones = `${API}products/cajones/getmodel?model=${state.cajonAcusticoC.modelo}`;  
-    //console.log("switch category");
-    //console.log(category);
     switch (category){
         case '1': categoryAPI = 'accesorios'; categoriaOpcional = 'Accesorios'; break;  //26
         case '2': categoryAPI = 'adaptadoresAntena'; categoriaOpcional = 'Adaptadores de Antena'; break;  //15
@@ -67,7 +65,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     //console.log(categoryAPI);
     const handleProductoOpcional = (category) =>{ setProductoOpcional(category); };
     let API2 = APIProducts.concat(categoryAPI,"/?administrador=false&offset=0&limit=700"); 
-    console.log(API2);
+    //console.log(API2);
     //==============================CONSULTAMOS LOS PRODUCTOS==========================================
     const { data: productFetchData, loading, error:errorE } = useGet7(API2);
     const [catalogoProfundidades, setCatalogoProfundidades] = useState([]);
@@ -133,7 +131,6 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
     }, [productFetchData,errorE,categoryComplement]);
     //=======================================================================================================
     const filterAndSetProductosFinal = (productos) => {
-        //console.log("filterAndSetProductosFinal");
         //console.log(category);
         if (value !== 'N/A') {  // Esta es la categoria
             let productosModeloAux = [];
@@ -253,8 +250,7 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                         /*console.log("Entra a filtrar delanteras");
                         console.log(productos);
                         console.log(caracteristicas);
-                        console.log(tipoConfiguracion);
-                        console.log("=====================");*/
+                        console.log(tipoConfiguracion);*/
 
                         if (caracteristicas){ 
                             const diametroBocinaFrontal = caracteristicas.diametroBocinaFrontal;//parseFloat(caracteristicas.diametroBocinaFrontal); 
@@ -458,7 +454,6 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                 case '23': //Procesador 
                 case '25': //Tweeters
                 case '18': //Ecualizador
-                //console.log(productos);
                     productosModeloAux = productos?.filter(function(product) {                        
                         const tipoConfiguracion2 = typeof tipoConfiguracion === 'string' ? tipoConfiguracion.toLowerCase().trim() : '';            
                         return (product.tipoCategoria).toLowerCase().trim() === tipoConfiguracion2;
@@ -470,8 +465,8 @@ const ConfiguradorCategoria = ({category,value,value2,estereo,optional,carFeatur
                     setProductosFinal(productos);
                     //setNumeroDeProductos(productos.length);
             }
-            console.log("Productos Default");
-            console.log(productosModeloAux);
+            //console.log("Productos Default");
+            //console.log(productosModeloAux);
             setNumeroDeProductos(productosModeloAux.length);
         }
     };

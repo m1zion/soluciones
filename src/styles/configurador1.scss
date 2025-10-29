@@ -1,3 +1,4 @@
+@import './_vars.css';
 .Configurador_Container{
     margin-top: 5rem; 
 }
@@ -194,6 +195,19 @@ margin-left: auto !important;
     color: var(--blueConfigurador) !important;
   }
   
+
+.tipoConfiguracion_ButtonDisabled{
+    font-weight:500 !important;
+    align-self: center;
+    margin-top: 10px !important;
+    width: 90%;
+    height: 3.5rem;
+    background-color: var(--very-light-pink) !important;
+    color:var(--gray-letter) !important;
+    border-radius: 12px !important;
+    }
+
+
 @media (min-width: 600px) {
     .Configurador_Form {
         width: 100%;
@@ -223,7 +237,8 @@ margin-left: auto !important;
         margin-top: 10px !important;
         width: 90%;
         height: 3.5rem;
-        background-color: var(--very-light-pink)!important;
+        background-color: gray !important;
+        background-color: var(--very-light-pink) !important;
         color:var(--gray-letter) !important;
         border-radius: 12px !important;
       }

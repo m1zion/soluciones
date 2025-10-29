@@ -9,19 +9,40 @@ import usePut2V from '@hooks/usePut2V';
 import { useNavigate } from "react-router-dom";
 import GradientCircularProgress from "./GradientCircularProgress";
 const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
+
 const Configurador1 = () => {
+   const [localLoading, setLocalLoading] = useState(true); 
   const { 
     state,
     refreshState,
     removeFromCartConf,
     fetchOrderData,
-    loading} = useContext(AppContext);
-    useEffect(() => {
-        refreshState();
-    }, []);
-  //const setConfigurador = item =>{setConfigInicial(item);};
-  console.log("STATE");
-  console.log(state);
+    loadingLoging,
+  setLoadingLoging} = useContext(AppContext);  
+  
+  /*useEffect(() => {
+    const init = async () => {
+      await refreshState();
+      setLocalLoading(false);
+    };
+    init();
+  }, []);*/
+  useEffect(() => {
+    setLoadingLoging(true);
+    refreshState();
+  }, []);
+
+
+   // Wait 0.5 seconds before hiding loading spinner
+  useEffect(() => {
+    if (!loadingLoging) {
+      const timer = setTimeout(() => setLocalLoading(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [loadingLoging]);
+
+
+
   const navigate = useNavigate();
   const API = process.env.REACT_APP_API_URL;
   const APIMARCAS =  API+'configurador/marcas/?offset=0&limit=30';
@@ -104,13 +125,11 @@ const handleSubmit = async (event) => {
     const activeOrderId =  await verifyActiveCart(); //Verificamos orden activa de configurador y monto 
     if (activeOrderId) {
       //AQUI BORRAREMOS LOS ARTICULOS Y actualizaremos LA NUEVA CONFIGURACION
-      //console.log("Orden Activa "+activeOrderId);
       const deletedSuccess = await deleteAllItems(activeOrderId); //bd
       if(!deletedSuccess){
         console.error("No se pudo actualizar la orden");
         return;
       }
-      //console.log("Creamos array de la orden");
       removeFromCartConf('nuevo'); 
       const dataConfCaracteristicas = createConfiguradorData();
       const updatedConfiguradorResponse = await updateConfigurador(dataConfCaracteristicas,activeOrderId);
@@ -128,13 +147,11 @@ const handleSubmit = async (event) => {
       }       
     }
     else { 
-      //console.log("Creamos la nueva order");
       const newOrderId = await createNewOrder();
       if (newOrderId) {
-        console.log("Se creo la nueva orden del configurador:"+newOrderId);
+        //console.log("Se creo la nueva orden del configurador:"+newOrderId);
         navigate("/configurador2");
       }
-      //CREAMOS LA ORDEN NUEVA
     }
   } catch (error) {
     setErrorMessage("Error al generar la orden. code:002");
@@ -146,7 +163,6 @@ const handleSubmit = async (event) => {
 //VERIFICA SI HAY UNA ORDEN ACTIVA
 const verifyActiveCart = async () =>{
   const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador`; 
-  //console.log(state.token);
   const response = await fetch(APICart, {
     headers: {
       'Authorization': `Bearer ${state.token}`,  
@@ -181,7 +197,6 @@ const createNewOrder = async () => {
     setErrMsg(error || "Error occurred while creating a new order");
     return null;
   }
-  //console.log("Nueva orden creada: " + data.id);
   return data.id;
 };
 const deleteAllItems = async (orderId) => {
@@ -238,10 +253,16 @@ const handleSubmitModificar = (event) => {
   event.preventDefault();
   navigate("/Configurador4");
 }
-/*console.log("======");
-console.log(state);
-console.log(state.userName);
-console.log(loading);*/
+ 
+
+  if (loadingLoging || localLoading) {
+    return (
+      <Box className="Loading_Container">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <React.Fragment>
     {

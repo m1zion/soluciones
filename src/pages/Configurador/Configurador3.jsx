@@ -7,13 +7,14 @@ import GradientCircularProgress from "./GradientCircularProgress";
 const API = process.env.REACT_APP_API_URL;
 import usePut2V from '@hooks/usePut2V';
 import { useNavigate } from 'react-router-dom';
+import { ConstructionOutlined } from "@mui/icons-material";
 /*import useGet7 from '@hooks/useGet7';
 import { CircularProgress } from "@mui/material";*/
 const Configurador3 = () => {
     
     const steps = ['Selecciona Modelo', 'Tipo de Configuración', 'Número de Dines', 'Configurador','Detalles Envio','Envio'];
     const {state,loading,error,refreshState,setConfig} = useContext(AppContext);
-    const [hideBotenes,setHideBotones] = useState(true); //Solo buscamos estereos tipo Original
+    const [hideBotones,setHideBotones] = useState(true); //Solo buscamos estereos tipo Original
     const [activeOrderId, setActiveOrderId] = useState(null);
     const [activeOrder, setActiveOrder] = useState([]);
     const [loadingLocal,setLoadingLocal] = useState(false);
@@ -34,32 +35,30 @@ const Configurador3 = () => {
     
    /* const { state, setConfig } = useContext(AppContext);
    
-    //var hideBotenes = state.ocultaBotonC;
+    //var hideBotones = state.ocultaBotonC;
     const [success, setSuccess] = useState(false);    
     const [errMsg, setErrMsg] = useState('');
     const form = useRef(null);
     const setConfigurador = item =>{setConfig(item);};
     */
     // Main useEffect
-    //console.log("----------");
     //console.log(state);
     useEffect(() => {
         const fetchData = async () => {
-            //console.log("Se ejecuta en use Effect");
             setLoadingLocal(true);
             //const { order, tipoConfiguracion } = await fetchActiveCart(API, state.token);
             if (state.confOrderId) { //Si hay una orden activa
-                const { unDin, dobleDin, tipoOriginal } = await fetchEstereos(API, state.tipoConfiguracionC);               
+                const { unDin, dobleDin, tipoOriginal } = await fetchEstereos(API, state.tipoConfiguracionC);              
                 setHasItemsUnDin(unDin.length > 0);
                 setHasItemsDobleDin(dobleDin.length > 0);
-                setHideBotones(tipoOriginal.length > 0);
+                setHideBotones(tipoOriginal.length == 0);
                //Podemos validar que si state.marcaC no esta definida no ejecute nada aun
                 const configuracion = await fetchConfiguracion(API);
                 if (!configuracion){
                     console.error("No se pudo recuperar la informacion de la configuracion");
                     return;
                 }
-                console.log(configuracion);
+                //(configuracion);
                 const arnesAI = configuracion.arnesAI;
                 const arnesHF = configuracion.arnesHF;
                 const dobleDinAI = configuracion.dobleDinAI;
@@ -72,19 +71,18 @@ const Configurador3 = () => {
                 if ((!tieneArnesAI && !tieneArnesHF) || (arnesAI === 'N/A' && arnesHF === 'N/A')) {
                     setHideUnDin(true);
                     setHideDobleDin(true);
-                    console.log("No tiene arneses: "+arnesAI+' / '+arnesHF +" , Se oculta boton de Un din y doble din");
-                }
-                
+                    //console.log("No tiene arneses: "+arnesAI+' / '+arnesHF +" , Se oculta boton de Un din y doble din");
+                }                
                 if (unDinHF == 'N/A' && unDinAI == 'N/A'){
                     setHideUnDin(true);
-                    console.log("No tiene bases de un Din, Se oculta boton de Un din");
+                    //console.log("No tiene bases de un Din, Se oculta boton de Un din");
                 }
                 if (dobleDinHF == 'N/A' && dobleDinAI == 'N/A'){
                     setHideDobleDin(true);
-                    console.log("No tiene bases de doble Din, Se oculta doble din");
+                    //console.log("No tiene bases de doble Din, Se oculta doble din");
                 }
                 if(pantallaHF != 'N/A' && pantallaHF){
-                    console.log("Habilita el boton de conservar porque pantallaHF != N/A"+pantallaHF);
+                    //console.log("Habilita el boton de conservar porque pantallaHF != N/A"+pantallaHF);
                     setHideBotonOriginal(false);
                 }
             } else {
@@ -113,13 +111,12 @@ const Configurador3 = () => {
             );        
             return { unDin: filteredProductsUnDin, dobleDin: filteredProductsDobledin, tipoOriginal: filteredProductsTipoOriginal };
         } catch (error) {
-            console.error("Error:", error.message);
+            console.error("Error 01:", error.message);
             return { unDin: [], dobleDin: [], tipoOriginal: [] };
         }
     };
     const fetchConfiguracion = async (API) => {
         const APIconf = API+'configurador/detalleModelo/?marca='+state.marcaC+'&modelo='+state.modeloC+'&Anio='+state.anioC;
-        console.log(APIconf);
         try {
             const response = await fetch(APIconf);
             if (!response.ok) {
@@ -131,7 +128,7 @@ const Configurador3 = () => {
             }
             return configuracionData.modelo;
         } catch (error) {
-            console.error("Error:", error.message);
+            //console.error("Error 02:", error.message);
             return null;
         }
     };
@@ -145,7 +142,7 @@ const Configurador3 = () => {
             return arnesesData.id ? true: false;
         
         } catch (error) {
-            console.error("Error:", error.message);
+            console.error("Error 03:", error.message);
             return false;
         }
     };
@@ -235,13 +232,13 @@ const Configurador3 = () => {
                         ))}
                     </Stepper>
                     <Typography sx={{fontWeight: 600, pb:3}} variant="h6">Selecciona tu <Typography variant="h7" sx={{fontWeight: 600}}>Configuración</Typography></Typography>
-                    {hideBotenes && (
+                    {hideBotones && (
                     <Alert severity="warning" sx={{width:"90%", mb:"20px !important", textAlign:"center"}}>
                         Lo sentimos, por el momento no contamos con todas las configuraciones disponibles {state.mensajeC}</Alert>
                     )}
                     <Button disabled = {hideUnDin || !hasItemsUndin} onClick={() => handleSubmit('1')} className={hideUnDin || !hasItemsUndin ? classesDisabled: classesBasica }>Estereo Un Din</Button>
                     <Button disabled = {hideDobleDin || !hasItemsDobledin} onClick={() => handleSubmit('2')} className={hideDobleDin || !hasItemsDobledin  ? classesDisabled: classesBasica }>Pantalla Doble Din</Button>
-                    <Button disabled = {hideBotenes} onClick={() => handleSubmit('3')} className={hideBotenes ? classesDisabled: classesBasica }>Estereo Tipo Original</Button>
+                    <Button disabled = {hideBotones} onClick={() => handleSubmit('3')} className={hideBotones ? classesDisabled: classesBasica }>Estereo Tipo Original</Button>
                     <Button disabled = {hideBotonOriginal} onClick={() => handleSubmit('4')} className={hideBotonOriginal ? classesDisabled: classesBasica }>
                         Conservar mi Estereo Original 
                         {
