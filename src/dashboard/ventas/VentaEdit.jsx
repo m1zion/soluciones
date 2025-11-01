@@ -133,6 +133,7 @@ const VentaEdit = () => {
                         throw new Error('Failed to fetch orden');
                     }
                     const jsonOrden = await ordenFetchData.json();   
+                    //console.log(jsonOrden);
                     setClienteId(jsonOrden.clienteId);                   
                     const datosDireccionTemp = {
                         nombreCompleto: jsonOrden.nombreCompleto,
@@ -152,7 +153,9 @@ const VentaEdit = () => {
                     }
                     setNotas(jsonOrden.notas ? jsonOrden.notas : '');  
                     //setAPICliente(API+'clientes/'+jsonOrden.clienteId);
-                    setAPICliente(`${API}clientes/?offset=0&limit=1`+`${jsonOrden.clienteId !== '' ? `&usuarioId=${jsonOrden.clienteId}` : ''}`); //USERID
+                    
+                    //console.log(`${API}clientes/`+`${jsonOrden.clienteId !== '' ? `${jsonOrden.clienteId}` : ''}`); //Cliente ID
+                    setAPICliente(`${API}clientes/`+`${jsonOrden.clienteId !== '' ? `${jsonOrden.clienteId}` : ''}`); //Cliente ID
                     setFecha(formatDate(jsonOrden.lastmodified));                
                     setDatosOrden(jsonOrden);
                     setLoadingVenta(false);
@@ -171,6 +174,7 @@ const VentaEdit = () => {
     //===============CLIENTE====================
     useEffect(() => {// PARA ESTE CASO USAMOS UN FETCH DIRECTO
         if(clienteId != ""){
+            console.log(APICliente);
             const fetchData = async () => {
                 try {
                     const clienteFetchData = await fetch(APICliente, {
@@ -183,7 +187,7 @@ const VentaEdit = () => {
                         throw new Error('Failed to fetch clientes');
                     }
                     const jsonClientes = await clienteFetchData.json();    
-                    const userId = jsonClientes.clientes[0].usuarioId; // o usa jsonClientes.userId si es otro campo
+                    const userId = jsonClientes.usuarioId; // o usa jsonClientes.userId si es otro campo
                     const userResponse = await fetch(`${API}users/${userId}`, {
                         headers: {
                             'Authorization': `Bearer ${state.token}`,
@@ -194,7 +198,7 @@ const VentaEdit = () => {
                         throw new Error('Failed to fetch user');
                     }
                     const userData = await userResponse.json();
-                    const clienteConEmail = { ...jsonClientes.clientes[0], correo: userData.correo };                             
+                    const clienteConEmail = { ...jsonClientes, correo: userData.correo };                             
                     setSuccessCliente(true); 
                     setErrorClienteId(false);
                     setErrMsg("");

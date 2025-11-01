@@ -120,7 +120,7 @@ const VentaDetail = () => {
             //2:Buscamos el usuario en user_id
             ordenVentaFetchData.clienteId
             if (ordenVentaFetchData.clienteId) { 
-                fetch(`${APIClientes}?offset=0&limit=1`+`${ordenVentaFetchData.clienteId !== '' ? `&usuarioId=${ordenVentaFetchData.clienteId}` : ''}`, {
+                fetch(`${APIClientes}`+`${ordenVentaFetchData.clienteId !== '' ? `${ordenVentaFetchData.clienteId}` : ''}`, {
                     headers: {
                       'Authorization': `Bearer ${state.token}`,  
                       'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ const VentaDetail = () => {
                 })  
                 .then(response => response.json())
                 .then(data => { 
-                    const dataUsuario = data.clientes[0];
+                    const dataUsuario = data;
                     usuarioId = dataUsuario.usuarioId;
                     //==========BUSCAMOS datos del usuario
                     fetch(APIUsers+usuarioId, {
