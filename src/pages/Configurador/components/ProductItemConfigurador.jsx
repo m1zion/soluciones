@@ -65,6 +65,7 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
   }
   /**********************useState*/
   const handleClick = (item,category,item2) => {
+    const scrollY = window.scrollY;
     const formData = new FormData(form.current);
     let numberProducts;
     if (!editarCantidad) {
@@ -79,45 +80,8 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
       categoryId: item.categoryId,
       categoryIdConfigurador: category,
       modelo: item.Modelo || item.modelo || '',  
-      
-      
-
-      /*marca: item.Marca || item.marca || '',
-      alto: item.alto,*/
       amount: numberProducts
     };
-
-    //PARA QUE SALGA LOS DATOS ADICIONALES SE TENDRIA QUE MODIFICAR EL ENDPOINT DE ORDER PRODUCTS Y ACEPTAR LOS SIGUIENTES PARAMETROS  **LUIS
-    // alto
-    // ancho
-    // largo
-    // peso
-    // marca
-
-
-    /*const data = {
-      id_item: item.id, // Matches id from item
-      sku_producto: item.SKU,
-      Nombre: item.Nombre,
-      Categoria: item.Categoria,
-      descripcionProducto: item.descripcionProducto,
-      precio: item.precio, // Default price since it's not in item
-      precioTotal: item.precioTotal,
-      precioPromoTotal: item.precioPromoTotal,
-      tipoMoneda: item.tipoMoneda,
-      fotos: [], // Assuming empty array for now
-      SKU: item.SKU,
-      categoryIdConfigurador: parseInt(item.categoryIdConfigurador), // Ensure it's a number
-      id_categoria: item.categoryId,
-      amount: item.amount,
-      modelo: item.modelo,
-      marcaVehiculo: null,
-      modeloVehiculo: null,
-      anioVehiculo: null
-  };*/
-
-
-
     item['categoryConf']= category; //Le agregamos la categoria propia del configurador
     item['amount'] = numberProducts; //   formData.get('contador');
     item['precio'] = numberProducts; //   formData.get('contador');
@@ -152,6 +116,8 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
       case '25': handleTweeter(item2,data,amountProducts); break;
       case '26': handleWoofer(item2,data,amountProducts); break;
     }
+    setTimeout(() => window.scrollTo({ top: scrollY, behavior: 'instant' }));
+    //setTimeout(() => window.scrollTo(0, scrollY), 0);
   }
   /*Agregamos el Item al carrito*/
   const form = useRef(null);
@@ -217,9 +183,10 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
   const handleAdaptadorImpedancia = (item2,data,amountProducts) =>{ setAdaptadorImpedancia(item2,data,amountProducts); }; 
   const handleMedioRango = (item2,data,amountProducts) =>{ setMedioRango(item2,data,amountProducts); };  //OPEN SHOW
   const handleComponentes = (item2,data,amountProducts) =>{ setComponentes(item2,data,amountProducts); };   //OPEN SHOW
-
+  //<form action="#" ref={form}>
   return (
-    <form action="/" ref={form}>
+    
+    <form ref={form} onSubmit={(e) => e.preventDefault()}>
       <Box className="ProductItemConfig">
         <Box>
           <Box>
@@ -248,7 +215,15 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
             {cart}
           </Box>
           <Box className='product-config-button'>
-              <figure className='product-config-button-figure' onClick={() => handleClick(product,category,product2)}>
+              <figure 
+              className='product-config-button-figure' 
+               onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleClick(product, category, product2);
+  }}
+              //onClick={() => handleClick(product,category,product2)}
+              >
                 <BotonAgregarDark />
               </figure>
           </Box>

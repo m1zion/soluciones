@@ -1,5 +1,5 @@
 //m2134256161 
-import React, {useRef, useState, useEffect, useContext} from "react";
+import React, {useMemo, useState, useEffect, useContext} from "react";
 import { Typography, Stack, Button, Stepper, Step, StepLabel } from "@mui/material";
 import { Box, sizeHeight } from "@mui/system";
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
@@ -94,6 +94,7 @@ const Configurador4 = () => {
   const [APIconfCaracteristicas,setAPIconfCaracteristicas] = useState('');
   const [loadingLocal,setLoadingLocal] = useState(false);
   const [caracteristicas,setCaracteristicas] = useState([]);
+  const memoCarFeatures = useMemo(() => caracteristicas, [caracteristicas]);
   const [activarBotonWoofer,setActivarBotonWoofer] = useState(true)
   const  dataLogin = {
     token: state.token
@@ -103,6 +104,7 @@ const Configurador4 = () => {
     navigate("/CheckOutCart");
   }
   useEffect(() => {
+     if (!state.configuracion || !state.modeloC) return;
     const fetchData = async () => {
         setLoadingLocal(true);
         //await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate a 1-second delay
@@ -124,7 +126,8 @@ const Configurador4 = () => {
         setLoadingLocal(false);
     };    
     fetchData();
-  }, [state]);
+  //}, [state]);
+  }, [state.marcaC, state.modeloC, state.anioC, state.confOrderId]);
   // HELPER FUNCTIONS ============================================================
   const fetchCaracteristicas = async (API) => {
     try {
