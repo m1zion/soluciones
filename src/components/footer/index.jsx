@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTiktok,faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 import { Box, List, ListItem, Typography } from '@mui/material';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+//import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Header() {
     return(
@@ -29,7 +29,7 @@ export default function Header() {
                 </Box>
             </Box>
             <Box className="legal">
-                <Typography>&copy;Solucionesparatuauto. Derechos reservados. v1.1.1</Typography>
+                <Typography>&copy;Solucionesparatuauto. Derechos reservados. v1.1.2</Typography>
             </Box>
         </Box>
     )
