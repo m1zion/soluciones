@@ -1,39 +1,28 @@
-import React from "react";
+import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Configurador1 from '@pages/Configurador/Configurador1';
-import Configurador2 from '@pages/Configurador/Configurador2';
-import Configurador3 from '@pages/Configurador/Configurador3';
-import Configurador4 from '@pages/Configurador/Configurador4';
-import CheckOutCart3_1 from '@pages/Configurador/CheckOutCart3_1';
-import CheckOutCart from '@pages/Configurador/CheckOutCart';
-import CheckOutCart4 from '@pages/Configurador/CheckOutCart4';
-import Login from "../pages/Login";
-
+const Configurador1 = React.lazy(() => import('@pages/Configurador/Configurador1'));
+const Configurador2 = React.lazy(() => import('@pages/Configurador/Configurador2'));
+const Configurador3 = React.lazy(() => import('@pages/Configurador/Configurador3'));
+const Configurador4 = React.lazy(() => import('@pages/Configurador/Configurador4'));
+const CheckOutCart3_1 = React.lazy(() => import('@pages/Configurador/CheckOutCart3_1'));
+const CheckOutCart = React.lazy(() => import('@pages/Configurador/CheckOutCart'));
+const CheckOutCart4 = React.lazy(() => import('@pages/Configurador/CheckOutCart4'));
+const Login = React.lazy(() => import('../pages/Login'));
 import Dashboard from '@dashboard/Dashboard.js';
 import ProductosAdm from '@dashboard/productos/ProductosAdm';
 import ProductosAdmFiltros from '@dashboard/productos/ProductosAdmFiltros';
 import ProductCreate from '@dashboard/productos/ProductCreate';
 import ProductEdit from '@dashboard/productos/ProductEdit';
 import ProductDetailAdmin from '@dashboard/productos/ProductDetail';
-
-/*import ProveedoresAdm from '@dashboard/proveedores/ProveedoresAdm';
-import ProveedorCreate from '@dashboard/proveedores/ProveedorCreate';
-import ProveedorDetail from '@dashboard/proveedores/ProveedorDetail';
-import ProveedorEdit from '@dashboard/proveedores/ProveedorEdit';*/
-//import ProveedorMovimientoEdit from '@dashboard/proveedores/ProveedorMovimientoEdit';
-//import ProveedorMovimientoCreate from '@dashboard/proveedores/ProveedorMovimientoCreate';
-
 import UsuariosAdm from '@dashboard/usuarios/UsuariosAdm';
 import UsuarioCreate from '@dashboard/usuarios/UsuarioCreate';
 import UsuarioEdit from '@dashboard/usuarios/UsuarioEdit';
-
 import ConfiguradorAdm from '@dashboard/configurador/ConfiguradorAdm';
 import ConfiguradorCreate from '@dashboard/configurador/ConfiguradorCreate';
 import ConfiguradorEdit from '@dashboard/configurador/ConfiguradorEdit';
 import ConfiguradorDetail from '@dashboard/configurador/ConfiguradorDetail';
 import ConfiguradorMarcasAdm from '@dashboard/configurador/ConfiguradorMarcasAdm';
 import ConfiguradorModelosAdm from '@dashboard/configurador/ConfiguradorModelosAdm';
-
 import useInitialState from '@hooks/useInitialState';
 import AppContext from '@context/AppContext';
 import '@styles/global.css';
@@ -42,23 +31,15 @@ import LayoutAdmin from '@containersDashboard/LayoutAdmin';
 import NewAccount from "../pages/NewAccount";
 import ForgotPassword from "../pages/ForgotPassword";
 import Recovery from "../pages/Recovery";
-
 import ClientesAdm from '@dashboard/clientes/ClientesAdm';
 import ClienteCreate from '@dashboard/clientes/ClienteCreate';
 import ClienteDetail from '@dashboard/clientes/ClienteDetail';
 import ClienteEdit from '@dashboard/clientes/ClienteEdit';
-//import ClienteMovimientoEdit from '@dashboard/clientes/ClienteMovimientoEdit';
-//import ClienteMovimientoCreate from '@dashboard/clientes/ClienteMovimientoCreate';
-
-
 import VentasAdm from '@dashboard/ventas/VentasAdm';
 import VentaCreate from '@dashboard/ventas/VentaCreate';
 import VentaDetail from '@dashboard/ventas/VentaDetail';
 import VentaEdit from '@dashboard/ventas/VentaEdit';
 import VentaNota from '@dashboard/ventas/VentaNota';
-
-
-
 //import { LoginProvider } from "../context/LoginContext";
 //<LoginProvider>
 //</LoginProvider>
@@ -68,6 +49,7 @@ const App = () => {
    
             <AppContext.Provider value={initialState}>
                 <BrowserRouter>
+                 <Suspense fallback={<div>Loading...</div>}>
                     <Routes>                        
                         <Route exact path="/" element={<Layout><Configurador1/></Layout>} />  
                         <Route exact path="/configurador2" element={<Layout><Configurador2/></Layout>} />  
@@ -122,6 +104,7 @@ const App = () => {
 
 
                     </Routes>
+                    </Suspense>
                 </BrowserRouter>
             </AppContext.Provider>
         
