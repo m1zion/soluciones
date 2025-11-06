@@ -8,38 +8,41 @@ const CheckOutCart3_1 = React.lazy(() => import('@pages/Configurador/CheckOutCar
 const CheckOutCart = React.lazy(() => import('@pages/Configurador/CheckOutCart'));
 const CheckOutCart4 = React.lazy(() => import('@pages/Configurador/CheckOutCart4'));
 const Login = React.lazy(() => import('../pages/Login'));
-import Dashboard from '@dashboard/Dashboard.js';
-import ProductosAdm from '@dashboard/productos/ProductosAdm';
-import ProductosAdmFiltros from '@dashboard/productos/ProductosAdmFiltros';
-import ProductCreate from '@dashboard/productos/ProductCreate';
-import ProductEdit from '@dashboard/productos/ProductEdit';
-import ProductDetailAdmin from '@dashboard/productos/ProductDetail';
-import UsuariosAdm from '@dashboard/usuarios/UsuariosAdm';
-import UsuarioCreate from '@dashboard/usuarios/UsuarioCreate';
-import UsuarioEdit from '@dashboard/usuarios/UsuarioEdit';
-import ConfiguradorAdm from '@dashboard/configurador/ConfiguradorAdm';
-import ConfiguradorCreate from '@dashboard/configurador/ConfiguradorCreate';
-import ConfiguradorEdit from '@dashboard/configurador/ConfiguradorEdit';
-import ConfiguradorDetail from '@dashboard/configurador/ConfiguradorDetail';
-import ConfiguradorMarcasAdm from '@dashboard/configurador/ConfiguradorMarcasAdm';
-import ConfiguradorModelosAdm from '@dashboard/configurador/ConfiguradorModelosAdm';
+
+const Dashboard = React.lazy(() => import('@dashboard/Dashboard.js'));
+const ProductosAdm = React.lazy(() => import('@dashboard/productos/ProductosAdm'));
+const ProductosAdmFiltros = React.lazy(() => import('@dashboard/productos/ProductosAdmFiltros'));
+const ProductCreate = React.lazy(() => import('@dashboard/productos/ProductCreate'));
+const ProductEdit = React.lazy(() => import('@dashboard/productos/ProductEdit'));
+const ProductDetailAdmin = React.lazy(() => import('@dashboard/productos/ProductDetail'));
+const UsuariosAdm = React.lazy(() => import('@dashboard/usuarios/UsuariosAdm'));
+const UsuarioCreate = React.lazy(() => import('@dashboard/usuarios/UsuarioCreate'));
+const UsuarioEdit = React.lazy(() => import('@dashboard/usuarios/UsuarioEdit'));
+const ConfiguradorAdm = React.lazy(() => import('@dashboard/configurador/ConfiguradorAdm'));
+
+const ConfiguradorCreate = React.lazy(() => import('@dashboard/configurador/ConfiguradorCreate'));
+const ConfiguradorEdit = React.lazy(() => import('@dashboard/configurador/ConfiguradorEdit'));
+const ConfiguradorDetail = React.lazy(() => import('@dashboard/configurador/ConfiguradorDetail'));
+const ConfiguradorMarcasAdm = React.lazy(() => import('@dashboard/configurador/ConfiguradorMarcasAdm'));
+const ConfiguradorModelosAdm = React.lazy(() => import('@dashboard/configurador/ConfiguradorModelosAdm'));
+
 import useInitialState from '@hooks/useInitialState';
 import AppContext from '@context/AppContext';
 import '@styles/global.css';
 import Layout from '@containers/Layout';
 import LayoutAdmin from '@containersDashboard/LayoutAdmin';
-import NewAccount from "../pages/NewAccount";
-import ForgotPassword from "../pages/ForgotPassword";
-import Recovery from "../pages/Recovery";
-import ClientesAdm from '@dashboard/clientes/ClientesAdm';
-import ClienteCreate from '@dashboard/clientes/ClienteCreate';
-import ClienteDetail from '@dashboard/clientes/ClienteDetail';
-import ClienteEdit from '@dashboard/clientes/ClienteEdit';
-import VentasAdm from '@dashboard/ventas/VentasAdm';
-import VentaCreate from '@dashboard/ventas/VentaCreate';
-import VentaDetail from '@dashboard/ventas/VentaDetail';
-import VentaEdit from '@dashboard/ventas/VentaEdit';
-import VentaNota from '@dashboard/ventas/VentaNota';
+import NewAccount from '../pages/NewAccount';
+import ForgotPassword from '../pages/ForgotPassword';
+const Recovery = React.lazy(() => import('../pages/Recovery'));
+const ClientesAdm = React.lazy(() => import('@dashboard/clientes/ClientesAdm'));
+const ClienteCreate = React.lazy(() => import('@dashboard/clientes/ClienteCreate'));
+const ClienteDetail = React.lazy(() => import('@dashboard/clientes/ClienteDetail'));
+const ClienteEdit = React.lazy(() => import('@dashboard/clientes/ClienteEdit'));
+const VentasAdm = React.lazy(() => import('@dashboard/ventas/VentasAdm'));
+const VentaCreate = React.lazy(() => import('@dashboard/ventas/VentaCreate'));
+const VentaDetail = React.lazy(() => import('@dashboard/ventas/VentaDetail'));
+const VentaEdit = React.lazy(() => import('@dashboard/ventas/VentaEdit'));
+const VentaNota = React.lazy(() => import('@dashboard/ventas/VentaNota'));
 //import { LoginProvider } from "../context/LoginContext";
 //<LoginProvider>
 //</LoginProvider>
@@ -70,12 +73,7 @@ const App = () => {
                         <Route exact path="/Dashboard/Productos/edit/:idCategory/:modelo" element={<LayoutAdmin><ProductEdit/> </LayoutAdmin>} />
                         <Route exact path="/Dashboard/productos/detail/:idCategory/:modelo" element={<LayoutAdmin><ProductDetailAdmin/></LayoutAdmin>} />
                         
-                        {/*<Route exact path="/Dashboard/Proveedores" element={<LayoutAdmin><ProveedoresAdm/></LayoutAdmin>} />
-                        <Route exact path="/Dashboard/Proveedores/create" element={<LayoutAdmin><ProveedorCreate/></LayoutAdmin>} />
-                        <Route exact path="/Dashboard/Proveedores/detail/:proveedor_id" element={<LayoutAdmin><ProveedorDetail/></LayoutAdmin>} />
-                        <Route exact path="/Dashboard/Proveedores/edit/:proveedor_id" element={<LayoutAdmin><ProveedorEdit/></LayoutAdmin>} />
-                        <Route exact path="/Dashboard/Proveedores/movimientoedit/:proveedorId/:proveedorMovimiento_id" element={<LayoutAdmin><ProveedorMovimientoEdit/></LayoutAdmin>} />
-                        <Route exact path="/Dashboard/Proveedores/movimientocreate/:proveedorId/:tipo" element={<LayoutAdmin><ProveedorMovimientoCreate/></LayoutAdmin>} />*/}
+                        {/*<Route exact path="/Dashboard/Proveedores" element={<LayoutAdmin><ProveedoresAdm/></LayoutAdmin>} />*/}
 
                         <Route exact path="/Dashboard/Configurador" element={<LayoutAdmin><ConfiguradorAdm/></LayoutAdmin>} />
                         <Route exact path="/Dashboard/Configurador/create" element={<LayoutAdmin><ConfiguradorCreate/></LayoutAdmin>} />
@@ -99,15 +97,11 @@ const App = () => {
                         <Route exact path="/Dashboard/Ventas/create" element={<LayoutAdmin><VentaCreate/></LayoutAdmin>} />                        
                         <Route exact path="/Dashboard/Ventas/detail/:ordenVentaId" element={<LayoutAdmin><VentaDetail/></LayoutAdmin>} />
                         <Route exact path="/Dashboard/Ventas/ventaNota/:ordenVentaId" element={<VentaNota/>} /> 
-                        <Route exact path="/Dashboard/Ventas/edit/:ordenVentaId" element={<LayoutAdmin><VentaEdit/></LayoutAdmin>} />
-                        
-
-
+                        <Route exact path="/Dashboard/Ventas/edit/:ordenVentaId" element={<LayoutAdmin><VentaEdit/></LayoutAdmin>} />                
                     </Routes>
                     </Suspense>
                 </BrowserRouter>
-            </AppContext.Provider>
-        
+            </AppContext.Provider>        
     );
 }
 export default App;

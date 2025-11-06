@@ -29,7 +29,7 @@ export default function Header() {
                 </Box>
             </Box>
             <Box className="legal">
-                <Typography>&copy;Solucionesparatuauto. Derechos reservados. v1.1.3</Typography>
+                <Typography>&copy;Solucionesparatuauto. Derechos reservados. v1.1.4</Typography>
             </Box>
         </Box>
     )

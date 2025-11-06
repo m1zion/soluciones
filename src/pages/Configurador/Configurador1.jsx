@@ -275,7 +275,7 @@ const handleSubmitModificar = (event) => {
     (state.userName === 'Invitado') ? 
       (
       <Box className="verify_Container">
-        <Typography variant="h6">Favor de Iniciar Sesión</Typography>
+        <Typography variant="h6">Favor de Iniciar Sesión.</Typography>
         <Typography variant="body1" className="NewAccountSignIn">
           <a href="/Login">Iniciar Sesión / Registrarse</a>
         </Typography>

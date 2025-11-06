@@ -214,7 +214,8 @@ const Configurador4 = () => {
 
   const handleRemoveNuevo  = async () => {
     let APIDeleteAll2 = "";
-    APIDeleteAll2 = APIDeleteAll.concat("9");
+    //APIDeleteAll2 = APIDeleteAll.concat("9");
+    APIDeleteAll2 = APIDeleteAll.concat(state.confOrderId);
     let dataConfCaracteristicas = {
       orderType: 'configurador',
       status: 'activo',
@@ -257,7 +258,7 @@ const Configurador4 = () => {
           removeFromCartConf('nuevo');
           await usePut(APIconfCaracteristicas, dataConfCaracteristicas);
           //("se Borraran los Items");
-          navigate("/configurador1");
+          navigate("/");
       } catch (error) {
           console.error("Error during deletion and update:", error);
       }
@@ -877,10 +878,11 @@ const Configurador4 = () => {
     break;
     }
   }
-
-  //console.log("---------------");
-  //console.log(state.tieneBocinaReemplazo);
-  /*console.log("===========");*/
+/*
+  console.log("===========");
+  console.log(state.bocinaPremiumDelanteraC);
+  console.log(state.calzaBocinaPremiumDelanteraC);
+  */
   return (
     <React.Fragment>
       {(loading || loadingLocal) && <Box className="Loading_Container"> <GradientCircularProgress /></Box>}
@@ -1153,7 +1155,7 @@ const Configurador4 = () => {
           </Accordion>
           {/*------------------------------------------------------CALZAS BOCINA DE REEMPLAZO DELANTERA--------------------------------------------------------------*/}
           <Accordion expanded={(expandBaseBocinaRD || expanded === 'panel6')} onChange={handleChange('panel6')} 
-            disabled = {state.bocinaReemplazoDelanteraC.length === 0 || (state.calzaBocinaReemplazoDelanteraC?.SKU != null && state.calzaBocinaReemplazoDelanteraC?.SKU !== '') }>
+            disabled = {state.bocinaReemplazoDelanteraC.length === 0 || (state.calzaBocinaReemplazoDelanteraC?.SKU != null && state.calzaBocinaReemplazoDelanteraC?.SKU !== '') || (state.calzaBocinaReemplazoDelanteraC === 'N/A')}>
               <Box className="configurador-accordionSummary">
                 <AccordionSummary 
                   className={state.calzaBocinaReemplazoDelanteraC?.SKU != null && state.calzaBocinaReemplazoDelanteraC?.SKU !== '' ? 'configurador-accordion-header-disabled': ''}
@@ -1247,12 +1249,14 @@ const Configurador4 = () => {
         </Accordion>  
         {/*------------------------------------------------------TERMINAR CONFIGURACION 1--------------------------------------------------------------*/}
         <Accordion expanded={(
-           // (state.calzaBocinaReemplazoTraseraC.length != 0 && state.tieneBocinaReemplazo.length != 0) 
-          ((state.calzaBocinaReemplazoTraseraC?.length ?? 0) !== 0 && (state.tieneBocinaReemplazo?.length ?? 0) !== 0) || 
+         (state.calzaBocinaReemplazoTraseraC?.SKU != null && state.calzaBocinaReemplazoTraseraC?.SKU !== '' && (state.tieneBocinaReemplazo?.length ?? 0) !== 0) ||
           expanded === 'panel9')} onChange={handleChange('panel9')} 
           disabled = {state.calzaBocinaReemplazoTraseraC.length === 0 && state.calzaBocinaReemplazoTraseraC.length === 0}>
            <Box className="configurador-accordionSummary">
-              <AccordionSummary className="configurador-accordion-header" aria-controls="panel9d-content" id="panel9d-header">
+              <AccordionSummary 
+                className={(state.terminaConfiguracion1 == 'si' || state.terminaConfiguracion1 == 'no') ? 'configurador-accordion-header-disabled': 'configurador-accordion-header'}
+                //className="configurador-accordion-header" 
+                aria-controls="panel9d-content" id="panel9d-header">
                 <Typography>Terminar Configuracion 1</Typography>
               </AccordionSummary>
             </Box>        
@@ -1347,7 +1351,7 @@ const Configurador4 = () => {
         {/*------------------------------------------------------CALZAS BOCINA PREMIUM DELANTERA--------------------------------------------------------------*/}
         <Accordion 
           expanded={(expandCalzaBocinaPD || expanded === 'panel12')} 
-          onChange={handleChange('panel12')} 
+          onChange={handleChange('panel12')}            
           disabled = {state.bocinaPremiumDelanteraC.length === 0 || state.calzaBocinaPremiumDelanteraC.length != 0}>
           <Box className="configurador-accordionSummary">
             <AccordionSummary 
