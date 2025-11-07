@@ -1,6 +1,6 @@
 import React, {useRef, useContext,useState, useEffect} from "react";
 import { Box, Typography, Stack, Button, Stepper, Step, StepLabel } from "@mui/material";
-import '@styles/Configurador1.scss';
+import './Configurador1.scss';
 import AppContext from '@context/AppContext';
 import Alert from '@mui/material/Alert';
 import GradientCircularProgress from "./GradientCircularProgress";

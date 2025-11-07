@@ -9,7 +9,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import useDeleteOrderItem from '@hooks/useDeleteOrderItem';
-import '@styles/Configurador1.scss';
+import './Configurador1.scss';
 import '@styles/ProductList.scss';
 import usePut from '@hooks/usePut';
 import AppContext from '@context/AppContext';

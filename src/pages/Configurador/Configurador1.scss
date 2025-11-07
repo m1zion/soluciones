@@ -1,4 +1,4 @@
-@import './_vars.css';
+@import '../../styles/_vars.css';
 .Configurador_Container{
     margin-top: 5rem; 
 }
@@ -21,7 +21,7 @@
 }
 .hero-image{
     background-color: black;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../assets/images/Slide-configurador.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../../../src/assets/images/Slide-configurador.jpg");
     height: 400px;
     /* Position and center the image to scale nicely on all screens */
     background-position: center;
@@ -53,7 +53,7 @@
 }
 .configurador1_stack{
     padding-bottom: 6em;
-    background-image: url("../assets/images/Slide-configurador_min.jpg");
+    background-image: url("../../../src/assets/images/Slide-configurador_min.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

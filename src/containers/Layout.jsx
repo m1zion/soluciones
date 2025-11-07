@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '@components/Header/';  //Header 2 en el original
-import Footer from '@components/Footer/';
+import Header from '@components/header/';  //Header 2 en el original
+import Footer from '@components/footer/';
 import '@styles/Layout.scss';
 import { Box } from '@mui/material';
 //import Header2 from '@components/Header2';

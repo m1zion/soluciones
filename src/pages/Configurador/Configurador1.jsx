@@ -1,5 +1,5 @@
 import { Alert, Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, Stack, Step, StepLabel, Stepper, Typography } from "@mui/material";
-import '@styles/Configurador1.scss';
+import './Configurador1.scss';
 import React, { useState, useEffect, useRef, useContext } from "react";
 import useGet7 from '@hooks/useGet7';
 import AppContext from '@context/AppContext';
