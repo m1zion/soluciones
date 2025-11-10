@@ -1,5 +1,5 @@
 import React , {useContext, useRef, useEffect, useState}from "react";
-import { Stack, FormControl, Typography, Box, TextField, InputLabel, Select, MenuItem, Button, Step, StepLabel, Stepper} from "@mui/material";
+import { Stack, FormControl, Typography, Box, TextField, InputLabel, Select, MenuItem, Button, Step, StepLabel, Stepper, CircularProgress} from "@mui/material";
 import ProductCart from "./containers/ProductCart";
 import './CheckOutCart2.scss';
 import './FacturacionForm.scss';
@@ -8,6 +8,7 @@ import './CheckOutCart3.scss';
 import AppContext from '@context/AppContext';
 import usePut2V from '@hooks/usePut2V';
 import { useNavigate } from "react-router-dom";
+import './Configurador1.scss';
 var formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'MXN',
@@ -147,7 +148,6 @@ const CheckOutCart = () => {
       setLoadingLocal(false);  // Ensure loading state is reset
     }
   }
-
   const sendOrderEmail = async (orderNumber, email) => {
     console.log(orderNumber);
     console.log(`${API}orderEmail`);
@@ -174,9 +174,14 @@ const CheckOutCart = () => {
       alert('Ocurrió un error al enviar el correo de confirmación.');
     }
   };
-
   //==================================FUNCIONES PARA TRAER EL CARRITO==================================
-	const form = useRef(null);
+  if (loadingLocal) {
+    return (
+      <Box className="Loading_Container">
+            <CircularProgress />
+      </Box>
+    );
+  }
   if (state.totalCompra <= 0 && !setLoadingLocal){
     return(
       <Box className="CheckOutCart2Container">

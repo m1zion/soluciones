@@ -878,11 +878,6 @@ const Configurador4 = () => {
     break;
     }
   }
-/*
-  console.log("===========");
-  console.log(state.bocinaPremiumDelanteraC);
-  console.log(state.calzaBocinaPremiumDelanteraC);
-  */
   return (
     <React.Fragment>
       {(loading || loadingLocal) && <Box className="Loading_Container"> <GradientCircularProgress /></Box>}
@@ -1249,7 +1244,7 @@ const Configurador4 = () => {
         </Accordion>  
         {/*------------------------------------------------------TERMINAR CONFIGURACION 1--------------------------------------------------------------*/}
         <Accordion expanded={(
-         (state.calzaBocinaReemplazoTraseraC?.SKU != null && state.calzaBocinaReemplazoTraseraC?.SKU !== '' && (state.tieneBocinaReemplazo?.length ?? 0) !== 0) ||
+         ((state.calzaBocinaReemplazoTraseraC?.SKU != null || state.calzaBocinaReemplazoTraseraC == 'N/A') && state.calzaBocinaReemplazoTraseraC?.SKU !== '' && (state.tieneBocinaReemplazo?.length ?? 0) !== 0) ||
           expanded === 'panel9')} onChange={handleChange('panel9')} 
           disabled = {state.calzaBocinaReemplazoTraseraC.length === 0 && state.calzaBocinaReemplazoTraseraC.length === 0}>
            <Box className="configurador-accordionSummary">

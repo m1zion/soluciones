@@ -1,15 +1,12 @@
 import React from 'react';
 import { Typography, Box } from '@mui/material';
 const Paginate = ({ productsPerPage, totalPosts, paginate, previousPage, nextPage, currentPage}) => {
-   /*console.log("paginate");
-   console.log(paginate);*/
    const pageNumbers = [];
    for (let i = 1; i <= Math.ceil(totalPosts / productsPerPage); i++) {
       pageNumbers.push(i);
    }
    const showPagination = 5;
    let visiblePageNumbers = [];
-   //console.log(currentPage);
    
    if (currentPage === 1) {
       visiblePageNumbers = pageNumbers.slice(0, showPagination);
@@ -20,7 +17,6 @@ const Paginate = ({ productsPerPage, totalPosts, paginate, previousPage, nextPag
       const end = Math.min(currentPage + 2, pageNumbers.length - 1);
       visiblePageNumbers = pageNumbers.slice(start, end + 1);
   }
-
    return (
       <Box className='pagination_rounded_container'>
          <Box className="pagination_rounded">
