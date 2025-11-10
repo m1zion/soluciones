@@ -27,6 +27,9 @@ const ProductItemConfigurador = ({product,llave,category,editarCantidad,cantidad
       //fotoDefault = product.fotos[0].url;
     }
   }
+
+
+
   const showProduct = (productDetail) => {
     openProductDetail();
     setProductToShow(productDetail);

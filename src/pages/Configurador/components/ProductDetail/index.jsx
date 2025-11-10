@@ -1,61 +1,3 @@
-/*import {
-  Drawer,
-  Box,
-  Typography,
-  IconButton
-} from '@mui/material';
-import CancelIcon from '@mui/icons-material/Cancel';
-import React, {useContext } from 'react';
-import './styles.css'
-import AppContext from '@context/AppContext';
-import noImage from '@images/imageNotFound.png';
-const ProductDetail = () => {
-  const context = useContext(AppContext);
-  const fotoDefault = noImage;
-  return (
-    <Drawer
-      anchor="right"
-      open={context.isProductDetailOpen}
-      onClose={context.closeProductDetail}
-    >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 3 }}>
-        <Typography variant="h5">Detalle</Typography>
-        <IconButton onClick={context.closeProductDetail}>
-          <CancelIcon />
-        </IconButton>
-      </Box>
-
-      <Box component="figure" sx={{ px: 3 }}>
-        <Box
-          component="img"
-          src={context.productToShow.fotos?.[0] || fotoDefault}
-          alt={context.productToShow.Modelo}
-          sx={{
-            width: '100%',
-            borderRadius: '0.5rem',
-            objectFit: 'cover',
-          }}
-        />
-      </Box>
-
-      <Box sx={{ display: 'flex', flexDirection: 'column', p: 3 }}>
-        <Typography variant="h5" fontWeight="medium" mb={2}>
-          ${context.productToShow.precioPromoTotal}
-        </Typography>
-        <Typography variant="subtitle1" fontWeight="medium">
-          {context.productToShow.Modelo}
-        </Typography>
-        <Typography variant="body2" fontWeight="light">
-          {context.productToShow.descripcionProducto}
-        </Typography>
-      </Box>
-    </Drawer>
-  );
-};
-
-export default ProductDetail;*/
-
-
 import { Box, Paper, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import React, {useContext } from 'react';
 import './styles.css'
@@ -65,7 +7,6 @@ import noImage from '@images/imageNotFound.png';
 const ProductDetail = () => {
     const context = useContext(AppContext);
     let fotoDefault = noImage;
-
     function createData(caracteristica, descripcion) {
       return { caracteristica, descripcion };
     }
@@ -107,6 +48,15 @@ const ProductDetail = () => {
 
 
     if (!context.isProductDetailOpen) return null;
+    let fotos =  context.productToShow.fotos;
+    if(typeof fotos !== "undefined"){
+      if (fotos.length > 0 ){
+        const defaultPhoto = fotos.find(photo => photo.fileName.includes("_1_lg.jpg"));
+        fotoDefault = defaultPhoto ? defaultPhoto.url : fotos[0].url;
+        //fotoDefault = product.fotos[0].url;
+      }
+    }
+
     return (
         <Box className="product-detail-overlay" onClick={context.closeProductDetail}>
         <Box component="aside" className="product-detail-container" onClick={(e) => e.stopPropagation()}>        
@@ -121,7 +71,7 @@ const ProductDetail = () => {
             <Box component="figure" sx={{ px: 6 }}>
                 <Box
                     component="img"
-                    src={context.productToShow.fotos?.[0] || fotoDefault}
+                    src={fotoDefault} 
                     alt={context.productToShow.Modelo}
                     className="product-detail-img"
                 />
