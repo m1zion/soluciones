@@ -604,12 +604,14 @@ const useInitialState = () =>{  //Funcion para inicializar el estado
     }
 
     const fetchOrderData = async (payloadLogin) => {
-        //console.log("Inicia fetchOrderData");        
+        //console.log("Inicia fetchOrderData");      
+        //console.log(payloadLogin);
         //console.log(payloadLogin);
         try {
             // 1. Check if I have active orders of cart and configurador
-            const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=tienda`;
-            const APIConf = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador`; 
+            const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=tienda&clienteId=${payloadLogin.clienteId}`;
+            const APIConf = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador&clienteId=${payloadLogin.clienteId}`; 
+            console.log(APIConf);
             const [cartResponse, confResponse] = await Promise.all([
                 fetch(APICart, {
                     method: 'GET',

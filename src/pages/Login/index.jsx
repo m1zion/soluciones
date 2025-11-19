@@ -75,7 +75,7 @@ const Login = () => {
   );
   //------------------------------------------------------------------------
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event?.preventDefault();
     setLoading(true);
     try {
       const response = await fetch(`${baseURL}auth/login`, {
@@ -188,6 +188,11 @@ const Login = () => {
                 name="password"   
                 label="Password"            
                 id="password"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSubmit(); // trigger login directly
+                  }
+                }}
                 type={values.showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

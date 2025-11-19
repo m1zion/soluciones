@@ -162,7 +162,8 @@ const handleSubmit = async (event) => {
 //HELPER FUNCTIONS=============================================================
 //VERIFICA SI HAY UNA ORDEN ACTIVA
 const verifyActiveCart = async () =>{
-  const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador`; 
+  //console.log(state);
+  const APICart = `${API}ordenesUsuario/V2/get?offset=0&limit=1&status=activo&orderType=configurador&clienteId=${state.clienteId}`; 
   const response = await fetch(APICart, {
     headers: {
       'Authorization': `Bearer ${state.token}`,  
